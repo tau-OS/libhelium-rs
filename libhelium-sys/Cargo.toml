@@ -1,0 +1,46 @@
+[package]
+name = "libhelium-sys"
+version = "0.0.1"
+edition = "2021"
+build = "build.rs"
+[package.metadata.system-deps.libhelium_1]
+name = "libhelium-1"
+version = "1"
+[package.metadata.docs.rs]
+features = ["dox"]
+
+[lib]
+name = "libhelium_sys"
+
+[dependencies]
+libc = "0.2"
+
+[dependencies.glib]
+package = "glib-sys"
+git = "https://github.com/gtk-rs/gtk-rs-core"
+
+[dependencies.gobject]
+package = "gobject-sys"
+git = "https://github.com/gtk-rs/gtk-rs-core"
+
+[dependencies.gdk]
+package = "gdk4-sys"
+git = "https://github.com/gtk-rs/gtk4-rs"
+
+[dependencies.gio]
+package = "gio-sys"
+git = "https://github.com/gtk-rs/gtk-rs-core"
+
+[dependencies.gtk]
+package = "gtk4-sys"
+git = "https://github.com/gtk-rs/gtk4-rs"
+
+[build-dependencies]
+system-deps = "6"
+
+[dev-dependencies]
+shell-words = "1.0.0"
+tempfile = "3"
+
+[features]
+dox = []
