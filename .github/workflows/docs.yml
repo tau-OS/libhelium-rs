@@ -19,6 +19,7 @@ jobs:
         with:
             toolchain: nightly
             default: true
+            components: rustfmt, clippy
 
       - name: Generate docs
         run: cargo install rustdoc-stripper
