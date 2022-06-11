@@ -27,6 +27,12 @@ glib::wrapper! {
     /// # Implements
     ///
     /// [`DesktopExt`][trait@crate::prelude::DesktopExt], [`trait@glib::ObjectExt`]
+    // rustdoc-stripper-ignore-next-stop
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`DesktopExt`][trait@crate::prelude::DesktopExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "HeDesktop")]
     pub struct Desktop(Object<ffi::HeDesktop, ffi::HeDesktopClass>);
 
@@ -92,6 +98,12 @@ impl DesktopBuilder {
     }
 }
 
+/// Trait containing all [`struct@Desktop`] methods.
+///
+/// # Implementors
+///
+/// [`Desktop`][struct@crate::Desktop]
+// rustdoc-stripper-ignore-next-stop
 /// Trait containing all [`struct@Desktop`] methods.
 ///
 /// # Implementors

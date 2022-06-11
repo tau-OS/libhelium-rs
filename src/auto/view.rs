@@ -28,6 +28,14 @@ glib::wrapper! {
     /// # Implements
     ///
     /// [`ViewExt`][trait@crate::prelude::ViewExt], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`]
+    // rustdoc-stripper-ignore-next-stop
+    ///
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// # Implements
+    ///
+    /// [`ViewExt`][trait@crate::prelude::ViewExt], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`]
     #[doc(alias = "HeView")]
     pub struct View(Object<ffi::HeView, ffi::HeViewClass>) @extends gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 
@@ -40,6 +48,12 @@ impl View {
     pub const NONE: Option<&'static View> = None;
 }
 
+/// Trait containing all [`struct@View`] methods.
+///
+/// # Implementors
+///
+/// [`ViewAux`][struct@crate::ViewAux], [`ViewDual`][struct@crate::ViewDual], [`ViewMono`][struct@crate::ViewMono], [`View`][struct@crate::View]
+// rustdoc-stripper-ignore-next-stop
 /// Trait containing all [`struct@View`] methods.
 ///
 /// # Implementors

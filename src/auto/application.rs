@@ -24,6 +24,12 @@ glib::wrapper! {
     /// # Implements
     ///
     /// [`trait@gtk::prelude::ApplicationExt`], [`trait@gio::prelude::ApplicationExt`], [`trait@glib::ObjectExt`], [`trait@gio::prelude::ActionGroupExt`], [`trait@gio::prelude::ActionMapExt`]
+    // rustdoc-stripper-ignore-next-stop
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::ApplicationExt`], [`trait@gio::prelude::ApplicationExt`], [`trait@glib::ObjectExt`], [`trait@gio::prelude::ActionGroupExt`], [`trait@gio::prelude::ActionMapExt`]
     #[doc(alias = "HeApplication")]
     pub struct Application(Object<ffi::HeApplication, ffi::HeApplicationClass>) @extends gtk::Application, gio::Application, @implements gio::ActionGroup, gio::ActionMap;
 
@@ -134,11 +140,18 @@ impl ApplicationBuilder {
     /// The `GMenuModel` to be used for the application's menu bar.
     // rustdoc-stripper-ignore-next-stop
     /// The `GMenuModel` to be used for the application's menu bar.
+    // rustdoc-stripper-ignore-next-stop
+    /// The `GMenuModel` to be used for the application's menu bar.
     pub fn menubar(mut self, menubar: &impl IsA<gio::MenuModel>) -> Self {
         self.menubar = Some(menubar.clone().upcast());
         self
     }
 
+    /// Set this property to `TRUE` to register with the session manager.
+    ///
+    /// This will make GTK track the session state (such as the
+    /// `property::gtk::Application::screensaver-active` property).
+    // rustdoc-stripper-ignore-next-stop
     /// Set this property to `TRUE` to register with the session manager.
     ///
     /// This will make GTK track the session state (such as the

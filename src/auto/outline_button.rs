@@ -24,6 +24,12 @@ glib::wrapper! {
     /// # Implements
     ///
     /// [`ButtonExt`][trait@crate::prelude::ButtonExt], [`trait@gtk::prelude::ButtonExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::ActionableExt`]
+    // rustdoc-stripper-ignore-next-stop
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ButtonExt`][trait@crate::prelude::ButtonExt], [`trait@gtk::prelude::ButtonExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::ActionableExt`]
     #[doc(alias = "HeOutlineButton")]
     pub struct OutlineButton(Object<ffi::HeOutlineButton, ffi::HeOutlineButtonClass>) @extends Button, gtk::Button, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Actionable;
 
@@ -252,11 +258,15 @@ impl OutlineButtonBuilder {
     /// The child widget.
     // rustdoc-stripper-ignore-next-stop
     /// The child widget.
+    // rustdoc-stripper-ignore-next-stop
+    /// The child widget.
     pub fn child(mut self, child: &impl IsA<gtk::Widget>) -> Self {
         self.child = Some(child.clone().upcast());
         self
     }
 
+    /// Whether the button has a frame.
+    // rustdoc-stripper-ignore-next-stop
     /// Whether the button has a frame.
     // rustdoc-stripper-ignore-next-stop
     /// Whether the button has a frame.
@@ -272,6 +282,8 @@ impl OutlineButtonBuilder {
     /// The name of the icon used to automatically populate the button.
     // rustdoc-stripper-ignore-next-stop
     /// The name of the icon used to automatically populate the button.
+    // rustdoc-stripper-ignore-next-stop
+    /// The name of the icon used to automatically populate the button.
     pub fn icon_name(mut self, icon_name: &str) -> Self {
         self.icon_name = Some(icon_name.to_string());
         self
@@ -282,11 +294,16 @@ impl OutlineButtonBuilder {
     /// Text of the label inside the button, if the button contains a label widget.
     // rustdoc-stripper-ignore-next-stop
     /// Text of the label inside the button, if the button contains a label widget.
+    // rustdoc-stripper-ignore-next-stop
+    /// Text of the label inside the button, if the button contains a label widget.
     pub fn label(mut self, label: &str) -> Self {
         self.label = Some(label.to_string());
         self
     }
 
+    /// If set, an underline in the text indicates that the following character is
+    /// to be used as mnemonic.
+    // rustdoc-stripper-ignore-next-stop
     /// If set, an underline in the text indicates that the following character is
     /// to be used as mnemonic.
     // rustdoc-stripper-ignore-next-stop
@@ -317,6 +334,12 @@ impl OutlineButtonBuilder {
     ///
     /// This property is meant to be set by widget implementations,
     /// typically in their instance init function.
+    // rustdoc-stripper-ignore-next-stop
+    /// Whether the widget or any of its descendents can accept
+    /// the input focus.
+    ///
+    /// This property is meant to be set by widget implementations,
+    /// typically in their instance init function.
     pub fn can_focus(mut self, can_focus: bool) -> Self {
         self.can_focus = Some(can_focus);
         self
@@ -327,11 +350,15 @@ impl OutlineButtonBuilder {
     /// Whether the widget can receive pointer events.
     // rustdoc-stripper-ignore-next-stop
     /// Whether the widget can receive pointer events.
+    // rustdoc-stripper-ignore-next-stop
+    /// Whether the widget can receive pointer events.
     pub fn can_target(mut self, can_target: bool) -> Self {
         self.can_target = Some(can_target);
         self
     }
 
+    /// A list of css classes applied to this widget.
+    // rustdoc-stripper-ignore-next-stop
     /// A list of css classes applied to this widget.
     // rustdoc-stripper-ignore-next-stop
     /// A list of css classes applied to this widget.
@@ -356,11 +383,18 @@ impl OutlineButtonBuilder {
     ///
     /// This property is meant to be set by widget implementations,
     /// typically in their instance init function.
+    // rustdoc-stripper-ignore-next-stop
+    /// The name of this widget in the CSS tree.
+    ///
+    /// This property is meant to be set by widget implementations,
+    /// typically in their instance init function.
     pub fn css_name(mut self, css_name: &str) -> Self {
         self.css_name = Some(css_name.to_string());
         self
     }
 
+    /// The cursor used by @widget.
+    // rustdoc-stripper-ignore-next-stop
     /// The cursor used by @widget.
     // rustdoc-stripper-ignore-next-stop
     /// The cursor used by @widget.
@@ -382,11 +416,17 @@ impl OutlineButtonBuilder {
     /// Whether the widget should grab focus when it is clicked with the mouse.
     ///
     /// This property is only relevant for widgets that can take focus.
+    // rustdoc-stripper-ignore-next-stop
+    /// Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
     pub fn focus_on_click(mut self, focus_on_click: bool) -> Self {
         self.focus_on_click = Some(focus_on_click);
         self
     }
 
+    /// Whether this widget itself will accept the input focus.
+    // rustdoc-stripper-ignore-next-stop
     /// Whether this widget itself will accept the input focus.
     // rustdoc-stripper-ignore-next-stop
     /// Whether this widget itself will accept the input focus.
@@ -402,11 +442,19 @@ impl OutlineButtonBuilder {
     /// How to distribute horizontal space if widget gets extra space.
     // rustdoc-stripper-ignore-next-stop
     /// How to distribute horizontal space if widget gets extra space.
+    // rustdoc-stripper-ignore-next-stop
+    /// How to distribute horizontal space if widget gets extra space.
     pub fn halign(mut self, halign: gtk::Align) -> Self {
         self.halign = Some(halign);
         self
     }
 
+    /// Enables or disables the emission of the ::query-tooltip signal on @widget.
+    ///
+    /// A value of [`true`] indicates that @widget can have a tooltip, in this case
+    /// the widget will be queried using `signal::gtk::Widget::query-tooltip` to
+    /// determine whether it will provide a tooltip or not.
+    // rustdoc-stripper-ignore-next-stop
     /// Enables or disables the emission of the ::query-tooltip signal on @widget.
     ///
     /// A value of [`true`] indicates that @widget can have a tooltip, in this case
@@ -440,11 +488,17 @@ impl OutlineButtonBuilder {
     /// Override for height request of the widget.
     ///
     /// If this is -1, the natural request will be used.
+    // rustdoc-stripper-ignore-next-stop
+    /// Override for height request of the widget.
+    ///
+    /// If this is -1, the natural request will be used.
     pub fn height_request(mut self, height_request: i32) -> Self {
         self.height_request = Some(height_request);
         self
     }
 
+    /// Whether to expand horizontally.
+    // rustdoc-stripper-ignore-next-stop
     /// Whether to expand horizontally.
     // rustdoc-stripper-ignore-next-stop
     /// Whether to expand horizontally.
@@ -460,11 +514,19 @@ impl OutlineButtonBuilder {
     /// Whether to use the `hexpand` property.
     // rustdoc-stripper-ignore-next-stop
     /// Whether to use the `hexpand` property.
+    // rustdoc-stripper-ignore-next-stop
+    /// Whether to use the `hexpand` property.
     pub fn hexpand_set(mut self, hexpand_set: bool) -> Self {
         self.hexpand_set = Some(hexpand_set);
         self
     }
 
+    /// The [`gtk::LayoutManager`][crate::gtk::LayoutManager] instance to use to compute the preferred size
+    /// of the widget, and allocate its children.
+    ///
+    /// This property is meant to be set by widget implementations,
+    /// typically in their instance init function.
+    // rustdoc-stripper-ignore-next-stop
     /// The [`gtk::LayoutManager`][crate::gtk::LayoutManager] instance to use to compute the preferred size
     /// of the widget, and allocate its children.
     ///
@@ -504,11 +566,26 @@ impl OutlineButtonBuilder {
     /// This property adds margin outside of the widget's normal size
     /// request, the margin will be added in addition to the size from
     /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    // rustdoc-stripper-ignore-next-stop
+    /// Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
     pub fn margin_bottom(mut self, margin_bottom: i32) -> Self {
         self.margin_bottom = Some(margin_bottom);
         self
     }
 
+    /// Margin on end of widget, horizontally.
+    ///
+    /// This property supports left-to-right and right-to-left text
+    /// directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    // rustdoc-stripper-ignore-next-stop
     /// Margin on end of widget, horizontally.
     ///
     /// This property supports left-to-right and right-to-left text
@@ -566,11 +643,26 @@ impl OutlineButtonBuilder {
     /// This property adds margin outside of the widget's normal size
     /// request, the margin will be added in addition to the size from
     /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    // rustdoc-stripper-ignore-next-stop
+    /// Margin on start of widget, horizontally.
+    ///
+    /// This property supports left-to-right and right-to-left text
+    /// directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
     pub fn margin_start(mut self, margin_start: i32) -> Self {
         self.margin_start = Some(margin_start);
         self
     }
 
+    /// Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    // rustdoc-stripper-ignore-next-stop
     /// Margin on top side of widget.
     ///
     /// This property adds margin outside of the widget's normal size
@@ -598,11 +690,15 @@ impl OutlineButtonBuilder {
     /// The name of the widget.
     // rustdoc-stripper-ignore-next-stop
     /// The name of the widget.
+    // rustdoc-stripper-ignore-next-stop
+    /// The name of the widget.
     pub fn name(mut self, name: &str) -> Self {
         self.name = Some(name.to_string());
         self
     }
 
+    /// The requested opacity of the widget.
+    // rustdoc-stripper-ignore-next-stop
     /// The requested opacity of the widget.
     // rustdoc-stripper-ignore-next-stop
     /// The requested opacity of the widget.
@@ -627,11 +723,18 @@ impl OutlineButtonBuilder {
     ///
     /// This property is meant to be set by widget implementations,
     /// typically in their instance init function.
+    // rustdoc-stripper-ignore-next-stop
+    /// How content outside the widget's content area is treated.
+    ///
+    /// This property is meant to be set by widget implementations,
+    /// typically in their instance init function.
     pub fn overflow(mut self, overflow: gtk::Overflow) -> Self {
         self.overflow = Some(overflow);
         self
     }
 
+    /// Whether the widget will receive the default action when it is focused.
+    // rustdoc-stripper-ignore-next-stop
     /// Whether the widget will receive the default action when it is focused.
     // rustdoc-stripper-ignore-next-stop
     /// Whether the widget will receive the default action when it is focused.
@@ -647,11 +750,27 @@ impl OutlineButtonBuilder {
     /// Whether the widget responds to input.
     // rustdoc-stripper-ignore-next-stop
     /// Whether the widget responds to input.
+    // rustdoc-stripper-ignore-next-stop
+    /// Whether the widget responds to input.
     pub fn sensitive(mut self, sensitive: bool) -> Self {
         self.sensitive = Some(sensitive);
         self
     }
 
+    /// Sets the text of tooltip to be the given string, which is marked up
+    /// with Pango markup.
+    ///
+    /// Also see `Gtk::Tooltip::set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]:
+    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
+    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
+    /// the default signal handler.
+    ///
+    /// Note that if both `property::gtk::Widget::tooltip-text` and
+    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
+    // rustdoc-stripper-ignore-next-stop
     /// Sets the text of tooltip to be the given string, which is marked up
     /// with Pango markup.
     ///
@@ -736,11 +855,26 @@ impl OutlineButtonBuilder {
     ///
     /// Note that if both `property::gtk::Widget::tooltip-text` and
     /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
+    // rustdoc-stripper-ignore-next-stop
+    /// Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `Gtk::Tooltip::set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]:
+    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
+    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
+    /// the default signal handler.
+    ///
+    /// Note that if both `property::gtk::Widget::tooltip-text` and
+    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
     pub fn tooltip_text(mut self, tooltip_text: &str) -> Self {
         self.tooltip_text = Some(tooltip_text.to_string());
         self
     }
 
+    /// How to distribute vertical space if widget gets extra space.
+    // rustdoc-stripper-ignore-next-stop
     /// How to distribute vertical space if widget gets extra space.
     // rustdoc-stripper-ignore-next-stop
     /// How to distribute vertical space if widget gets extra space.
@@ -756,6 +890,8 @@ impl OutlineButtonBuilder {
     /// Whether to expand vertically.
     // rustdoc-stripper-ignore-next-stop
     /// Whether to expand vertically.
+    // rustdoc-stripper-ignore-next-stop
+    /// Whether to expand vertically.
     pub fn vexpand(mut self, vexpand: bool) -> Self {
         self.vexpand = Some(vexpand);
         self
@@ -766,11 +902,15 @@ impl OutlineButtonBuilder {
     /// Whether to use the `vexpand` property.
     // rustdoc-stripper-ignore-next-stop
     /// Whether to use the `vexpand` property.
+    // rustdoc-stripper-ignore-next-stop
+    /// Whether to use the `vexpand` property.
     pub fn vexpand_set(mut self, vexpand_set: bool) -> Self {
         self.vexpand_set = Some(vexpand_set);
         self
     }
 
+    /// Whether the widget is visible.
+    // rustdoc-stripper-ignore-next-stop
     /// Whether the widget is visible.
     // rustdoc-stripper-ignore-next-stop
     /// Whether the widget is visible.
@@ -792,11 +932,19 @@ impl OutlineButtonBuilder {
     /// Override for width request of the widget.
     ///
     /// If this is -1, the natural request will be used.
+    // rustdoc-stripper-ignore-next-stop
+    /// Override for width request of the widget.
+    ///
+    /// If this is -1, the natural request will be used.
     pub fn width_request(mut self, width_request: i32) -> Self {
         self.width_request = Some(width_request);
         self
     }
 
+    /// The accessible role of the given [`gtk::Accessible`][crate::gtk::Accessible] implementation.
+    ///
+    /// The accessible role cannot be changed once set.
+    // rustdoc-stripper-ignore-next-stop
     /// The accessible role of the given [`gtk::Accessible`][crate::gtk::Accessible] implementation.
     ///
     /// The accessible role cannot be changed once set.
