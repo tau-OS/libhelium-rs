@@ -15,7 +15,7 @@ jobs:
           submodules: true
 
       - name: Install system level libraries
-        run: sudo apt install libpango1.0-dev
+        run: sudo apt install libpango1.0-dev libgtk-4-dev
 
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
