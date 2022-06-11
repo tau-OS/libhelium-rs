@@ -15,7 +15,16 @@ jobs:
           submodules: true
 
       - name: Install system level libraries
-        run: sudo apt install libpango1.0-dev libgtk-4-dev
+        run: sudo apt install libpango1.0-dev libgtk-4-dev libgee-0.8-dev meson ninja-build valac valadoc
+
+      - name: Install libhelium
+        run: meson build
+      - name: Build libhelium with Ninja
+        run: ninja
+        working-directory: ./build
+      - name: Install libhelium globally
+        run: sudo ninja install
+        working-directory: ./build
 
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
