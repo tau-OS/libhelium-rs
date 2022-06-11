@@ -1,0 +1,143 @@
+[options]
+library = "He"
+version = "1"
+girs_directories = ["./gir-files", "./"]
+min_cfg_version = "1"
+work_mode = "normal"
+target_path = "."
+use_gi_docgen = true
+single_version_file = true
+generate_builder = true
+#trust_return_value_nullability = true
+
+external_libraries = [
+   "GLib",
+   "GObject",
+   "Gdk",
+   "GdkPixbuf",
+   "Gtk",
+   "Pango",
+]
+
+generate = [
+    "He.Application",
+    "He.AboutWindow",
+    "He.AboutWindowLicenses",
+    "He.AppBar",
+    "He.ApplicationWindow",
+    "He.Badge",
+    "He.Banner",
+    "He.BannerStyle",
+    "He.BottomBar",
+    "He.IconicButton",
+    "He.BottomBarPosition",
+    "He.Chip",
+    "He.Colors",
+    "He.ContentBlock",
+    "He.ContentBlockImage",
+    "He.ContentBlockImageCluster",
+    "He.ContentBlockImageClusterImagePosition",
+    "He.ContentList",
+    "He.Desktop",
+    "He.DesktopColorScheme",
+    "He.Dialog",
+    "He.TintButton",
+    "He.FillButton",
+    "He.DisclosureButton",
+    "He.PillButton",
+    "He.EmptyPage",
+    "He.MiniContentBlock",
+    "He.ModifierBadge",
+    "He.ModifierBadgeAlignment",
+    "He.OutlineButton",
+    "He.OverlayButtonSize",
+    "He.OverlayButton",
+    "He.OverlayButtonAlignment",
+    "He.SideBar",
+    "He.TextButton",
+    "He.Toast",
+    "He.ViewAux",
+    "He.ViewDual",
+    "He.ViewMono",
+    "He.ViewSubTitle",
+    "He.ViewSwitcher",
+    "He.ViewTitle",
+    "He.WelcomeScreen"
+]
+
+manual = [
+    "GLib.DestroyNotify",
+    "GLib.Variant",
+    "GObject.BoxedCopyFunc",
+    "GObject.Object",
+    "GObject.ParamSpec",
+    "GObject.Value",
+    "Gdk.Cursor",
+    "Gdk.Display",
+    "Gdk.DragAction",
+    "Gdk.Paintable",
+    "Gdk.Rectangle",
+    "Gdk.Texture",
+    "Gio.Application",
+    "Gio.ApplicationFlags",
+    "Gio.ActionGroup",
+    "Gio.ActionMap",
+    "Gio.Icon",
+    "Gio.ListModel",
+    "Gio.MenuModel",
+    "Gtk.Accessible",
+    "Gtk.AccessibleRole",
+    "Gtk.Actionable",
+    "Gtk.Adjustment",
+    "Gtk.Align",
+    "Gtk.Application",
+    "Gtk.ApplicationWindow",
+    "Gtk.ArrowType",
+    "Gtk.Box",
+    "Gtk.Buildable",
+    "Gtk.Builder",
+    "Gtk.Button",
+    "Gtk.ConstraintTarget",
+    "Gtk.Editable",
+    "Gtk.Entry",
+    "Gtk.Expression",
+    "Gtk.HeaderBar",
+    "Gtk.LayoutManager",
+    "Gtk.ListBoxRow",
+    "Gtk.ListItemFactory",
+    "Gtk.ListView",
+    "Gtk.Native",
+    "Gtk.Orientable",
+    "Gtk.Orientation",
+    "Gtk.Overflow",
+    "Gtk.PackType",
+    "Gtk.Popover",
+    "Gtk.Root",
+    "Gtk.Scrollable",
+    "Gtk.ScrollablePolicy",
+    "Gtk.ScrolledWindow",
+    "Gtk.SelectionModel",
+    "Gtk.ShortcutManager",
+    "Gtk.Stack",
+    "Gtk.Widget",
+    "Gtk.Window",
+    "Pango.EllipsizeMode",
+]
+
+[[object]]
+name = "He.Button"
+status = "generate"
+generate_builder = false
+
+[[object]]
+name = "He.View"
+status = "generate"
+generate_builder = false
+    # [[object.function]]
+    # name = "add_child"
+    # manual = true
+
+[[object]]
+name = "He.Window"
+status = "generate"
+trait_name = "HeWindowExt"
