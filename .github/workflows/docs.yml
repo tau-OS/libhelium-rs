@@ -17,14 +17,20 @@ jobs:
       - name: Install system level libraries
         run: sudo apt install libpango1.0-dev libgtk-4-dev libgee-0.8-dev meson ninja-build valac valadoc
 
+      - name: Checkout libhelium
+        uses: actions/checkout@v3
+        with:
+          repository: tau-OS/libhelium
+          path: libhelium
       - name: Install libhelium
         run: meson build
+        working-directory: ./libhelium
       - name: Build libhelium with Ninja
         run: ninja
-        working-directory: ./build
+        working-directory: ./libhelium/build
       - name: Install libhelium globally
         run: sudo ninja install
-        working-directory: ./build
+        working-directory: ./libhelium/build
 
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
