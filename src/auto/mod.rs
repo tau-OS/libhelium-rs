@@ -129,6 +129,7 @@ pub use self::enums::OverlayButtonSize;
 pub mod traits {
     pub use super::about_window::AboutWindowExt;
     pub use super::app_bar::AppBarExt;
+    pub use super::application_window::ApplicationWindowExt;
     pub use super::badge::BadgeExt;
     pub use super::banner::BannerExt;
     pub use super::bottom_bar::BottomBarExt;

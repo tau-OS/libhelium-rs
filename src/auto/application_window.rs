@@ -4,34 +4,32 @@
 // DO NOT EDIT
 
 use crate::Application;
-use crate::Window;
 use glib::object::Cast;
 use glib::object::IsA;
+use glib::signal::connect_raw;
+use glib::signal::SignalHandlerId;
 use glib::translate::*;
 use glib::StaticType;
 use glib::ToValue;
+use std::boxed::Box as Box_;
 use std::fmt;
+use std::mem::transmute;
 
+#[cfg(any(feature = "gio_v2_32", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "gio_v2_32")))]
 glib::wrapper! {
-    ///
-    ///
-    /// # Implements
-    ///
-    /// [`HeWindowExt`][trait@crate::prelude::HeWindowExt], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::NativeExt`], [`trait@gtk::prelude::RootExt`], [`trait@gtk::prelude::ShortcutManagerExt`]
-    // rustdoc-stripper-ignore-next-stop
-    ///
-    ///
-    /// # Implements
-    ///
-    /// [`HeWindowExt`][trait@crate::prelude::HeWindowExt], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::NativeExt`], [`trait@gtk::prelude::RootExt`], [`trait@gtk::prelude::ShortcutManagerExt`]
-    // rustdoc-stripper-ignore-next-stop
-    ///
-    ///
-    /// # Implements
-    ///
-    /// [`HeWindowExt`][trait@crate::prelude::HeWindowExt], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::NativeExt`], [`trait@gtk::prelude::RootExt`], [`trait@gtk::prelude::ShortcutManagerExt`]
     #[doc(alias = "HeApplicationWindow")]
-    pub struct ApplicationWindow(Object<ffi::HeApplicationWindow, ffi::HeApplicationWindowClass>) @extends Window, gtk::Window, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
+    pub struct ApplicationWindow(Object<ffi::HeApplicationWindow, ffi::HeApplicationWindowClass>) @extends gtk::ApplicationWindow, gtk::Window, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager, gio::ActionGroup, gio::ActionMap;
+
+    match fn {
+        type_ => || ffi::he_application_window_get_type(),
+    }
+}
+
+#[cfg(not(any(feature = "gio_v2_32", feature = "dox")))]
+glib::wrapper! {
+    #[doc(alias = "HeApplicationWindow")]
+    pub struct ApplicationWindow(Object<ffi::HeApplicationWindow, ffi::HeApplicationWindowClass>) @extends gtk::ApplicationWindow, gtk::Window, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager, gio::ActionGroup;
 
     match fn {
         type_ => || ffi::he_application_window_get_type(),
@@ -73,10 +71,10 @@ impl Default for ApplicationWindow {
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct ApplicationWindowBuilder {
-    parent: Option<gtk::Window>,
     modal: Option<bool>,
     has_title: Option<bool>,
     has_back_button: Option<bool>,
+    show_menubar: Option<bool>,
     application: Option<gtk::Application>,
     child: Option<gtk::Widget>,
     decorated: Option<bool>,
@@ -147,9 +145,6 @@ impl ApplicationWindowBuilder {
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> ApplicationWindow {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-        if let Some(ref parent) = self.parent {
-            properties.push(("parent", parent));
-        }
         if let Some(ref modal) = self.modal {
             properties.push(("modal", modal));
         }
@@ -158,6 +153,9 @@ impl ApplicationWindowBuilder {
         }
         if let Some(ref has_back_button) = self.has_back_button {
             properties.push(("has-back-button", has_back_button));
+        }
+        if let Some(ref show_menubar) = self.show_menubar {
+            properties.push(("show-menubar", show_menubar));
         }
         if let Some(ref application) = self.application {
             properties.push(("application", application));
@@ -321,18 +319,6 @@ impl ApplicationWindowBuilder {
             .expect("Failed to create an instance of ApplicationWindow")
     }
 
-    pub fn parent(mut self, parent: &impl IsA<gtk::Window>) -> Self {
-        self.parent = Some(parent.clone().upcast());
-        self
-    }
-
-    /// If [`true`], the window is modal.
-    // rustdoc-stripper-ignore-next-stop
-    /// If [`true`], the window is modal.
-    // rustdoc-stripper-ignore-next-stop
-    /// If [`true`], the window is modal.
-    // rustdoc-stripper-ignore-next-stop
-    /// If [`true`], the window is modal.
     pub fn modal(mut self, modal: bool) -> Self {
         self.modal = Some(modal);
         self
@@ -348,229 +334,71 @@ impl ApplicationWindowBuilder {
         self
     }
 
-    /// The [`gtk::Application`][crate::gtk::Application] associated with the window.
-    ///
-    /// The application will be kept alive for at least as long as it
-    /// has any windows associated with it (see g_application_hold()
-    /// for a way to keep it alive without windows).
-    ///
-    /// Normally, the connection between the application and the window
-    /// will remain until the window is destroyed, but you can explicitly
-    /// remove it by setting the :application property to [`None`].
-    // rustdoc-stripper-ignore-next-stop
-    /// The [`gtk::Application`][crate::gtk::Application] associated with the window.
-    ///
-    /// The application will be kept alive for at least as long as it
-    /// has any windows associated with it (see g_application_hold()
-    /// for a way to keep it alive without windows).
-    ///
-    /// Normally, the connection between the application and the window
-    /// will remain until the window is destroyed, but you can explicitly
-    /// remove it by setting the :application property to [`None`].
-    // rustdoc-stripper-ignore-next-stop
-    /// The [`gtk::Application`][crate::gtk::Application] associated with the window.
-    ///
-    /// The application will be kept alive for at least as long as it
-    /// has any windows associated with it (see g_application_hold()
-    /// for a way to keep it alive without windows).
-    ///
-    /// Normally, the connection between the application and the window
-    /// will remain until the window is destroyed, but you can explicitly
-    /// remove it by setting the :application property to [`None`].
-    // rustdoc-stripper-ignore-next-stop
-    /// The [`gtk::Application`][crate::gtk::Application] associated with the window.
-    ///
-    /// The application will be kept alive for at least as long as it
-    /// has any windows associated with it (see g_application_hold()
-    /// for a way to keep it alive without windows).
-    ///
-    /// Normally, the connection between the application and the window
-    /// will remain until the window is destroyed, but you can explicitly
-    /// remove it by setting the :application property to [`None`].
+    pub fn show_menubar(mut self, show_menubar: bool) -> Self {
+        self.show_menubar = Some(show_menubar);
+        self
+    }
+
     pub fn application(mut self, application: &impl IsA<gtk::Application>) -> Self {
         self.application = Some(application.clone().upcast());
         self
     }
 
-    /// The child widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The child widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The child widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The child widget.
     pub fn child(mut self, child: &impl IsA<gtk::Widget>) -> Self {
         self.child = Some(child.clone().upcast());
         self
     }
 
-    /// Whether the window should have a frame (also known as *decorations*).
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window should have a frame (also known as *decorations*).
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window should have a frame (also known as *decorations*).
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window should have a frame (also known as *decorations*).
     pub fn decorated(mut self, decorated: bool) -> Self {
         self.decorated = Some(decorated);
         self
     }
 
-    /// The default height of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default height of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default height of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default height of the window.
     pub fn default_height(mut self, default_height: i32) -> Self {
         self.default_height = Some(default_height);
         self
     }
 
-    /// The default widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default widget.
     pub fn default_widget(mut self, default_widget: &impl IsA<gtk::Widget>) -> Self {
         self.default_widget = Some(default_widget.clone().upcast());
         self
     }
 
-    /// The default width of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default width of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default width of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The default width of the window.
     pub fn default_width(mut self, default_width: i32) -> Self {
         self.default_width = Some(default_width);
         self
     }
 
-    /// Whether the window frame should have a close button.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window frame should have a close button.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window frame should have a close button.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window frame should have a close button.
     pub fn deletable(mut self, deletable: bool) -> Self {
         self.deletable = Some(deletable);
         self
     }
 
-    /// If this window should be destroyed when the parent is destroyed.
-    // rustdoc-stripper-ignore-next-stop
-    /// If this window should be destroyed when the parent is destroyed.
-    // rustdoc-stripper-ignore-next-stop
-    /// If this window should be destroyed when the parent is destroyed.
-    // rustdoc-stripper-ignore-next-stop
-    /// If this window should be destroyed when the parent is destroyed.
     pub fn destroy_with_parent(mut self, destroy_with_parent: bool) -> Self {
         self.destroy_with_parent = Some(destroy_with_parent);
         self
     }
 
-    /// The display that will display this window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The display that will display this window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The display that will display this window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The display that will display this window.
     pub fn display(mut self, display: &gdk::Display) -> Self {
         self.display = Some(display.clone());
         self
     }
 
-    /// Whether 'focus rectangles' are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input
-    /// and should not be set by applications.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether 'focus rectangles' are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input
-    /// and should not be set by applications.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether 'focus rectangles' are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input
-    /// and should not be set by applications.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether 'focus rectangles' are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input
-    /// and should not be set by applications.
     pub fn focus_visible(mut self, focus_visible: bool) -> Self {
         self.focus_visible = Some(focus_visible);
         self
     }
 
-    /// The focus widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The focus widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The focus widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The focus widget.
     pub fn focus_widget(mut self, focus_widget: &impl IsA<gtk::Widget>) -> Self {
         self.focus_widget = Some(focus_widget.clone().upcast());
         self
     }
 
-    /// Whether the window is fullscreen.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::fullscreen()`][crate::gtk::prelude::WindowExtManual::fullscreen()] or [`WindowExtManual::unfullscreen()`][crate::gtk::prelude::WindowExtManual::unfullscreen()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window is fullscreen.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::fullscreen()`][crate::gtk::prelude::WindowExtManual::fullscreen()] or [`WindowExtManual::unfullscreen()`][crate::gtk::prelude::WindowExtManual::unfullscreen()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window is fullscreen.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::fullscreen()`][crate::gtk::prelude::WindowExtManual::fullscreen()] or [`WindowExtManual::unfullscreen()`][crate::gtk::prelude::WindowExtManual::unfullscreen()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window is fullscreen.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::fullscreen()`][crate::gtk::prelude::WindowExtManual::fullscreen()] or [`WindowExtManual::unfullscreen()`][crate::gtk::prelude::WindowExtManual::unfullscreen()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
     pub fn fullscreened(mut self, fullscreened: bool) -> Self {
         self.fullscreened = Some(fullscreened);
         self
     }
 
-    /// Whether the window frame should handle F10 for activating
-    /// menubars.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window frame should handle F10 for activating
-    /// menubars.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window frame should handle F10 for activating
-    /// menubars.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window frame should handle F10 for activating
-    /// menubars.
     #[cfg(any(feature = "gtk_v4_2", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_v4_2")))]
     pub fn handle_menubar_accel(mut self, handle_menubar_accel: bool) -> Self {
@@ -578,141 +406,41 @@ impl ApplicationWindowBuilder {
         self
     }
 
-    /// If this window should be hidden when the users clicks the close button.
-    // rustdoc-stripper-ignore-next-stop
-    /// If this window should be hidden when the users clicks the close button.
-    // rustdoc-stripper-ignore-next-stop
-    /// If this window should be hidden when the users clicks the close button.
-    // rustdoc-stripper-ignore-next-stop
-    /// If this window should be hidden when the users clicks the close button.
     pub fn hide_on_close(mut self, hide_on_close: bool) -> Self {
         self.hide_on_close = Some(hide_on_close);
         self
     }
 
-    /// Specifies the name of the themed icon to use as the window icon.
-    ///
-    /// See `Gtk::IconTheme` for more details.
-    // rustdoc-stripper-ignore-next-stop
-    /// Specifies the name of the themed icon to use as the window icon.
-    ///
-    /// See `Gtk::IconTheme` for more details.
-    // rustdoc-stripper-ignore-next-stop
-    /// Specifies the name of the themed icon to use as the window icon.
-    ///
-    /// See `Gtk::IconTheme` for more details.
-    // rustdoc-stripper-ignore-next-stop
-    /// Specifies the name of the themed icon to use as the window icon.
-    ///
-    /// See `Gtk::IconTheme` for more details.
     pub fn icon_name(mut self, icon_name: &str) -> Self {
         self.icon_name = Some(icon_name.to_string());
         self
     }
 
-    /// Whether the window is maximized.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::maximize()`][crate::gtk::prelude::WindowExtManual::maximize()] or [`WindowExtManual::unmaximize()`][crate::gtk::prelude::WindowExtManual::unmaximize()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window is maximized.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::maximize()`][crate::gtk::prelude::WindowExtManual::maximize()] or [`WindowExtManual::unmaximize()`][crate::gtk::prelude::WindowExtManual::unmaximize()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window is maximized.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::maximize()`][crate::gtk::prelude::WindowExtManual::maximize()] or [`WindowExtManual::unmaximize()`][crate::gtk::prelude::WindowExtManual::unmaximize()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the window is maximized.
-    ///
-    /// Setting this property is the equivalent of calling
-    /// [`WindowExtManual::maximize()`][crate::gtk::prelude::WindowExtManual::maximize()] or [`WindowExtManual::unmaximize()`][crate::gtk::prelude::WindowExtManual::unmaximize()];
-    /// either operation is asynchronous, which means you will need to
-    /// connect to the ::notify signal in order to know whether the
-    /// operation was successful.
     pub fn maximized(mut self, maximized: bool) -> Self {
         self.maximized = Some(maximized);
         self
     }
 
-    /// Whether mnemonics are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input,
-    /// and should not be set by applications.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether mnemonics are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input,
-    /// and should not be set by applications.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether mnemonics are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input,
-    /// and should not be set by applications.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether mnemonics are currently visible in this window.
-    ///
-    /// This property is maintained by GTK based on user input,
-    /// and should not be set by applications.
     pub fn mnemonics_visible(mut self, mnemonics_visible: bool) -> Self {
         self.mnemonics_visible = Some(mnemonics_visible);
         self
     }
 
-    /// If [`true`], users can resize the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// If [`true`], users can resize the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// If [`true`], users can resize the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// If [`true`], users can resize the window.
     pub fn resizable(mut self, resizable: bool) -> Self {
         self.resizable = Some(resizable);
         self
     }
 
-    /// A write-only property for setting window's startup notification identifier.
-    // rustdoc-stripper-ignore-next-stop
-    /// A write-only property for setting window's startup notification identifier.
-    // rustdoc-stripper-ignore-next-stop
-    /// A write-only property for setting window's startup notification identifier.
-    // rustdoc-stripper-ignore-next-stop
-    /// A write-only property for setting window's startup notification identifier.
     pub fn startup_id(mut self, startup_id: &str) -> Self {
         self.startup_id = Some(startup_id.to_string());
         self
     }
 
-    /// The title of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The title of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The title of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The title of the window.
     pub fn title(mut self, title: &str) -> Self {
         self.title = Some(title.to_string());
         self
     }
 
-    /// The titlebar widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The titlebar widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The titlebar widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The titlebar widget.
     #[cfg(any(feature = "gtk_v4_6", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_v4_6")))]
     pub fn titlebar(mut self, titlebar: &impl IsA<gtk::Widget>) -> Self {
@@ -720,660 +448,316 @@ impl ApplicationWindowBuilder {
         self
     }
 
-    /// The transient parent of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The transient parent of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The transient parent of the window.
-    // rustdoc-stripper-ignore-next-stop
-    /// The transient parent of the window.
     pub fn transient_for(mut self, transient_for: &impl IsA<gtk::Window>) -> Self {
         self.transient_for = Some(transient_for.clone().upcast());
         self
     }
 
-    /// Whether the widget or any of its descendents can accept
-    /// the input focus.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget or any of its descendents can accept
-    /// the input focus.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget or any of its descendents can accept
-    /// the input focus.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget or any of its descendents can accept
-    /// the input focus.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
     pub fn can_focus(mut self, can_focus: bool) -> Self {
         self.can_focus = Some(can_focus);
         self
     }
 
-    /// Whether the widget can receive pointer events.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget can receive pointer events.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget can receive pointer events.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget can receive pointer events.
     pub fn can_target(mut self, can_target: bool) -> Self {
         self.can_target = Some(can_target);
         self
     }
 
-    /// A list of css classes applied to this widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// A list of css classes applied to this widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// A list of css classes applied to this widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// A list of css classes applied to this widget.
     pub fn css_classes(mut self, css_classes: Vec<String>) -> Self {
         self.css_classes = Some(css_classes);
         self
     }
 
-    /// The name of this widget in the CSS tree.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// The name of this widget in the CSS tree.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// The name of this widget in the CSS tree.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// The name of this widget in the CSS tree.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
     pub fn css_name(mut self, css_name: &str) -> Self {
         self.css_name = Some(css_name.to_string());
         self
     }
 
-    /// The cursor used by @widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The cursor used by @widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The cursor used by @widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The cursor used by @widget.
     pub fn cursor(mut self, cursor: &gdk::Cursor) -> Self {
         self.cursor = Some(cursor.clone());
         self
     }
 
-    /// Whether the widget should grab focus when it is clicked with the mouse.
-    ///
-    /// This property is only relevant for widgets that can take focus.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget should grab focus when it is clicked with the mouse.
-    ///
-    /// This property is only relevant for widgets that can take focus.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget should grab focus when it is clicked with the mouse.
-    ///
-    /// This property is only relevant for widgets that can take focus.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget should grab focus when it is clicked with the mouse.
-    ///
-    /// This property is only relevant for widgets that can take focus.
     pub fn focus_on_click(mut self, focus_on_click: bool) -> Self {
         self.focus_on_click = Some(focus_on_click);
         self
     }
 
-    /// Whether this widget itself will accept the input focus.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether this widget itself will accept the input focus.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether this widget itself will accept the input focus.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether this widget itself will accept the input focus.
     pub fn focusable(mut self, focusable: bool) -> Self {
         self.focusable = Some(focusable);
         self
     }
 
-    /// How to distribute horizontal space if widget gets extra space.
-    // rustdoc-stripper-ignore-next-stop
-    /// How to distribute horizontal space if widget gets extra space.
-    // rustdoc-stripper-ignore-next-stop
-    /// How to distribute horizontal space if widget gets extra space.
-    // rustdoc-stripper-ignore-next-stop
-    /// How to distribute horizontal space if widget gets extra space.
     pub fn halign(mut self, halign: gtk::Align) -> Self {
         self.halign = Some(halign);
         self
     }
 
-    /// Enables or disables the emission of the ::query-tooltip signal on @widget.
-    ///
-    /// A value of [`true`] indicates that @widget can have a tooltip, in this case
-    /// the widget will be queried using `signal::gtk::Widget::query-tooltip` to
-    /// determine whether it will provide a tooltip or not.
-    // rustdoc-stripper-ignore-next-stop
-    /// Enables or disables the emission of the ::query-tooltip signal on @widget.
-    ///
-    /// A value of [`true`] indicates that @widget can have a tooltip, in this case
-    /// the widget will be queried using `signal::gtk::Widget::query-tooltip` to
-    /// determine whether it will provide a tooltip or not.
-    // rustdoc-stripper-ignore-next-stop
-    /// Enables or disables the emission of the ::query-tooltip signal on @widget.
-    ///
-    /// A value of [`true`] indicates that @widget can have a tooltip, in this case
-    /// the widget will be queried using `signal::gtk::Widget::query-tooltip` to
-    /// determine whether it will provide a tooltip or not.
-    // rustdoc-stripper-ignore-next-stop
-    /// Enables or disables the emission of the ::query-tooltip signal on @widget.
-    ///
-    /// A value of [`true`] indicates that @widget can have a tooltip, in this case
-    /// the widget will be queried using `signal::gtk::Widget::query-tooltip` to
-    /// determine whether it will provide a tooltip or not.
     pub fn has_tooltip(mut self, has_tooltip: bool) -> Self {
         self.has_tooltip = Some(has_tooltip);
         self
     }
 
-    /// Override for height request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
-    // rustdoc-stripper-ignore-next-stop
-    /// Override for height request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
-    // rustdoc-stripper-ignore-next-stop
-    /// Override for height request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
-    // rustdoc-stripper-ignore-next-stop
-    /// Override for height request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
     pub fn height_request(mut self, height_request: i32) -> Self {
         self.height_request = Some(height_request);
         self
     }
 
-    /// Whether to expand horizontally.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to expand horizontally.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to expand horizontally.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to expand horizontally.
     pub fn hexpand(mut self, hexpand: bool) -> Self {
         self.hexpand = Some(hexpand);
         self
     }
 
-    /// Whether to use the `hexpand` property.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to use the `hexpand` property.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to use the `hexpand` property.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to use the `hexpand` property.
     pub fn hexpand_set(mut self, hexpand_set: bool) -> Self {
         self.hexpand_set = Some(hexpand_set);
         self
     }
 
-    /// The [`gtk::LayoutManager`][crate::gtk::LayoutManager] instance to use to compute the preferred size
-    /// of the widget, and allocate its children.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// The [`gtk::LayoutManager`][crate::gtk::LayoutManager] instance to use to compute the preferred size
-    /// of the widget, and allocate its children.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// The [`gtk::LayoutManager`][crate::gtk::LayoutManager] instance to use to compute the preferred size
-    /// of the widget, and allocate its children.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// The [`gtk::LayoutManager`][crate::gtk::LayoutManager] instance to use to compute the preferred size
-    /// of the widget, and allocate its children.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
     pub fn layout_manager(mut self, layout_manager: &impl IsA<gtk::LayoutManager>) -> Self {
         self.layout_manager = Some(layout_manager.clone().upcast());
         self
     }
 
-    /// Margin on bottom side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on bottom side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on bottom side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on bottom side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
     pub fn margin_bottom(mut self, margin_bottom: i32) -> Self {
         self.margin_bottom = Some(margin_bottom);
         self
     }
 
-    /// Margin on end of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on end of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on end of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on end of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
     pub fn margin_end(mut self, margin_end: i32) -> Self {
         self.margin_end = Some(margin_end);
         self
     }
 
-    /// Margin on start of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on start of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on start of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on start of widget, horizontally.
-    ///
-    /// This property supports left-to-right and right-to-left text
-    /// directions.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
     pub fn margin_start(mut self, margin_start: i32) -> Self {
         self.margin_start = Some(margin_start);
         self
     }
 
-    /// Margin on top side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on top side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on top side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
-    // rustdoc-stripper-ignore-next-stop
-    /// Margin on top side of widget.
-    ///
-    /// This property adds margin outside of the widget's normal size
-    /// request, the margin will be added in addition to the size from
-    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
     pub fn margin_top(mut self, margin_top: i32) -> Self {
         self.margin_top = Some(margin_top);
         self
     }
 
-    /// The name of the widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The name of the widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The name of the widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The name of the widget.
     pub fn name(mut self, name: &str) -> Self {
         self.name = Some(name.to_string());
         self
     }
 
-    /// The requested opacity of the widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The requested opacity of the widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The requested opacity of the widget.
-    // rustdoc-stripper-ignore-next-stop
-    /// The requested opacity of the widget.
     pub fn opacity(mut self, opacity: f64) -> Self {
         self.opacity = Some(opacity);
         self
     }
 
-    /// How content outside the widget's content area is treated.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// How content outside the widget's content area is treated.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// How content outside the widget's content area is treated.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
-    // rustdoc-stripper-ignore-next-stop
-    /// How content outside the widget's content area is treated.
-    ///
-    /// This property is meant to be set by widget implementations,
-    /// typically in their instance init function.
     pub fn overflow(mut self, overflow: gtk::Overflow) -> Self {
         self.overflow = Some(overflow);
         self
     }
 
-    /// Whether the widget will receive the default action when it is focused.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget will receive the default action when it is focused.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget will receive the default action when it is focused.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget will receive the default action when it is focused.
     pub fn receives_default(mut self, receives_default: bool) -> Self {
         self.receives_default = Some(receives_default);
         self
     }
 
-    /// Whether the widget responds to input.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget responds to input.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget responds to input.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget responds to input.
     pub fn sensitive(mut self, sensitive: bool) -> Self {
         self.sensitive = Some(sensitive);
         self
     }
 
-    /// Sets the text of tooltip to be the given string, which is marked up
-    /// with Pango markup.
-    ///
-    /// Also see `Gtk::Tooltip::set_markup()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
-    // rustdoc-stripper-ignore-next-stop
-    /// Sets the text of tooltip to be the given string, which is marked up
-    /// with Pango markup.
-    ///
-    /// Also see `Gtk::Tooltip::set_markup()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
-    // rustdoc-stripper-ignore-next-stop
-    /// Sets the text of tooltip to be the given string, which is marked up
-    /// with Pango markup.
-    ///
-    /// Also see `Gtk::Tooltip::set_markup()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
-    // rustdoc-stripper-ignore-next-stop
-    /// Sets the text of tooltip to be the given string, which is marked up
-    /// with Pango markup.
-    ///
-    /// Also see `Gtk::Tooltip::set_markup()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
     pub fn tooltip_markup(mut self, tooltip_markup: &str) -> Self {
         self.tooltip_markup = Some(tooltip_markup.to_string());
         self
     }
 
-    /// Sets the text of tooltip to be the given string.
-    ///
-    /// Also see `Gtk::Tooltip::set_text()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
-    // rustdoc-stripper-ignore-next-stop
-    /// Sets the text of tooltip to be the given string.
-    ///
-    /// Also see `Gtk::Tooltip::set_text()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
-    // rustdoc-stripper-ignore-next-stop
-    /// Sets the text of tooltip to be the given string.
-    ///
-    /// Also see `Gtk::Tooltip::set_text()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
-    // rustdoc-stripper-ignore-next-stop
-    /// Sets the text of tooltip to be the given string.
-    ///
-    /// Also see `Gtk::Tooltip::set_text()`.
-    ///
-    /// This is a convenience property which will take care of getting the
-    /// tooltip shown if the given string is not [`None`]:
-    /// `property::gtk::Widget::has-tooltip` will automatically be set to [`true`]
-    /// and there will be taken care of `signal::gtk::Widget::query-tooltip` in
-    /// the default signal handler.
-    ///
-    /// Note that if both `property::gtk::Widget::tooltip-text` and
-    /// `property::gtk::Widget::tooltip-markup` are set, the last one wins.
     pub fn tooltip_text(mut self, tooltip_text: &str) -> Self {
         self.tooltip_text = Some(tooltip_text.to_string());
         self
     }
 
-    /// How to distribute vertical space if widget gets extra space.
-    // rustdoc-stripper-ignore-next-stop
-    /// How to distribute vertical space if widget gets extra space.
-    // rustdoc-stripper-ignore-next-stop
-    /// How to distribute vertical space if widget gets extra space.
-    // rustdoc-stripper-ignore-next-stop
-    /// How to distribute vertical space if widget gets extra space.
     pub fn valign(mut self, valign: gtk::Align) -> Self {
         self.valign = Some(valign);
         self
     }
 
-    /// Whether to expand vertically.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to expand vertically.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to expand vertically.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to expand vertically.
     pub fn vexpand(mut self, vexpand: bool) -> Self {
         self.vexpand = Some(vexpand);
         self
     }
 
-    /// Whether to use the `vexpand` property.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to use the `vexpand` property.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to use the `vexpand` property.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether to use the `vexpand` property.
     pub fn vexpand_set(mut self, vexpand_set: bool) -> Self {
         self.vexpand_set = Some(vexpand_set);
         self
     }
 
-    /// Whether the widget is visible.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget is visible.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget is visible.
-    // rustdoc-stripper-ignore-next-stop
-    /// Whether the widget is visible.
     pub fn visible(mut self, visible: bool) -> Self {
         self.visible = Some(visible);
         self
     }
 
-    /// Override for width request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
-    // rustdoc-stripper-ignore-next-stop
-    /// Override for width request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
-    // rustdoc-stripper-ignore-next-stop
-    /// Override for width request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
-    // rustdoc-stripper-ignore-next-stop
-    /// Override for width request of the widget.
-    ///
-    /// If this is -1, the natural request will be used.
     pub fn width_request(mut self, width_request: i32) -> Self {
         self.width_request = Some(width_request);
         self
     }
 
-    /// The accessible role of the given [`gtk::Accessible`][crate::gtk::Accessible] implementation.
-    ///
-    /// The accessible role cannot be changed once set.
-    // rustdoc-stripper-ignore-next-stop
-    /// The accessible role of the given [`gtk::Accessible`][crate::gtk::Accessible] implementation.
-    ///
-    /// The accessible role cannot be changed once set.
-    // rustdoc-stripper-ignore-next-stop
-    /// The accessible role of the given [`gtk::Accessible`][crate::gtk::Accessible] implementation.
-    ///
-    /// The accessible role cannot be changed once set.
-    // rustdoc-stripper-ignore-next-stop
-    /// The accessible role of the given [`gtk::Accessible`][crate::gtk::Accessible] implementation.
-    ///
-    /// The accessible role cannot be changed once set.
     pub fn accessible_role(mut self, accessible_role: gtk::AccessibleRole) -> Self {
         self.accessible_role = Some(accessible_role);
         self
+    }
+}
+
+pub trait ApplicationWindowExt: 'static {
+    #[doc(alias = "he_application_window_get_modal")]
+    #[doc(alias = "get_modal")]
+    fn is_modal(&self) -> bool;
+
+    #[doc(alias = "he_application_window_set_modal")]
+    fn set_modal(&self, value: bool);
+
+    #[doc(alias = "he_application_window_get_has_title")]
+    #[doc(alias = "get_has_title")]
+    fn has_title(&self) -> bool;
+
+    #[doc(alias = "he_application_window_set_has_title")]
+    fn set_has_title(&self, value: bool);
+
+    #[doc(alias = "he_application_window_get_has_back_button")]
+    #[doc(alias = "get_has_back_button")]
+    fn has_back_button(&self) -> bool;
+
+    #[doc(alias = "he_application_window_set_has_back_button")]
+    fn set_has_back_button(&self, value: bool);
+
+    #[doc(alias = "modal")]
+    fn connect_modal_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "has-title")]
+    fn connect_has_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "has-back-button")]
+    fn connect_has_back_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+}
+
+impl<O: IsA<ApplicationWindow>> ApplicationWindowExt for O {
+    fn is_modal(&self) -> bool {
+        unsafe {
+            from_glib(ffi::he_application_window_get_modal(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_modal(&self, value: bool) {
+        unsafe {
+            ffi::he_application_window_set_modal(self.as_ref().to_glib_none().0, value.into_glib());
+        }
+    }
+
+    fn has_title(&self) -> bool {
+        unsafe {
+            from_glib(ffi::he_application_window_get_has_title(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_has_title(&self, value: bool) {
+        unsafe {
+            ffi::he_application_window_set_has_title(
+                self.as_ref().to_glib_none().0,
+                value.into_glib(),
+            );
+        }
+    }
+
+    fn has_back_button(&self) -> bool {
+        unsafe {
+            from_glib(ffi::he_application_window_get_has_back_button(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_has_back_button(&self, value: bool) {
+        unsafe {
+            ffi::he_application_window_set_has_back_button(
+                self.as_ref().to_glib_none().0,
+                value.into_glib(),
+            );
+        }
+    }
+
+    fn connect_modal_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_modal_trampoline<
+            P: IsA<ApplicationWindow>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::HeApplicationWindow,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(ApplicationWindow::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::modal\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_modal_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    fn connect_has_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_has_title_trampoline<
+            P: IsA<ApplicationWindow>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::HeApplicationWindow,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(ApplicationWindow::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::has-title\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_has_title_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    fn connect_has_back_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_has_back_button_trampoline<
+            P: IsA<ApplicationWindow>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::HeApplicationWindow,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(ApplicationWindow::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::has-back-button\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_has_back_button_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
     }
 }
 

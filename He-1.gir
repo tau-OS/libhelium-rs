@@ -5,7 +5,7 @@
 <include name="GObject" version="2.0"/>
 <include name="Gio" version="2.0"/>
 <package name="libhelium-1"/>
-<c:include name="libhelium.h"/>
+<c:include name="libhelium-1.h"/>
 <namespace name="He" version="1" c:prefix="He" c:identifier-prefixes="He" c:symbol-prefixes="he">
 	<function name="misc_find_ancestor_of_type" c:identifier="he_misc_find_ancestor_of_type">
 		<return-value transfer-ownership="full" nullable="1">
@@ -80,6 +80,106 @@
 		</field>
 	</record>
 	<record name="ApplicationPrivate" c:type="HeApplicationPrivate" disguised="1"/>
+	<class name="Bin" c:type="HeBin" c:symbol-prefix="bin" glib:type-name="HeBin" glib:get-type="he_bin_get_type" glib:type-struct="BinClass" parent="Gtk.Widget" abstract="1">
+		<implements name="Gtk.Buildable"/>
+		<field name="parent_instance" readable="0" private="1">
+			<type name="Gtk.Widget" c:type="GtkWidget"/>
+		</field>
+		<method name="add_child" c:identifier="he_bin_add_child">
+			<return-value transfer-ownership="full">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.Bin" c:type="HeBin*"/>
+				</instance-parameter>
+				<parameter name="builder" transfer-ownership="none">
+					<type name="Gtk.Builder" c:type="GtkBuilder*"/>
+				</parameter>
+				<parameter name="child" transfer-ownership="none">
+					<type name="GObject.Object" c:type="GObject*"/>
+				</parameter>
+				<parameter name="type" transfer-ownership="none" nullable="1">
+					<type name="utf8" c:type="const gchar*"/>
+				</parameter>
+			</parameters>
+		</method>
+		<virtual-method name="add_child" invoker="add_child">
+			<return-value transfer-ownership="full">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.Bin" c:type="HeBin*"/>
+				</instance-parameter>
+				<parameter name="builder" transfer-ownership="none">
+					<type name="Gtk.Builder" c:type="GtkBuilder*"/>
+				</parameter>
+				<parameter name="child" transfer-ownership="none">
+					<type name="GObject.Object" c:type="GObject*"/>
+				</parameter>
+				<parameter name="type" transfer-ownership="none" nullable="1">
+					<type name="utf8" c:type="const gchar*"/>
+				</parameter>
+			</parameters>
+		</virtual-method>
+		<method name="grab_focus" c:identifier="he_bin_grab_focus">
+			<return-value transfer-ownership="full">
+				<type name="gboolean" c:type="gboolean"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.Bin" c:type="HeBin*"/>
+				</instance-parameter>
+				<parameter name="widget" transfer-ownership="none" nullable="1">
+					<type name="Gtk.Widget" c:type="GtkWidget*"/>
+				</parameter>
+			</parameters>
+		</method>
+		<method name="grab_focus_child" c:identifier="he_bin_grab_focus_child">
+			<return-value transfer-ownership="full">
+				<type name="gboolean" c:type="gboolean"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.Bin" c:type="HeBin*"/>
+				</instance-parameter>
+				<parameter name="widget" transfer-ownership="none" nullable="1">
+					<type name="Gtk.Widget" c:type="GtkWidget*"/>
+				</parameter>
+			</parameters>
+		</method>
+		<field name="priv" readable="0" private="1">
+			<type name="BinPrivate" c:type="HeBinPrivate*"/>
+		</field>
+	</class>
+	<record name="BinClass" c:type="HeBinClass" glib:is-gtype-struct-for="Bin">
+		<field name="parent_class" readable="0" private="1">
+			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+		</field>
+		<field name="add_child">
+			<callback name="add_child" c:type="add_child">
+				<return-value transfer-ownership="full">
+					<type name="none" c:type="void"/>
+				</return-value>
+				<parameters>
+					<parameter name="self" transfer-ownership="none">
+						<type name="He.Bin" c:type="HeBin*"/>
+					</parameter>
+					<parameter name="builder" transfer-ownership="none">
+						<type name="Gtk.Builder" c:type="GtkBuilder*"/>
+					</parameter>
+					<parameter name="child" transfer-ownership="none">
+						<type name="GObject.Object" c:type="GObject*"/>
+					</parameter>
+					<parameter name="type" transfer-ownership="none" nullable="1">
+						<type name="utf8" c:type="const gchar*"/>
+					</parameter>
+				</parameters>
+			</callback>
+		</field>
+	</record>
+	<record name="BinPrivate" c:type="HeBinPrivate" disguised="1"/>
 	<class name="Button" c:type="HeButton" c:symbol-prefix="button" glib:type-name="HeButton" glib:get-type="he_button_get_type" glib:type-struct="ButtonClass" parent="Gtk.Button" abstract="1">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
@@ -838,10 +938,9 @@
 			</instance-parameter>
 		</parameters>
 	</function>
-	<class name="AppBar" c:type="HeAppBar" c:symbol-prefix="app_bar" glib:type-name="HeAppBar" glib:get-type="he_app_bar_get_type" glib:type-struct="AppBarClass" parent="Gtk.Widget">
-		<implements name="Gtk.Buildable"/>
+	<class name="AppBar" c:type="HeAppBar" c:symbol-prefix="app_bar" glib:type-name="HeAppBar" glib:get-type="he_app_bar_get_type" glib:type-struct="AppBarClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<field name="title" writable="1" nullable="1">
 			<type name="Gtk.HeaderBar" c:type="GtkHeaderBar*"/>
@@ -950,6 +1049,32 @@
 				</parameter>
 			</parameters>
 		</method>
+		<method name="append" c:identifier="he_app_bar_append">
+			<return-value transfer-ownership="full">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.AppBar" c:type="HeAppBar*"/>
+				</instance-parameter>
+				<parameter name="child" transfer-ownership="none">
+					<type name="Gtk.Widget" c:type="GtkWidget*"/>
+				</parameter>
+			</parameters>
+		</method>
+		<method name="remove" c:identifier="he_app_bar_remove">
+			<return-value transfer-ownership="full">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.AppBar" c:type="HeAppBar*"/>
+				</instance-parameter>
+				<parameter name="child" transfer-ownership="none">
+					<type name="Gtk.Widget" c:type="GtkWidget*"/>
+				</parameter>
+			</parameters>
+		</method>
 		<constructor name="new" c:identifier="he_app_bar_new">
 			<return-value transfer-ownership="none">
 				<type name="He.AppBar" c:type="HeAppBar*"/>
@@ -961,13 +1086,13 @@
 	</class>
 	<record name="AppBarClass" c:type="HeAppBarClass" glib:is-gtype-struct-for="AppBar">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="AppBarPrivate" c:type="HeAppBarPrivate" disguised="1"/>
-	<class name="ApplicationWindow" c:type="HeApplicationWindow" c:symbol-prefix="application_window" glib:type-name="HeApplicationWindow" glib:get-type="he_application_window_get_type" glib:type-struct="ApplicationWindowClass" parent="He.Window">
+	<class name="ApplicationWindow" c:type="HeApplicationWindow" c:symbol-prefix="application_window" glib:type-name="HeApplicationWindow" glib:get-type="he_application_window_get_type" glib:type-struct="ApplicationWindowClass" parent="Gtk.ApplicationWindow">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="He.Window" c:type="HeWindow"/>
+			<type name="Gtk.ApplicationWindow" c:type="GtkApplicationWindow"/>
 		</field>
 		<constructor name="new" c:identifier="he_application_window_new">
 			<return-value transfer-ownership="none">
@@ -979,20 +1104,97 @@
 				</parameter>
 			</parameters>
 		</constructor>
+		<property name="modal" writable="1">
+			<type name="gboolean" c:type="gboolean"/>
+		</property>
+		<method name="get_modal" c:identifier="he_application_window_get_modal">
+			<return-value transfer-ownership="none">
+				<type name="gboolean" c:type="gboolean"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.ApplicationWindow" c:type="HeApplicationWindow*"/>
+				</instance-parameter>
+			</parameters>
+		</method>
+		<method name="set_modal" c:identifier="he_application_window_set_modal">
+			<return-value transfer-ownership="none">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.ApplicationWindow" c:type="HeApplicationWindow*"/>
+				</instance-parameter>
+				<parameter name="value" transfer-ownership="none">
+					<type name="gboolean" c:type="gboolean"/>
+				</parameter>
+			</parameters>
+		</method>
+		<property name="has-title" writable="1">
+			<type name="gboolean" c:type="gboolean"/>
+		</property>
+		<method name="get_has_title" c:identifier="he_application_window_get_has_title">
+			<return-value transfer-ownership="none">
+				<type name="gboolean" c:type="gboolean"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.ApplicationWindow" c:type="HeApplicationWindow*"/>
+				</instance-parameter>
+			</parameters>
+		</method>
+		<method name="set_has_title" c:identifier="he_application_window_set_has_title">
+			<return-value transfer-ownership="none">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.ApplicationWindow" c:type="HeApplicationWindow*"/>
+				</instance-parameter>
+				<parameter name="value" transfer-ownership="none">
+					<type name="gboolean" c:type="gboolean"/>
+				</parameter>
+			</parameters>
+		</method>
+		<property name="has-back-button" writable="1">
+			<type name="gboolean" c:type="gboolean"/>
+		</property>
+		<method name="get_has_back_button" c:identifier="he_application_window_get_has_back_button">
+			<return-value transfer-ownership="none">
+				<type name="gboolean" c:type="gboolean"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.ApplicationWindow" c:type="HeApplicationWindow*"/>
+				</instance-parameter>
+			</parameters>
+		</method>
+		<method name="set_has_back_button" c:identifier="he_application_window_set_has_back_button">
+			<return-value transfer-ownership="none">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.ApplicationWindow" c:type="HeApplicationWindow*"/>
+				</instance-parameter>
+				<parameter name="value" transfer-ownership="none">
+					<type name="gboolean" c:type="gboolean"/>
+				</parameter>
+			</parameters>
+		</method>
 		<field name="priv" readable="0" private="1">
 			<type name="ApplicationWindowPrivate" c:type="HeApplicationWindowPrivate*"/>
 		</field>
 	</class>
 	<record name="ApplicationWindowClass" c:type="HeApplicationWindowClass" glib:is-gtype-struct-for="ApplicationWindow">
 		<field name="parent_class" readable="0" private="1">
-			<type name="He.WindowClass" c:type="HeWindowClass"/>
+			<type name="Gtk.ApplicationWindowClass" c:type="GtkApplicationWindowClass"/>
 		</field>
 	</record>
 	<record name="ApplicationWindowPrivate" c:type="HeApplicationWindowPrivate" disguised="1"/>
-	<class name="Badge" c:type="HeBadge" c:symbol-prefix="badge" glib:type-name="HeBadge" glib:get-type="he_badge_get_type" glib:type-struct="BadgeClass" parent="Gtk.Widget">
-		<implements name="Gtk.Buildable"/>
+	<class name="Badge" c:type="HeBadge" c:symbol-prefix="badge" glib:type-name="HeBadge" glib:get-type="he_badge_get_type" glib:type-struct="BadgeClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="child" writable="1">
 			<type name="Gtk.Widget" c:type="GtkWidget*"/>
@@ -1057,14 +1259,14 @@
 	</class>
 	<record name="BadgeClass" c:type="HeBadgeClass" glib:is-gtype-struct-for="Badge">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="BadgePrivate" c:type="HeBadgePrivate" disguised="1"/>
-	<class name="Banner" c:type="HeBanner" c:symbol-prefix="banner" glib:type-name="HeBanner" glib:get-type="he_banner_get_type" glib:type-struct="BannerClass" parent="Gtk.Widget">
+	<class name="Banner" c:type="HeBanner" c:symbol-prefix="banner" glib:type-name="HeBanner" glib:get-type="he_banner_get_type" glib:type-struct="BannerClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -1202,7 +1404,7 @@
 	</class>
 	<record name="BannerClass" c:type="HeBannerClass" glib:is-gtype-struct-for="Banner">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="BannerPrivate" c:type="HeBannerPrivate" disguised="1"/>
@@ -1211,10 +1413,10 @@
 		<member name="warning" c:identifier="HE_BANNER_STYLE_WARNING" value="1"/>
 		<member name="error" c:identifier="HE_BANNER_STYLE_ERROR" value="2"/>
 	</enumeration>
-	<class name="BottomBar" c:type="HeBottomBar" c:symbol-prefix="bottom_bar" glib:type-name="HeBottomBar" glib:get-type="he_bottom_bar_get_type" glib:type-struct="BottomBarClass" parent="Gtk.Box">
+	<class name="BottomBar" c:type="HeBottomBar" c:symbol-prefix="bottom_bar" glib:type-name="HeBottomBar" glib:get-type="he_bottom_bar_get_type" glib:type-struct="BottomBarClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Box" c:type="GtkBox"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -1268,6 +1470,76 @@
 				</parameter>
 			</parameters>
 		</method>
+		<property name="menu-model" writable="1">
+			<type name="Gio.MenuModel" c:type="GMenuModel*"/>
+		</property>
+		<method name="get_menu_model" c:identifier="he_bottom_bar_get_menu_model">
+			<return-value transfer-ownership="none">
+				<type name="Gio.MenuModel" c:type="GMenuModel*"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.BottomBar" c:type="HeBottomBar*"/>
+				</instance-parameter>
+			</parameters>
+		</method>
+		<method name="set_menu_model" c:identifier="he_bottom_bar_set_menu_model">
+			<return-value transfer-ownership="none">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.BottomBar" c:type="HeBottomBar*"/>
+				</instance-parameter>
+				<parameter name="value" transfer-ownership="none">
+					<type name="Gio.MenuModel" c:type="GMenuModel*"/>
+				</parameter>
+			</parameters>
+		</method>
+		<property name="collapse-actions" writable="1">
+			<type name="gboolean" c:type="gboolean"/>
+		</property>
+		<method name="get_collapse_actions" c:identifier="he_bottom_bar_get_collapse_actions">
+			<return-value transfer-ownership="none">
+				<type name="gboolean" c:type="gboolean"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.BottomBar" c:type="HeBottomBar*"/>
+				</instance-parameter>
+			</parameters>
+		</method>
+		<method name="set_collapse_actions" c:identifier="he_bottom_bar_set_collapse_actions">
+			<return-value transfer-ownership="none">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.BottomBar" c:type="HeBottomBar*"/>
+				</instance-parameter>
+				<parameter name="value" transfer-ownership="none">
+					<type name="gboolean" c:type="gboolean"/>
+				</parameter>
+			</parameters>
+		</method>
+		<constructor name="with_details" c:identifier="he_bottom_bar_new_with_details">
+			<return-value transfer-ownership="none">
+				<type name="He.BottomBar" c:type="HeBottomBar*"/>
+			</return-value>
+			<parameters>
+				<parameter name="title" transfer-ownership="none">
+					<type name="utf8" c:type="const gchar*"/>
+				</parameter>
+				<parameter name="description" transfer-ownership="none">
+					<type name="utf8" c:type="const gchar*"/>
+				</parameter>
+			</parameters>
+		</constructor>
+		<constructor name="new" c:identifier="he_bottom_bar_new">
+			<return-value transfer-ownership="none">
+				<type name="He.BottomBar" c:type="HeBottomBar*"/>
+			</return-value>
+		</constructor>
 		<method name="append_button" c:identifier="he_bottom_bar_append_button">
 			<return-value transfer-ownership="full">
 				<type name="none" c:type="void"/>
@@ -1354,26 +1626,13 @@
 				</parameter>
 			</parameters>
 		</method>
-		<constructor name="new" c:identifier="he_bottom_bar_new">
-			<return-value transfer-ownership="none">
-				<type name="He.BottomBar" c:type="HeBottomBar*"/>
-			</return-value>
-			<parameters>
-				<parameter name="title" transfer-ownership="none">
-					<type name="utf8" c:type="const gchar*"/>
-				</parameter>
-				<parameter name="description" transfer-ownership="none">
-					<type name="utf8" c:type="const gchar*"/>
-				</parameter>
-			</parameters>
-		</constructor>
 		<field name="priv" readable="0" private="1">
 			<type name="BottomBarPrivate" c:type="HeBottomBarPrivate*"/>
 		</field>
 	</class>
 	<record name="BottomBarClass" c:type="HeBottomBarClass" glib:is-gtype-struct-for="BottomBar">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.BoxClass" c:type="GtkBoxClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="BottomBarPrivate" c:type="HeBottomBarPrivate" disguised="1"/>
@@ -1381,9 +1640,9 @@
 		<member name="left" c:identifier="HE_BOTTOM_BAR_POSITION_LEFT" value="0"/>
 		<member name="right" c:identifier="HE_BOTTOM_BAR_POSITION_RIGHT" value="1"/>
 	</enumeration>
-	<class name="Chip" c:type="HeChip" c:symbol-prefix="chip" glib:type-name="HeChip" glib:get-type="he_chip_get_type" glib:type-struct="ChipClass" parent="Gtk.Button">
+	<class name="Chip" c:type="HeChip" c:symbol-prefix="chip" glib:type-name="HeChip" glib:get-type="he_chip_get_type" glib:type-struct="ChipClass" parent="He.Button">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Button" c:type="GtkButton"/>
+			<type name="He.Button" c:type="HeButton"/>
 		</field>
 		<constructor name="new" c:identifier="he_chip_new">
 			<return-value transfer-ownership="none">
@@ -1401,14 +1660,14 @@
 	</class>
 	<record name="ChipClass" c:type="HeChipClass" glib:is-gtype-struct-for="Chip">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.ButtonClass" c:type="GtkButtonClass"/>
+			<type name="He.ButtonClass" c:type="HeButtonClass"/>
 		</field>
 	</record>
 	<record name="ChipPrivate" c:type="HeChipPrivate" disguised="1"/>
-	<class name="ContentBlock" c:type="HeContentBlock" c:symbol-prefix="content_block" glib:type-name="HeContentBlock" glib:get-type="he_content_block_get_type" glib:type-struct="ContentBlockClass" parent="Gtk.Widget">
+	<class name="ContentBlock" c:type="HeContentBlock" c:symbol-prefix="content_block" glib:type-name="HeContentBlock" glib:get-type="he_content_block_get_type" glib:type-struct="ContentBlockClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -1584,14 +1843,14 @@
 	</class>
 	<record name="ContentBlockClass" c:type="HeContentBlockClass" glib:is-gtype-struct-for="ContentBlock">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ContentBlockPrivate" c:type="HeContentBlockPrivate" disguised="1"/>
-	<class name="ContentBlockImage" c:type="HeContentBlockImage" c:symbol-prefix="content_block_image" glib:type-name="HeContentBlockImage" glib:get-type="he_content_block_image_get_type" glib:type-struct="ContentBlockImageClass" parent="Gtk.Widget">
+	<class name="ContentBlockImage" c:type="HeContentBlockImage" c:symbol-prefix="content_block_image" glib:type-name="HeContentBlockImage" glib:get-type="he_content_block_image_get_type" glib:type-struct="ContentBlockImageClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="file" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -1677,14 +1936,13 @@
 	</class>
 	<record name="ContentBlockImageClass" c:type="HeContentBlockImageClass" glib:is-gtype-struct-for="ContentBlockImage">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ContentBlockImagePrivate" c:type="HeContentBlockImagePrivate" disguised="1"/>
-	<class name="ContentBlockImageCluster" c:type="HeContentBlockImageCluster" c:symbol-prefix="content_block_image_cluster" glib:type-name="HeContentBlockImageCluster" glib:get-type="he_content_block_image_cluster_get_type" glib:type-struct="ContentBlockImageClusterClass" parent="Gtk.Box">
-		<implements name="Gtk.Buildable"/>
+	<class name="ContentBlockImageCluster" c:type="HeContentBlockImageCluster" c:symbol-prefix="content_block_image_cluster" glib:type-name="HeContentBlockImageCluster" glib:get-type="he_content_block_image_cluster_get_type" glib:type-struct="ContentBlockImageClusterClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Box" c:type="GtkBox"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -1809,13 +2067,32 @@
 				</parameter>
 			</parameters>
 		</constructor>
+		<method name="add_child" c:identifier="he_content_block_image_cluster_add_child">
+			<return-value transfer-ownership="full">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.ContentBlockImageCluster" c:type="HeContentBlockImageCluster*"/>
+				</instance-parameter>
+				<parameter name="builder" transfer-ownership="none">
+					<type name="Gtk.Builder" c:type="GtkBuilder*"/>
+				</parameter>
+				<parameter name="child" transfer-ownership="none">
+					<type name="GObject.Object" c:type="GObject*"/>
+				</parameter>
+				<parameter name="type" transfer-ownership="none" nullable="1">
+					<type name="utf8" c:type="const gchar*"/>
+				</parameter>
+			</parameters>
+		</method>
 		<field name="priv" readable="0" private="1">
 			<type name="ContentBlockImageClusterPrivate" c:type="HeContentBlockImageClusterPrivate*"/>
 		</field>
 	</class>
 	<record name="ContentBlockImageClusterClass" c:type="HeContentBlockImageClusterClass" glib:is-gtype-struct-for="ContentBlockImageCluster">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.BoxClass" c:type="GtkBoxClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ContentBlockImageClusterPrivate" c:type="HeContentBlockImageClusterPrivate" disguised="1"/>
@@ -1845,10 +2122,10 @@
 			</instance-parameter>
 		</parameters>
 	</function>
-	<class name="ContentList" c:type="HeContentList" c:symbol-prefix="content_list" glib:type-name="HeContentList" glib:get-type="he_content_list_get_type" glib:type-struct="ContentListClass" parent="Gtk.Widget">
+	<class name="ContentList" c:type="HeContentList" c:symbol-prefix="content_list" glib:type-name="HeContentList" glib:get-type="he_content_list_get_type" glib:type-struct="ContentListClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -1939,13 +2216,16 @@
 	</class>
 	<record name="ContentListClass" c:type="HeContentListClass" glib:is-gtype-struct-for="ContentList">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ContentListPrivate" c:type="HeContentListPrivate" disguised="1"/>
 	<class name="Dialog" c:type="HeDialog" c:symbol-prefix="dialog" glib:type-name="HeDialog" glib:get-type="he_dialog_get_type" glib:type-struct="DialogClass" parent="He.Window">
 		<field name="parent_instance" readable="0" private="1">
 			<type name="He.Window" c:type="HeWindow"/>
+		</field>
+		<field name="cancel_button" writable="1">
+			<type name="He.TextButton" c:type="HeTextButton*"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -2144,10 +2424,9 @@
 		</field>
 	</record>
 	<record name="DialogPrivate" c:type="HeDialogPrivate" disguised="1"/>
-	<class name="DisclosureButton" c:type="HeDisclosureButton" c:symbol-prefix="disclosure_button" glib:type-name="HeDisclosureButton" glib:get-type="he_disclosure_button_get_type" glib:type-struct="DisclosureButtonClass" parent="Gtk.Button">
-		<implements name="Gtk.Buildable"/>
+	<class name="DisclosureButton" c:type="HeDisclosureButton" c:symbol-prefix="disclosure_button" glib:type-name="HeDisclosureButton" glib:get-type="he_disclosure_button_get_type" glib:type-struct="DisclosureButtonClass" parent="He.Button">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Button" c:type="GtkButton"/>
+			<type name="He.Button" c:type="HeButton"/>
 		</field>
 		<property name="icon" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -2191,16 +2470,13 @@
 	</class>
 	<record name="DisclosureButtonClass" c:type="HeDisclosureButtonClass" glib:is-gtype-struct-for="DisclosureButton">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.ButtonClass" c:type="GtkButtonClass"/>
+			<type name="He.ButtonClass" c:type="HeButtonClass"/>
 		</field>
 	</record>
 	<record name="DisclosureButtonPrivate" c:type="HeDisclosureButtonPrivate" disguised="1"/>
-	<class name="EmptyPage" c:type="HeEmptyPage" c:symbol-prefix="empty_page" glib:type-name="HeEmptyPage" glib:get-type="he_empty_page_get_type" glib:type-struct="EmptyPageClass" parent="Gtk.Widget">
+	<class name="EmptyPage" c:type="HeEmptyPage" c:symbol-prefix="empty_page" glib:type-name="HeEmptyPage" glib:get-type="he_empty_page_get_type" glib:type-struct="EmptyPageClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
-		</field>
-		<field name="action_button" writable="1">
-			<type name="He.PillButton" c:type="HePillButton*"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -2317,7 +2593,7 @@
 	</class>
 	<record name="EmptyPageClass" c:type="HeEmptyPageClass" glib:is-gtype-struct-for="EmptyPage">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="EmptyPagePrivate" c:type="HeEmptyPagePrivate" disguised="1"/>
@@ -2345,10 +2621,9 @@
 		</field>
 	</record>
 	<record name="FillButtonPrivate" c:type="HeFillButtonPrivate" disguised="1"/>
-	<class name="IconicButton" c:type="HeIconicButton" c:symbol-prefix="iconic_button" glib:type-name="HeIconicButton" glib:get-type="he_iconic_button_get_type" glib:type-struct="IconicButtonClass" parent="Gtk.Button">
-		<implements name="Gtk.Buildable"/>
+	<class name="IconicButton" c:type="HeIconicButton" c:symbol-prefix="iconic_button" glib:type-name="HeIconicButton" glib:get-type="he_iconic_button_get_type" glib:type-struct="IconicButtonClass" parent="He.Button">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Button" c:type="GtkButton"/>
+			<type name="He.Button" c:type="HeButton"/>
 		</field>
 		<property name="icon" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -2364,6 +2639,32 @@
 			</parameters>
 		</method>
 		<method name="set_icon" c:identifier="he_iconic_button_set_icon">
+			<return-value transfer-ownership="none">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.IconicButton" c:type="HeIconicButton*"/>
+				</instance-parameter>
+				<parameter name="value" transfer-ownership="none">
+					<type name="utf8" c:type="const gchar*"/>
+				</parameter>
+			</parameters>
+		</method>
+		<property name="tooltip" writable="1">
+			<type name="utf8" c:type="gchar*"/>
+		</property>
+		<method name="get_tooltip" c:identifier="he_iconic_button_get_tooltip">
+			<return-value transfer-ownership="none">
+				<type name="utf8" c:type="const gchar*"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.IconicButton" c:type="HeIconicButton*"/>
+				</instance-parameter>
+			</parameters>
+		</method>
+		<method name="set_tooltip" c:identifier="he_iconic_button_set_tooltip">
 			<return-value transfer-ownership="none">
 				<type name="none" c:type="void"/>
 			</return-value>
@@ -2392,13 +2693,13 @@
 	</class>
 	<record name="IconicButtonClass" c:type="HeIconicButtonClass" glib:is-gtype-struct-for="IconicButton">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.ButtonClass" c:type="GtkButtonClass"/>
+			<type name="He.ButtonClass" c:type="HeButtonClass"/>
 		</field>
 	</record>
 	<record name="IconicButtonPrivate" c:type="HeIconicButtonPrivate" disguised="1"/>
-	<class name="MiniContentBlock" c:type="HeMiniContentBlock" c:symbol-prefix="mini_content_block" glib:type-name="HeMiniContentBlock" glib:get-type="he_mini_content_block_get_type" glib:type-struct="MiniContentBlockClass" parent="Gtk.Widget">
+	<class name="MiniContentBlock" c:type="HeMiniContentBlock" c:symbol-prefix="mini_content_block" glib:type-name="HeMiniContentBlock" glib:get-type="he_mini_content_block_get_type" glib:type-struct="MiniContentBlockClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -2520,21 +2821,26 @@
 				</parameter>
 			</parameters>
 		</method>
-		<constructor name="new" c:identifier="he_mini_content_block_new">
+		<constructor name="with_details" c:identifier="he_mini_content_block_new_with_details">
 			<return-value transfer-ownership="none">
 				<type name="He.MiniContentBlock" c:type="HeMiniContentBlock*"/>
 			</return-value>
 			<parameters>
-				<parameter name="title" transfer-ownership="none">
+				<parameter name="title" transfer-ownership="none" nullable="1">
 					<type name="utf8" c:type="const gchar*"/>
 				</parameter>
-				<parameter name="subtitle" transfer-ownership="none">
+				<parameter name="subtitle" transfer-ownership="none" nullable="1">
 					<type name="utf8" c:type="const gchar*"/>
 				</parameter>
-				<parameter name="primary_button" transfer-ownership="none">
+				<parameter name="primary_button" transfer-ownership="none" nullable="1">
 					<type name="He.Button" c:type="HeButton*"/>
 				</parameter>
 			</parameters>
+		</constructor>
+		<constructor name="new" c:identifier="he_mini_content_block_new">
+			<return-value transfer-ownership="none">
+				<type name="He.MiniContentBlock" c:type="HeMiniContentBlock*"/>
+			</return-value>
 		</constructor>
 		<field name="priv" readable="0" private="1">
 			<type name="MiniContentBlockPrivate" c:type="HeMiniContentBlockPrivate*"/>
@@ -2542,13 +2848,13 @@
 	</class>
 	<record name="MiniContentBlockClass" c:type="HeMiniContentBlockClass" glib:is-gtype-struct-for="MiniContentBlock">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="MiniContentBlockPrivate" c:type="HeMiniContentBlockPrivate" disguised="1"/>
-	<class name="ModifierBadge" c:type="HeModifierBadge" c:symbol-prefix="modifier_badge" glib:type-name="HeModifierBadge" glib:get-type="he_modifier_badge_get_type" glib:type-struct="ModifierBadgeClass" parent="Gtk.Widget">
+	<class name="ModifierBadge" c:type="HeModifierBadge" c:symbol-prefix="modifier_badge" glib:type-name="HeModifierBadge" glib:get-type="he_modifier_badge_get_type" glib:type-struct="ModifierBadgeClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="color" writable="1">
 			<type name="He.Colors" c:type="HeColors"/>
@@ -2670,7 +2976,7 @@
 	</class>
 	<record name="ModifierBadgeClass" c:type="HeModifierBadgeClass" glib:is-gtype-struct-for="ModifierBadge">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ModifierBadgePrivate" c:type="HeModifierBadgePrivate" disguised="1"/>
@@ -2723,10 +3029,10 @@
 		</field>
 	</record>
 	<record name="OutlineButtonPrivate" c:type="HeOutlineButtonPrivate" disguised="1"/>
-	<class name="OverlayButton" c:type="HeOverlayButton" c:symbol-prefix="overlay_button" glib:type-name="HeOverlayButton" glib:get-type="he_overlay_button_get_type" glib:type-struct="OverlayButtonClass" parent="Gtk.Widget">
+	<class name="OverlayButton" c:type="HeOverlayButton" c:symbol-prefix="overlay_button" glib:type-name="HeOverlayButton" glib:get-type="he_overlay_button_get_type" glib:type-struct="OverlayButtonClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<glib:signal name="clicked">
 			<return-value transfer-ownership="full">
@@ -2968,7 +3274,7 @@
 	</class>
 	<record name="OverlayButtonClass" c:type="HeOverlayButtonClass" glib:is-gtype-struct-for="OverlayButton">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="OverlayButtonPrivate" c:type="HeOverlayButtonPrivate" disguised="1"/>
@@ -3036,10 +3342,10 @@
 		</field>
 	</record>
 	<record name="PillButtonPrivate" c:type="HePillButtonPrivate" disguised="1"/>
-	<class name="SideBar" c:type="HeSideBar" c:symbol-prefix="side_bar" glib:type-name="HeSideBar" glib:get-type="he_side_bar_get_type" glib:type-struct="SideBarClass" parent="Gtk.Widget">
+	<class name="SideBar" c:type="HeSideBar" c:symbol-prefix="side_bar" glib:type-name="HeSideBar" glib:get-type="he_side_bar_get_type" glib:type-struct="SideBarClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="title" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -3190,7 +3496,7 @@
 	</class>
 	<record name="SideBarClass" c:type="HeSideBarClass" glib:is-gtype-struct-for="SideBar">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="SideBarPrivate" c:type="HeSideBarPrivate" disguised="1"/>
@@ -3262,9 +3568,9 @@
 		</field>
 	</record>
 	<record name="TintButtonPrivate" c:type="HeTintButtonPrivate" disguised="1"/>
-	<class name="Toast" c:type="HeToast" c:symbol-prefix="toast" glib:type-name="HeToast" glib:get-type="he_toast_get_type" glib:type-struct="ToastClass" parent="Gtk.Widget">
+	<class name="Toast" c:type="HeToast" c:symbol-prefix="toast" glib:type-name="HeToast" glib:get-type="he_toast_get_type" glib:type-struct="ToastClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<glib:signal name="closed">
 			<return-value transfer-ownership="full">
@@ -3354,7 +3660,7 @@
 	</class>
 	<record name="ToastClass" c:type="HeToastClass" glib:is-gtype-struct-for="Toast">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ToastPrivate" c:type="HeToastPrivate" disguised="1"/>
@@ -3441,10 +3747,10 @@
 		</field>
 	</record>
 	<record name="ViewMonoPrivate" c:type="HeViewMonoPrivate" disguised="1"/>
-	<class name="ViewSubTitle" c:type="HeViewSubTitle" c:symbol-prefix="view_sub_title" glib:type-name="HeViewSubTitle" glib:get-type="he_view_sub_title_get_type" glib:type-struct="ViewSubTitleClass" parent="Gtk.Widget">
+	<class name="ViewSubTitle" c:type="HeViewSubTitle" c:symbol-prefix="view_sub_title" glib:type-name="HeViewSubTitle" glib:get-type="he_view_sub_title_get_type" glib:type-struct="ViewSubTitleClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="label" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -3483,13 +3789,13 @@
 	</class>
 	<record name="ViewSubTitleClass" c:type="HeViewSubTitleClass" glib:is-gtype-struct-for="ViewSubTitle">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ViewSubTitlePrivate" c:type="HeViewSubTitlePrivate" disguised="1"/>
-	<class name="ViewSwitcher" c:type="HeViewSwitcher" c:symbol-prefix="view_switcher" glib:type-name="HeViewSwitcher" glib:get-type="he_view_switcher_get_type" glib:type-struct="ViewSwitcherClass" parent="Gtk.Widget">
+	<class name="ViewSwitcher" c:type="HeViewSwitcher" c:symbol-prefix="view_switcher" glib:type-name="HeViewSwitcher" glib:get-type="he_view_switcher_get_type" glib:type-struct="ViewSwitcherClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="stack" writable="1">
 			<type name="Gtk.Stack" c:type="GtkStack*"/>
@@ -3528,14 +3834,14 @@
 	</class>
 	<record name="ViewSwitcherClass" c:type="HeViewSwitcherClass" glib:is-gtype-struct-for="ViewSwitcher">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ViewSwitcherPrivate" c:type="HeViewSwitcherPrivate" disguised="1"/>
-	<class name="ViewTitle" c:type="HeViewTitle" c:symbol-prefix="view_title" glib:type-name="HeViewTitle" glib:get-type="he_view_title_get_type" glib:type-struct="ViewTitleClass" parent="Gtk.Widget">
+	<class name="ViewTitle" c:type="HeViewTitle" c:symbol-prefix="view_title" glib:type-name="HeViewTitle" glib:get-type="he_view_title_get_type" glib:type-struct="ViewTitleClass" parent="He.Bin">
 		<implements name="Gtk.Buildable"/>
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="label" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -3574,14 +3880,13 @@
 	</class>
 	<record name="ViewTitleClass" c:type="HeViewTitleClass" glib:is-gtype-struct-for="ViewTitle">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="ViewTitlePrivate" c:type="HeViewTitlePrivate" disguised="1"/>
-	<class name="WelcomeScreen" c:type="HeWelcomeScreen" c:symbol-prefix="welcome_screen" glib:type-name="HeWelcomeScreen" glib:get-type="he_welcome_screen_get_type" glib:type-struct="WelcomeScreenClass" parent="Gtk.Widget">
-		<implements name="Gtk.Buildable"/>
+	<class name="WelcomeScreen" c:type="HeWelcomeScreen" c:symbol-prefix="welcome_screen" glib:type-name="HeWelcomeScreen" glib:get-type="he_welcome_screen_get_type" glib:type-struct="WelcomeScreenClass" parent="He.Bin">
 		<field name="parent_instance" readable="0" private="1">
-			<type name="Gtk.Widget" c:type="GtkWidget"/>
+			<type name="He.Bin" c:type="HeBin"/>
 		</field>
 		<property name="appname" writable="1">
 			<type name="utf8" c:type="gchar*"/>
@@ -3635,6 +3940,25 @@
 				</parameter>
 			</parameters>
 		</method>
+		<method name="add_child" c:identifier="he_welcome_screen_add_child">
+			<return-value transfer-ownership="full">
+				<type name="none" c:type="void"/>
+			</return-value>
+			<parameters>
+				<instance-parameter name="self" transfer-ownership="none">
+					<type name="He.WelcomeScreen" c:type="HeWelcomeScreen*"/>
+				</instance-parameter>
+				<parameter name="builder" transfer-ownership="none">
+					<type name="Gtk.Builder" c:type="GtkBuilder*"/>
+				</parameter>
+				<parameter name="child" transfer-ownership="none">
+					<type name="GObject.Object" c:type="GObject*"/>
+				</parameter>
+				<parameter name="type" transfer-ownership="none" nullable="1">
+					<type name="utf8" c:type="const gchar*"/>
+				</parameter>
+			</parameters>
+		</method>
 		<constructor name="new" c:identifier="he_welcome_screen_new">
 			<return-value transfer-ownership="none">
 				<type name="He.WelcomeScreen" c:type="HeWelcomeScreen*"/>
@@ -3654,7 +3978,7 @@
 	</class>
 	<record name="WelcomeScreenClass" c:type="HeWelcomeScreenClass" glib:is-gtype-struct-for="WelcomeScreen">
 		<field name="parent_class" readable="0" private="1">
-			<type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
+			<type name="He.BinClass" c:type="HeBinClass"/>
 		</field>
 	</record>
 	<record name="WelcomeScreenPrivate" c:type="HeWelcomeScreenPrivate" disguised="1"/>

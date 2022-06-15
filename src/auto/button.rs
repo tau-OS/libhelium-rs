@@ -14,29 +14,6 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
-    ///
-    ///
-    /// This is an Abstract Base Class, you cannot instantiate it.
-    ///
-    /// # Implements
-    ///
-    /// [`ButtonExt`][trait@crate::prelude::ButtonExt], [`trait@gtk::prelude::ButtonExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::ActionableExt`]
-    // rustdoc-stripper-ignore-next-stop
-    ///
-    ///
-    /// This is an Abstract Base Class, you cannot instantiate it.
-    ///
-    /// # Implements
-    ///
-    /// [`ButtonExt`][trait@crate::prelude::ButtonExt], [`trait@gtk::prelude::ButtonExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::ActionableExt`]
-    // rustdoc-stripper-ignore-next-stop
-    ///
-    ///
-    /// This is an Abstract Base Class, you cannot instantiate it.
-    ///
-    /// # Implements
-    ///
-    /// [`ButtonExt`][trait@crate::prelude::ButtonExt], [`trait@gtk::prelude::ButtonExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::AccessibleExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::ConstraintTargetExt`], [`trait@gtk::prelude::ActionableExt`]
     #[doc(alias = "HeButton")]
     pub struct Button(Object<ffi::HeButton, ffi::HeButtonClass>) @extends gtk::Button, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Actionable;
 
@@ -49,29 +26,6 @@ impl Button {
     pub const NONE: Option<&'static Button> = None;
 }
 
-/// Trait containing all [`struct@Button`] methods.
-///
-/// # Implementors
-///
-/// [`Button`][struct@crate::Button], [`FillButton`][struct@crate::FillButton], [`OutlineButton`][struct@crate::OutlineButton], [`PillButton`][struct@crate::PillButton], [`TextButton`][struct@crate::TextButton], [`TintButton`][struct@crate::TintButton]
-// rustdoc-stripper-ignore-next-stop
-/// Trait containing all [`struct@Button`] methods.
-///
-/// # Implementors
-///
-/// [`Button`][struct@crate::Button], [`FillButton`][struct@crate::FillButton], [`OutlineButton`][struct@crate::OutlineButton], [`PillButton`][struct@crate::PillButton], [`TextButton`][struct@crate::TextButton], [`TintButton`][struct@crate::TintButton]
-// rustdoc-stripper-ignore-next-stop
-/// Trait containing all [`struct@Button`] methods.
-///
-/// # Implementors
-///
-/// [`Button`][struct@crate::Button], [`FillButton`][struct@crate::FillButton], [`OutlineButton`][struct@crate::OutlineButton], [`PillButton`][struct@crate::PillButton], [`TextButton`][struct@crate::TextButton], [`TintButton`][struct@crate::TintButton]
-// rustdoc-stripper-ignore-next-stop
-/// Trait containing all [`struct@Button`] methods.
-///
-/// # Implementors
-///
-/// [`Button`][struct@crate::Button], [`FillButton`][struct@crate::FillButton], [`OutlineButton`][struct@crate::OutlineButton], [`PillButton`][struct@crate::PillButton], [`TextButton`][struct@crate::TextButton], [`TintButton`][struct@crate::TintButton]
 pub trait ButtonExt: 'static {
     #[doc(alias = "he_button_get_color")]
     #[doc(alias = "get_color")]
