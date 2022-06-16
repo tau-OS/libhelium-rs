@@ -1513,7 +1513,7 @@ extern "C" {
     // HeApplication
     //=========================================================================
     pub fn he_application_get_type() -> GType;
-    pub fn he_application_new() -> *mut HeApplication;
+    pub fn he_application_new(application_id: *const c_char, flags: gio::GApplicationFlags) -> *mut HeApplication;
 
     //=========================================================================
     // HeApplicationWindow

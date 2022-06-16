@@ -1,3 +1,6 @@
+[external_libraries]
+Gio = {min_version = "2.66"}
+
 [options]
 library = "He"
 version = "1"
@@ -20,7 +23,6 @@ external_libraries = [
 ]
 
 generate = [
-    "He.Application",
     "He.AboutWindow",
     "He.AboutWindowLicenses",
     "He.AppBar",
@@ -141,3 +143,14 @@ generate_builder = false
 name = "He.Window"
 status = "generate"
 trait_name = "HeWindowExt"
+
+
+# # Borrowed from https://gitlab.gnome.org/World/Rust/libadwaita-rs/-/blob/master/libadwaita/Gir.toml
+[[object]]
+name = "He.Application"
+status = "generate"
+builder_postprocess = "Application::register_startup_hook(&ret);"
+trait_name = "HeApplicationExt"
+    [[object.function]]
+    name = "new"
+    manual = true

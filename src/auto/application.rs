@@ -5,13 +5,10 @@
 
 use glib::object::Cast;
 use glib::object::IsA;
-use glib::translate::*;
 use glib::StaticType;
 use glib::ToValue;
 use std::fmt;
 
-#[cfg(any(feature = "gio_v2_28", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "gio_v2_28")))]
 glib::wrapper! {
     #[doc(alias = "HeApplication")]
     pub struct Application(Object<ffi::HeApplication, ffi::HeApplicationClass>) @extends gtk::Application, gio::Application, @implements gio::ActionGroup, gio::ActionMap;
@@ -21,34 +18,8 @@ glib::wrapper! {
     }
 }
 
-#[cfg(not(any(feature = "gio_v2_28", feature = "dox")))]
-#[cfg(any(feature = "gio_v2_32", feature = "dox"))]
-glib::wrapper! {
-    #[doc(alias = "HeApplication")]
-    pub struct Application(Object<ffi::HeApplication, ffi::HeApplicationClass>) @extends gtk::Application, @implements gio::ActionGroup, gio::ActionMap;
-
-    match fn {
-        type_ => || ffi::he_application_get_type(),
-    }
-}
-
-#[cfg(not(any(feature = "gio_v2_32", feature = "dox")))]
-glib::wrapper! {
-    #[doc(alias = "HeApplication")]
-    pub struct Application(Object<ffi::HeApplication, ffi::HeApplicationClass>) @extends gtk::Application, @implements gio::ActionGroup;
-
-    match fn {
-        type_ => || ffi::he_application_get_type(),
-    }
-}
-
 impl Application {
     pub const NONE: Option<&'static Application> = None;
-
-    #[doc(alias = "he_application_new")]
-    pub fn new() -> Application {
-        unsafe { from_glib_full(ffi::he_application_new()) }
-    }
 
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`Application`] objects.
@@ -56,12 +27,6 @@ impl Application {
     /// This method returns an instance of [`ApplicationBuilder`](crate::builders::ApplicationBuilder) which can be used to create [`Application`] objects.
     pub fn builder() -> ApplicationBuilder {
         ApplicationBuilder::default()
-    }
-}
-
-impl Default for Application {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -114,8 +79,12 @@ impl ApplicationBuilder {
         if let Some(ref resource_base_path) = self.resource_base_path {
             properties.push(("resource-base-path", resource_base_path));
         }
-        glib::Object::new::<Application>(&properties)
-            .expect("Failed to create an instance of Application")
+        let ret = glib::Object::new::<Application>(&properties)
+            .expect("Failed to create an instance of Application");
+        {
+            Application::register_startup_hook(&ret);
+        }
+        ret
     }
 
     pub fn menubar(mut self, menubar: &impl IsA<gio::MenuModel>) -> Self {

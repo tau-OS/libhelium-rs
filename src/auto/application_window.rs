@@ -15,21 +15,9 @@ use std::boxed::Box as Box_;
 use std::fmt;
 use std::mem::transmute;
 
-#[cfg(any(feature = "gio_v2_32", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "gio_v2_32")))]
 glib::wrapper! {
     #[doc(alias = "HeApplicationWindow")]
     pub struct ApplicationWindow(Object<ffi::HeApplicationWindow, ffi::HeApplicationWindowClass>) @extends gtk::ApplicationWindow, gtk::Window, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager, gio::ActionGroup, gio::ActionMap;
-
-    match fn {
-        type_ => || ffi::he_application_window_get_type(),
-    }
-}
-
-#[cfg(not(any(feature = "gio_v2_32", feature = "dox")))]
-glib::wrapper! {
-    #[doc(alias = "HeApplicationWindow")]
-    pub struct ApplicationWindow(Object<ffi::HeApplicationWindow, ffi::HeApplicationWindowClass>) @extends gtk::ApplicationWindow, gtk::Window, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager, gio::ActionGroup;
 
     match fn {
         type_ => || ffi::he_application_window_get_type(),

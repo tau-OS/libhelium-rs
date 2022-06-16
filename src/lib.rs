@@ -34,7 +34,10 @@ macro_rules! skip_assert_initialized {
 #[allow(clippy::type_complexity)]
 mod auto;
 
+mod application;
+
 pub use auto::*;
 
 pub mod builders;
 pub mod prelude;
+pub mod subclass;
