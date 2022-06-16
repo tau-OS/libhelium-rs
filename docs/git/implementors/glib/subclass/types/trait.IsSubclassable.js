@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["libhelium"] = [{"text":"impl&lt;T:&nbsp;<a class=\"trait\" href=\"libhelium/subclass/application/trait.HeApplicationImpl.html\" title=\"trait libhelium::subclass::application::HeApplicationImpl\">HeApplicationImpl</a>&gt; <a class=\"trait\" href=\"libhelium/subclass/prelude/trait.IsSubclassable.html\" title=\"trait libhelium::subclass::prelude::IsSubclassable\">IsSubclassable</a>&lt;T&gt; for <a class=\"struct\" href=\"libhelium/struct.Application.html\" title=\"struct libhelium::Application\">Application</a>","synthetic":false,"types":["libhelium::auto::application::Application"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
