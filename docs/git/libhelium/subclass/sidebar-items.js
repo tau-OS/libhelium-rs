@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["application",""],["prelude",""]]});
+initSidebarItems({"mod":[["application",""],["bin",""],["content_list",""],["prelude",""]]});
