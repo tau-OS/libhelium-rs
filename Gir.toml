@@ -27,6 +27,7 @@ generate = [
     "He.AboutWindowLicenses",
     "He.AppBar",
     "He.ApplicationWindow",
+    "He.Bin",
     "He.Badge",
     "He.Banner",
     "He.BannerStyle",
