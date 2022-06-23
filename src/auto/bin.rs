@@ -24,30 +24,12 @@ impl Bin {
 pub trait BinExt: 'static {
     #[doc(alias = "he_bin_add_child")]
     fn add_child(&self, builder: &gtk::Builder, child: &impl IsA<glib::Object>, type_: Option<&str>);
-
-    #[doc(alias = "he_bin_grab_focus")]
-    fn grab_focus(&self, widget: Option<&impl IsA<gtk::Widget>>) -> bool;
-
-    #[doc(alias = "he_bin_grab_focus_child")]
-    fn grab_focus_child(&self, widget: Option<&impl IsA<gtk::Widget>>) -> bool;
 }
 
 impl<O: IsA<Bin>> BinExt for O {
     fn add_child(&self, builder: &gtk::Builder, child: &impl IsA<glib::Object>, type_: Option<&str>) {
         unsafe {
             ffi::he_bin_add_child(self.as_ref().to_glib_none().0, builder.to_glib_none().0, child.as_ref().to_glib_none().0, type_.to_glib_none().0);
-        }
-    }
-
-    fn grab_focus(&self, widget: Option<&impl IsA<gtk::Widget>>) -> bool {
-        unsafe {
-            from_glib(ffi::he_bin_grab_focus(self.as_ref().to_glib_none().0, widget.map(|p| p.as_ref()).to_glib_none().0))
-        }
-    }
-
-    fn grab_focus_child(&self, widget: Option<&impl IsA<gtk::Widget>>) -> bool {
-        unsafe {
-            from_glib(ffi::he_bin_grab_focus_child(self.as_ref().to_glib_none().0, widget.map(|p| p.as_ref()).to_glib_none().0))
         }
     }
 }

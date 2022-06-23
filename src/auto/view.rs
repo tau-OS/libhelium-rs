@@ -48,6 +48,13 @@ pub trait ViewExt: 'static {
     #[doc(alias = "he_view_set_subtitle")]
     fn set_subtitle(&self, value: &str);
 
+    #[doc(alias = "he_view_get_has_margins")]
+    #[doc(alias = "get_has_margins")]
+    fn has_margins(&self) -> bool;
+
+    #[doc(alias = "he_view_set_has_margins")]
+    fn set_has_margins(&self, value: bool);
+
     #[doc(alias = "he_view_add_child")]
     fn add_child(&self, builder: &gtk::Builder, child: &impl IsA<glib::Object>, type_: Option<&str>);
 
@@ -62,6 +69,9 @@ pub trait ViewExt: 'static {
 
     #[doc(alias = "subtitle")]
     fn connect_subtitle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "has-margins")]
+    fn connect_has_margins_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: IsA<View>> ViewExt for O {
@@ -98,6 +108,18 @@ impl<O: IsA<View>> ViewExt for O {
     fn set_subtitle(&self, value: &str) {
         unsafe {
             ffi::he_view_set_subtitle(self.as_ref().to_glib_none().0, value.to_glib_none().0);
+        }
+    }
+
+    fn has_margins(&self) -> bool {
+        unsafe {
+            from_glib(ffi::he_view_get_has_margins(self.as_ref().to_glib_none().0))
+        }
+    }
+
+    fn set_has_margins(&self, value: bool) {
+        unsafe {
+            ffi::he_view_set_has_margins(self.as_ref().to_glib_none().0, value.into_glib());
         }
     }
 
@@ -146,6 +168,18 @@ impl<O: IsA<View>> ViewExt for O {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::subtitle\0".as_ptr() as *const _,
                 Some(transmute::<_, unsafe extern "C" fn()>(notify_subtitle_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
+        }
+    }
+
+    fn connect_has_margins_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_has_margins_trampoline<P: IsA<View>, F: Fn(&P) + 'static>(this: *mut ffi::HeView, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
+            let f: &F = &*(f as *const F);
+            f(View::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(self.as_ptr() as *mut _, b"notify::has-margins\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_has_margins_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 }

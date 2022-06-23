@@ -36,6 +36,13 @@ impl DisclosureButton {
         }
     }
 
+    #[doc(alias = "he_disclosure_button_new_from_icon")]
+    pub fn from_icon(icon: &str) -> DisclosureButton {
+        unsafe {
+            from_glib_none(ffi::he_disclosure_button_new_from_icon(icon.to_glib_none().0))
+        }
+    }
+
             // rustdoc-stripper-ignore-next
             /// Creates a new builder-pattern struct instance to construct [`DisclosureButton`] objects.
             ///
