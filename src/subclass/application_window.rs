@@ -1,7 +1,6 @@
 use crate::ApplicationWindow;
 use gtk::subclass::prelude::*;
-use gtk::subclass::application_window::ApplicationWindowImpl as GtkWindowImpl;
 
-pub trait ApplicationWindowImpl: GtkWindowImpl {}
+pub trait HeApplicationWindowImpl: ApplicationWindowImpl {}
 
-unsafe impl<T: ApplicationWindowImpl> IsSubclassable<T> for ApplicationWindow {}
+unsafe impl<T: HeApplicationWindowImpl> IsSubclassable<T> for ApplicationWindow {}
