@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["application",""],["bin",""],["content_list",""],["prelude",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["application",""],["application_window",""],["bin",""],["content_list",""],["prelude",""],["window",""]]};

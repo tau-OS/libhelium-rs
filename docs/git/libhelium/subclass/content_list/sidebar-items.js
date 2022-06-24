@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["ContentListImpl",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["ContentListImpl",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["HeApplicationImpl",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["HeApplicationImpl",""]]};
