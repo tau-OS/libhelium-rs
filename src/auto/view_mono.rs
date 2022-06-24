@@ -57,6 +57,7 @@ pub struct ViewMonoBuilder {
     title: Option<String>,
     stack: Option<gtk::Stack>,
     subtitle: Option<String>,
+    has_margins: Option<bool>,
     can_focus: Option<bool>,
     can_target: Option<bool>,
     css_classes: Option<Vec<String>>,
@@ -110,6 +111,9 @@ if let Some(ref stack) = self.stack {
             }
 if let Some(ref subtitle) = self.subtitle {
                 properties.push(("subtitle", subtitle));
+            }
+if let Some(ref has_margins) = self.has_margins {
+                properties.push(("has-margins", has_margins));
             }
 if let Some(ref can_focus) = self.can_focus {
                 properties.push(("can-focus", can_focus));
@@ -218,6 +222,11 @@ if let Some(ref accessible_role) = self.accessible_role {
 
     pub fn subtitle(mut self, subtitle: &str) -> Self {
         self.subtitle = Some(subtitle.to_string());
+        self
+    }
+
+    pub fn has_margins(mut self, has_margins: bool) -> Self {
+        self.has_margins = Some(has_margins);
         self
     }
 
