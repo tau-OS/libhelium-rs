@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["application",""],["application_window",""],["bin",""],["content_list",""],["prelude",""],["window",""]]};
+window.SIDEBAR_ITEMS = {"mod":[["application",""],["application_window",""],["bin",""],["content_list",""],["mini_content_block",""],["prelude",""],["window",""]]};
