@@ -1,6 +1,6 @@
 // Borrowed from https://gitlab.gnome.org/World/Rust/libadwaita-rs/-/blob/master/libadwaita/src/application.rs
 
-use crate::Application;
+use crate::{Application, ColorRGBColor};
 
 use glib::translate::*;
 use std::cell::RefCell;
@@ -39,6 +39,23 @@ impl Application {
                 gtk::init().expect("Failed to initalize gtk4");
             });
             *signalid.borrow_mut() = Some(id);
+        }
+    }
+}
+
+pub trait ApplicationManual {
+    #[doc(alias = "he_application_set_default_accent_color")]
+    #[doc(alias = "default-accent-color")]
+    fn set_default_accent_color(&self, value: Option<&mut ColorRGBColor>);
+}
+
+impl<O: IsA<Application>> ApplicationManual for O {
+    fn set_default_accent_color(&self, mut value: Option<&mut ColorRGBColor>) {
+        unsafe {
+            ffi::he_application_set_default_accent_color(
+                self.as_ref().to_glib_none().0,
+                value.to_glib_none_mut().0,
+            );
         }
     }
 }

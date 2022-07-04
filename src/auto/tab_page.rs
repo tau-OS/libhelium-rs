@@ -4,6 +4,7 @@
 // DO NOT EDIT
 
 use crate::Bin;
+use crate::Tab;
 use glib::object::Cast;
 use glib::object::IsA;
 use glib::signal::connect_raw;
@@ -16,50 +17,50 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
-    #[doc(alias = "HeContentList")]
-    pub struct ContentList(Object<ffi::HeContentList, ffi::HeContentListClass>) @extends Bin, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
+    #[doc(alias = "HeTabPage")]
+    pub struct TabPage(Object<ffi::HeTabPage, ffi::HeTabPageClass>) @extends Bin, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 
     match fn {
-        type_ => || ffi::he_content_list_get_type(),
+        type_ => || ffi::he_tab_page_get_type(),
     }
 }
 
-impl ContentList {
-        pub const NONE: Option<&'static ContentList> = None;
+impl TabPage {
+        pub const NONE: Option<&'static TabPage> = None;
     
 
-    #[doc(alias = "he_content_list_new")]
-    pub fn new() -> ContentList {
+    #[doc(alias = "he_tab_page_new")]
+    pub fn new(tab: &impl IsA<Tab>) -> TabPage {
         unsafe {
-            from_glib_none(ffi::he_content_list_new())
+            from_glib_none(ffi::he_tab_page_new(tab.as_ref().to_glib_none().0))
         }
     }
 
             // rustdoc-stripper-ignore-next
-            /// Creates a new builder-pattern struct instance to construct [`ContentList`] objects.
+            /// Creates a new builder-pattern struct instance to construct [`TabPage`] objects.
             ///
-            /// This method returns an instance of [`ContentListBuilder`](crate::builders::ContentListBuilder) which can be used to create [`ContentList`] objects.
-            pub fn builder() -> ContentListBuilder {
-                ContentListBuilder::default()
+            /// This method returns an instance of [`TabPageBuilder`](crate::builders::TabPageBuilder) which can be used to create [`TabPage`] objects.
+            pub fn builder() -> TabPageBuilder {
+                TabPageBuilder::default()
             }
         
 }
 
-impl Default for ContentList {
+impl Default for TabPage {
                      fn default() -> Self {
-                         Self::new()
+                         glib::object::Object::new::<Self>(&[])
+                            .expect("Can't construct TabPage object with default parameters")
                      }
                  }
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-        /// A [builder-pattern] type to construct [`ContentList`] objects.
+        /// A [builder-pattern] type to construct [`TabPage`] objects.
         ///
         /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
-pub struct ContentListBuilder {
-    title: Option<String>,
-    description: Option<String>,
+pub struct TabPageBuilder {
+    tab: Option<Tab>,
     can_focus: Option<bool>,
     can_target: Option<bool>,
     css_classes: Option<Vec<String>>,
@@ -92,24 +93,21 @@ pub struct ContentListBuilder {
     accessible_role: Option<gtk::AccessibleRole>,
 }
 
-impl ContentListBuilder {
+impl TabPageBuilder {
     // rustdoc-stripper-ignore-next
-    /// Create a new [`ContentListBuilder`].
+    /// Create a new [`TabPageBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
 
     // rustdoc-stripper-ignore-next
-    /// Build the [`ContentList`].
+    /// Build the [`TabPage`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
-    pub fn build(self) -> ContentList {
+    pub fn build(self) -> TabPage {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-if let Some(ref title) = self.title {
-                properties.push(("title", title));
-            }
-if let Some(ref description) = self.description {
-                properties.push(("description", description));
+if let Some(ref tab) = self.tab {
+                properties.push(("tab", tab));
             }
 if let Some(ref can_focus) = self.can_focus {
                 properties.push(("can-focus", can_focus));
@@ -201,18 +199,13 @@ if let Some(ref width_request) = self.width_request {
 if let Some(ref accessible_role) = self.accessible_role {
                 properties.push(("accessible-role", accessible_role));
             }
-        glib::Object::new::<ContentList>(&properties)
-                .expect("Failed to create an instance of ContentList")
+        glib::Object::new::<TabPage>(&properties)
+                .expect("Failed to create an instance of TabPage")
 
     }
 
-    pub fn title(mut self, title: &str) -> Self {
-        self.title = Some(title.to_string());
-        self
-    }
-
-    pub fn description(mut self, description: &str) -> Self {
-        self.description = Some(description.to_string());
+    pub fn tab(mut self, tab: &impl IsA<Tab>) -> Self {
+        self.tab = Some(tab.clone().upcast());
         self
     }
 
@@ -367,98 +360,46 @@ if let Some(ref accessible_role) = self.accessible_role {
     }
 }
 
-pub trait ContentListExt: 'static {
-    #[doc(alias = "he_content_list_get_title")]
-    #[doc(alias = "get_title")]
-    fn title(&self) -> Option<glib::GString>;
+pub trait TabPageExt: 'static {
+    #[doc(alias = "he_tab_page_get_tab")]
+    #[doc(alias = "get_tab")]
+    fn tab(&self) -> Option<Tab>;
 
-    #[doc(alias = "he_content_list_set_title")]
-    fn set_title(&self, value: Option<&str>);
+    #[doc(alias = "he_tab_page_set_tab")]
+    fn set_tab(&self, value: &impl IsA<Tab>);
 
-    #[doc(alias = "he_content_list_get_description")]
-    #[doc(alias = "get_description")]
-    fn description(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "he_content_list_set_description")]
-    fn set_description(&self, value: Option<&str>);
-
-    #[doc(alias = "he_content_list_add")]
-    fn add(&self, child: &impl IsA<gtk::Widget>);
-
-    #[doc(alias = "he_content_list_remove")]
-    fn remove(&self, child: &impl IsA<gtk::Widget>);
-
-    #[doc(alias = "title")]
-    fn connect_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "description")]
-    fn connect_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    #[doc(alias = "tab")]
+    fn connect_tab_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: IsA<ContentList>> ContentListExt for O {
-    fn title(&self) -> Option<glib::GString> {
+impl<O: IsA<TabPage>> TabPageExt for O {
+    fn tab(&self) -> Option<Tab> {
         unsafe {
-            from_glib_none(ffi::he_content_list_get_title(self.as_ref().to_glib_none().0))
+            from_glib_none(ffi::he_tab_page_get_tab(self.as_ref().to_glib_none().0))
         }
     }
 
-    fn set_title(&self, value: Option<&str>) {
+    fn set_tab(&self, value: &impl IsA<Tab>) {
         unsafe {
-            ffi::he_content_list_set_title(self.as_ref().to_glib_none().0, value.to_glib_none().0);
+            ffi::he_tab_page_set_tab(self.as_ref().to_glib_none().0, value.as_ref().to_glib_none().0);
         }
     }
 
-    fn description(&self) -> Option<glib::GString> {
-        unsafe {
-            from_glib_none(ffi::he_content_list_get_description(self.as_ref().to_glib_none().0))
-        }
-    }
-
-    fn set_description(&self, value: Option<&str>) {
-        unsafe {
-            ffi::he_content_list_set_description(self.as_ref().to_glib_none().0, value.to_glib_none().0);
-        }
-    }
-
-    fn add(&self, child: &impl IsA<gtk::Widget>) {
-        unsafe {
-            ffi::he_content_list_add(self.as_ref().to_glib_none().0, child.as_ref().to_glib_none().0);
-        }
-    }
-
-    fn remove(&self, child: &impl IsA<gtk::Widget>) {
-        unsafe {
-            ffi::he_content_list_remove(self.as_ref().to_glib_none().0, child.as_ref().to_glib_none().0);
-        }
-    }
-
-    fn connect_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_title_trampoline<P: IsA<ContentList>, F: Fn(&P) + 'static>(this: *mut ffi::HeContentList, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
+    fn connect_tab_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_tab_trampoline<P: IsA<TabPage>, F: Fn(&P) + 'static>(this: *mut ffi::HeTabPage, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
             let f: &F = &*(f as *const F);
-            f(ContentList::from_glib_borrow(this).unsafe_cast_ref())
+            f(TabPage::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            connect_raw(self.as_ptr() as *mut _, b"notify::title\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(notify_title_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
-        }
-    }
-
-    fn connect_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_description_trampoline<P: IsA<ContentList>, F: Fn(&P) + 'static>(this: *mut ffi::HeContentList, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
-            let f: &F = &*(f as *const F);
-            f(ContentList::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(self.as_ptr() as *mut _, b"notify::description\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(notify_description_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
+            connect_raw(self.as_ptr() as *mut _, b"notify::tab\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_tab_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 }
 
-impl fmt::Display for ContentList {
+impl fmt::Display for TabPage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ContentList")
+        f.write_str("TabPage")
     }
 }

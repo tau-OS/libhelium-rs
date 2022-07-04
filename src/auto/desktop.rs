@@ -3,6 +3,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ColorRGBColor;
 use crate::DesktopColorScheme;
 use glib::object::Cast;
 use glib::object::IsA;
@@ -59,8 +60,7 @@ impl Default for Desktop {
 #[must_use = "The builder must be built to be used"]
 pub struct DesktopBuilder {
     prefers_color_scheme: Option<DesktopColorScheme>,
-    accent_color: Option<String>,
-    foreground: Option<String>,
+    accent_color: Option<ColorRGBColor>,
 }
 
 impl DesktopBuilder {
@@ -82,9 +82,6 @@ if let Some(ref prefers_color_scheme) = self.prefers_color_scheme {
 if let Some(ref accent_color) = self.accent_color {
                 properties.push(("accent-color", accent_color));
             }
-if let Some(ref foreground) = self.foreground {
-                properties.push(("foreground", foreground));
-            }
         glib::Object::new::<Desktop>(&properties)
                 .expect("Failed to create an instance of Desktop")
 
@@ -95,13 +92,8 @@ if let Some(ref foreground) = self.foreground {
         self
     }
 
-    pub fn accent_color(mut self, accent_color: &str) -> Self {
-        self.accent_color = Some(accent_color.to_string());
-        self
-    }
-
-    pub fn foreground(mut self, foreground: &str) -> Self {
-        self.foreground = Some(foreground.to_string());
+    pub fn accent_color(mut self, accent_color: &ColorRGBColor) -> Self {
+        self.accent_color = Some(accent_color.clone());
         self
     }
 }
@@ -113,28 +105,19 @@ pub trait DesktopExt: 'static {
 
     #[doc(alias = "he_desktop_get_accent_color")]
     #[doc(alias = "get_accent_color")]
-    fn accent_color(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "he_desktop_get_foreground")]
-    #[doc(alias = "get_foreground")]
-    fn foreground(&self) -> Option<glib::GString>;
+    fn accent_color(&self) -> Option<ColorRGBColor>;
 
     #[doc(alias = "prefers-color-scheme")]
     fn set_prefers_color_scheme(&self, prefers_color_scheme: DesktopColorScheme);
 
     #[doc(alias = "accent-color")]
-    fn set_accent_color(&self, accent_color: Option<&str>);
-
-    fn set_foreground(&self, foreground: Option<&str>);
+    fn set_accent_color(&self, accent_color: Option<&ColorRGBColor>);
 
     #[doc(alias = "prefers-color-scheme")]
     fn connect_prefers_color_scheme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
     #[doc(alias = "accent-color")]
     fn connect_accent_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "foreground")]
-    fn connect_foreground_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: IsA<Desktop>> DesktopExt for O {
@@ -144,15 +127,9 @@ impl<O: IsA<Desktop>> DesktopExt for O {
         }
     }
 
-    fn accent_color(&self) -> Option<glib::GString> {
+    fn accent_color(&self) -> Option<ColorRGBColor> {
         unsafe {
             from_glib_none(ffi::he_desktop_get_accent_color(self.as_ref().to_glib_none().0))
-        }
-    }
-
-    fn foreground(&self) -> Option<glib::GString> {
-        unsafe {
-            from_glib_none(ffi::he_desktop_get_foreground(self.as_ref().to_glib_none().0))
         }
     }
 
@@ -160,12 +137,8 @@ impl<O: IsA<Desktop>> DesktopExt for O {
         glib::ObjectExt::set_property(self.as_ref(),"prefers-color-scheme", &prefers_color_scheme)
     }
 
-    fn set_accent_color(&self, accent_color: Option<&str>) {
+    fn set_accent_color(&self, accent_color: Option<&ColorRGBColor>) {
         glib::ObjectExt::set_property(self.as_ref(),"accent-color", &accent_color)
-    }
-
-    fn set_foreground(&self, foreground: Option<&str>) {
-        glib::ObjectExt::set_property(self.as_ref(),"foreground", &foreground)
     }
 
     fn connect_prefers_color_scheme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -189,18 +162,6 @@ impl<O: IsA<Desktop>> DesktopExt for O {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::accent-color\0".as_ptr() as *const _,
                 Some(transmute::<_, unsafe extern "C" fn()>(notify_accent_color_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
-        }
-    }
-
-    fn connect_foreground_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_foreground_trampoline<P: IsA<Desktop>, F: Fn(&P) + 'static>(this: *mut ffi::HeDesktop, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
-            let f: &F = &*(f as *const F);
-            f(Desktop::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(self.as_ptr() as *mut _, b"notify::foreground\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(notify_foreground_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 }

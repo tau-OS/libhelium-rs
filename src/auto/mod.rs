@@ -63,6 +63,9 @@ pub use self::fill_button::FillButton;
 mod iconic_button;
 pub use self::iconic_button::IconicButton;
 
+mod latch;
+pub use self::latch::Latch;
+
 mod mini_content_block;
 pub use self::mini_content_block::MiniContentBlock;
 
@@ -78,8 +81,23 @@ pub use self::overlay_button::OverlayButton;
 mod pill_button;
 pub use self::pill_button::PillButton;
 
+mod settings_page;
+pub use self::settings_page::SettingsPage;
+
+mod settings_window;
+pub use self::settings_window::SettingsWindow;
+
 mod side_bar;
 pub use self::side_bar::SideBar;
+
+mod tab;
+pub use self::tab::Tab;
+
+mod tab_page;
+pub use self::tab_page::TabPage;
+
+mod tab_switcher;
+pub use self::tab_switcher::TabSwitcher;
 
 mod text_button;
 pub use self::text_button::TextButton;
@@ -117,6 +135,18 @@ pub use self::welcome_screen::WelcomeScreen;
 mod window;
 pub use self::window::Window;
 
+mod color_lab_color;
+pub use self::color_lab_color::ColorLABColor;
+
+mod color_lch_color;
+pub use self::color_lch_color::ColorLCHColor;
+
+mod color_rgb_color;
+pub use self::color_rgb_color::ColorRGBColor;
+
+mod color_xyz_color;
+pub use self::color_xyz_color::ColorXYZColor;
+
 mod enums;
 pub use self::enums::AboutWindowLicenses;
 pub use self::enums::BannerStyle;
@@ -127,11 +157,13 @@ pub use self::enums::DesktopColorScheme;
 pub use self::enums::ModifierBadgeAlignment;
 pub use self::enums::OverlayButtonAlignment;
 pub use self::enums::OverlayButtonSize;
+pub use self::enums::TabSwitcherTabBarBehavior;
 
 #[doc(hidden)]
 pub mod traits {
     pub use super::about_window::AboutWindowExt;
     pub use super::app_bar::AppBarExt;
+    pub use super::application::HeApplicationExt;
     pub use super::application_window::ApplicationWindowExt;
     pub use super::badge::BadgeExt;
     pub use super::banner::BannerExt;
@@ -147,10 +179,16 @@ pub mod traits {
     pub use super::disclosure_button::DisclosureButtonExt;
     pub use super::empty_page::EmptyPageExt;
     pub use super::iconic_button::IconicButtonExt;
+    pub use super::latch::LatchExt;
     pub use super::mini_content_block::MiniContentBlockExt;
     pub use super::modifier_badge::ModifierBadgeExt;
     pub use super::overlay_button::OverlayButtonExt;
+    pub use super::settings_page::SettingsPageExt;
+    pub use super::settings_window::SettingsWindowExt;
     pub use super::side_bar::SideBarExt;
+    pub use super::tab::TabExt;
+    pub use super::tab_page::TabPageExt;
+    pub use super::tab_switcher::TabSwitcherExt;
     pub use super::toast::ToastExt;
     pub use super::view::ViewExt;
     pub use super::view_aux::ViewAuxExt;
@@ -180,12 +218,18 @@ pub mod builders {
     pub use super::empty_page::EmptyPageBuilder;
     pub use super::fill_button::FillButtonBuilder;
     pub use super::iconic_button::IconicButtonBuilder;
+    pub use super::latch::LatchBuilder;
     pub use super::mini_content_block::MiniContentBlockBuilder;
     pub use super::modifier_badge::ModifierBadgeBuilder;
     pub use super::outline_button::OutlineButtonBuilder;
     pub use super::overlay_button::OverlayButtonBuilder;
     pub use super::pill_button::PillButtonBuilder;
+    pub use super::settings_page::SettingsPageBuilder;
+    pub use super::settings_window::SettingsWindowBuilder;
     pub use super::side_bar::SideBarBuilder;
+    pub use super::tab::TabBuilder;
+    pub use super::tab_page::TabPageBuilder;
+    pub use super::tab_switcher::TabSwitcherBuilder;
     pub use super::text_button::TextButtonBuilder;
     pub use super::tint_button::TintButtonBuilder;
     pub use super::toast::ToastBuilder;

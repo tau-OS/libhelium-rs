@@ -3,7 +3,6 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Bin;
 use glib::object::Cast;
 use glib::object::IsA;
 use glib::signal::connect_raw;
@@ -16,36 +15,36 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
-    #[doc(alias = "HeContentList")]
-    pub struct ContentList(Object<ffi::HeContentList, ffi::HeContentListClass>) @extends Bin, gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
+    #[doc(alias = "HeLatch")]
+    pub struct Latch(Object<ffi::HeLatch, ffi::HeLatchClass>) @extends gtk::Widget, @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Orientable, gtk::Scrollable;
 
     match fn {
-        type_ => || ffi::he_content_list_get_type(),
+        type_ => || ffi::he_latch_get_type(),
     }
 }
 
-impl ContentList {
-        pub const NONE: Option<&'static ContentList> = None;
+impl Latch {
+        pub const NONE: Option<&'static Latch> = None;
     
 
-    #[doc(alias = "he_content_list_new")]
-    pub fn new() -> ContentList {
+    #[doc(alias = "he_latch_new")]
+    pub fn new() -> Latch {
         unsafe {
-            from_glib_none(ffi::he_content_list_new())
+            from_glib_none(ffi::he_latch_new())
         }
     }
 
             // rustdoc-stripper-ignore-next
-            /// Creates a new builder-pattern struct instance to construct [`ContentList`] objects.
+            /// Creates a new builder-pattern struct instance to construct [`Latch`] objects.
             ///
-            /// This method returns an instance of [`ContentListBuilder`](crate::builders::ContentListBuilder) which can be used to create [`ContentList`] objects.
-            pub fn builder() -> ContentListBuilder {
-                ContentListBuilder::default()
+            /// This method returns an instance of [`LatchBuilder`](crate::builders::LatchBuilder) which can be used to create [`Latch`] objects.
+            pub fn builder() -> LatchBuilder {
+                LatchBuilder::default()
             }
         
 }
 
-impl Default for ContentList {
+impl Default for Latch {
                      fn default() -> Self {
                          Self::new()
                      }
@@ -53,13 +52,14 @@ impl Default for ContentList {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-        /// A [builder-pattern] type to construct [`ContentList`] objects.
+        /// A [builder-pattern] type to construct [`Latch`] objects.
         ///
         /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
-pub struct ContentListBuilder {
-    title: Option<String>,
-    description: Option<String>,
+pub struct LatchBuilder {
+    tightening_threshold: Option<i32>,
+    maximum_size: Option<i32>,
+    child: Option<gtk::Widget>,
     can_focus: Option<bool>,
     can_target: Option<bool>,
     css_classes: Option<Vec<String>>,
@@ -90,26 +90,34 @@ pub struct ContentListBuilder {
     visible: Option<bool>,
     width_request: Option<i32>,
     accessible_role: Option<gtk::AccessibleRole>,
+    orientation: Option<gtk::Orientation>,
+    hadjustment: Option<gtk::Adjustment>,
+    hscroll_policy: Option<gtk::ScrollablePolicy>,
+    vadjustment: Option<gtk::Adjustment>,
+    vscroll_policy: Option<gtk::ScrollablePolicy>,
 }
 
-impl ContentListBuilder {
+impl LatchBuilder {
     // rustdoc-stripper-ignore-next
-    /// Create a new [`ContentListBuilder`].
+    /// Create a new [`LatchBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
 
     // rustdoc-stripper-ignore-next
-    /// Build the [`ContentList`].
+    /// Build the [`Latch`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
-    pub fn build(self) -> ContentList {
+    pub fn build(self) -> Latch {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-if let Some(ref title) = self.title {
-                properties.push(("title", title));
+if let Some(ref tightening_threshold) = self.tightening_threshold {
+                properties.push(("tightening-threshold", tightening_threshold));
             }
-if let Some(ref description) = self.description {
-                properties.push(("description", description));
+if let Some(ref maximum_size) = self.maximum_size {
+                properties.push(("maximum-size", maximum_size));
+            }
+if let Some(ref child) = self.child {
+                properties.push(("child", child));
             }
 if let Some(ref can_focus) = self.can_focus {
                 properties.push(("can-focus", can_focus));
@@ -201,18 +209,38 @@ if let Some(ref width_request) = self.width_request {
 if let Some(ref accessible_role) = self.accessible_role {
                 properties.push(("accessible-role", accessible_role));
             }
-        glib::Object::new::<ContentList>(&properties)
-                .expect("Failed to create an instance of ContentList")
+if let Some(ref orientation) = self.orientation {
+                properties.push(("orientation", orientation));
+            }
+if let Some(ref hadjustment) = self.hadjustment {
+                properties.push(("hadjustment", hadjustment));
+            }
+if let Some(ref hscroll_policy) = self.hscroll_policy {
+                properties.push(("hscroll-policy", hscroll_policy));
+            }
+if let Some(ref vadjustment) = self.vadjustment {
+                properties.push(("vadjustment", vadjustment));
+            }
+if let Some(ref vscroll_policy) = self.vscroll_policy {
+                properties.push(("vscroll-policy", vscroll_policy));
+            }
+        glib::Object::new::<Latch>(&properties)
+                .expect("Failed to create an instance of Latch")
 
     }
 
-    pub fn title(mut self, title: &str) -> Self {
-        self.title = Some(title.to_string());
+    pub fn tightening_threshold(mut self, tightening_threshold: i32) -> Self {
+        self.tightening_threshold = Some(tightening_threshold);
         self
     }
 
-    pub fn description(mut self, description: &str) -> Self {
-        self.description = Some(description.to_string());
+    pub fn maximum_size(mut self, maximum_size: i32) -> Self {
+        self.maximum_size = Some(maximum_size);
+        self
+    }
+
+    pub fn child(mut self, child: &impl IsA<gtk::Widget>) -> Self {
+        self.child = Some(child.clone().upcast());
         self
     }
 
@@ -365,100 +393,141 @@ if let Some(ref accessible_role) = self.accessible_role {
         self.accessible_role = Some(accessible_role);
         self
     }
+
+    pub fn orientation(mut self, orientation: gtk::Orientation) -> Self {
+        self.orientation = Some(orientation);
+        self
+    }
+
+    pub fn hadjustment(mut self, hadjustment: &impl IsA<gtk::Adjustment>) -> Self {
+        self.hadjustment = Some(hadjustment.clone().upcast());
+        self
+    }
+
+    pub fn hscroll_policy(mut self, hscroll_policy: gtk::ScrollablePolicy) -> Self {
+        self.hscroll_policy = Some(hscroll_policy);
+        self
+    }
+
+    pub fn vadjustment(mut self, vadjustment: &impl IsA<gtk::Adjustment>) -> Self {
+        self.vadjustment = Some(vadjustment.clone().upcast());
+        self
+    }
+
+    pub fn vscroll_policy(mut self, vscroll_policy: gtk::ScrollablePolicy) -> Self {
+        self.vscroll_policy = Some(vscroll_policy);
+        self
+    }
 }
 
-pub trait ContentListExt: 'static {
-    #[doc(alias = "he_content_list_get_title")]
-    #[doc(alias = "get_title")]
-    fn title(&self) -> Option<glib::GString>;
+pub trait LatchExt: 'static {
+    #[doc(alias = "he_latch_get_tightening_threshold")]
+    #[doc(alias = "get_tightening_threshold")]
+    fn tightening_threshold(&self) -> i32;
 
-    #[doc(alias = "he_content_list_set_title")]
-    fn set_title(&self, value: Option<&str>);
+    #[doc(alias = "he_latch_set_tightening_threshold")]
+    fn set_tightening_threshold(&self, value: i32);
 
-    #[doc(alias = "he_content_list_get_description")]
-    #[doc(alias = "get_description")]
-    fn description(&self) -> Option<glib::GString>;
+    #[doc(alias = "he_latch_get_maximum_size")]
+    #[doc(alias = "get_maximum_size")]
+    fn maximum_size(&self) -> i32;
 
-    #[doc(alias = "he_content_list_set_description")]
-    fn set_description(&self, value: Option<&str>);
+    #[doc(alias = "he_latch_set_maximum_size")]
+    fn set_maximum_size(&self, value: i32);
 
-    #[doc(alias = "he_content_list_add")]
-    fn add(&self, child: &impl IsA<gtk::Widget>);
+    #[doc(alias = "he_latch_get_child")]
+    #[doc(alias = "get_child")]
+    fn child(&self) -> Option<gtk::Widget>;
 
-    #[doc(alias = "he_content_list_remove")]
-    fn remove(&self, child: &impl IsA<gtk::Widget>);
+    #[doc(alias = "he_latch_set_child")]
+    fn set_child(&self, value: &impl IsA<gtk::Widget>);
 
-    #[doc(alias = "title")]
-    fn connect_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    #[doc(alias = "tightening-threshold")]
+    fn connect_tightening_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[doc(alias = "description")]
-    fn connect_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    #[doc(alias = "maximum-size")]
+    fn connect_maximum_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "child")]
+    fn connect_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: IsA<ContentList>> ContentListExt for O {
-    fn title(&self) -> Option<glib::GString> {
+impl<O: IsA<Latch>> LatchExt for O {
+    fn tightening_threshold(&self) -> i32 {
         unsafe {
-            from_glib_none(ffi::he_content_list_get_title(self.as_ref().to_glib_none().0))
+            ffi::he_latch_get_tightening_threshold(self.as_ref().to_glib_none().0)
         }
     }
 
-    fn set_title(&self, value: Option<&str>) {
+    fn set_tightening_threshold(&self, value: i32) {
         unsafe {
-            ffi::he_content_list_set_title(self.as_ref().to_glib_none().0, value.to_glib_none().0);
+            ffi::he_latch_set_tightening_threshold(self.as_ref().to_glib_none().0, value);
         }
     }
 
-    fn description(&self) -> Option<glib::GString> {
+    fn maximum_size(&self) -> i32 {
         unsafe {
-            from_glib_none(ffi::he_content_list_get_description(self.as_ref().to_glib_none().0))
+            ffi::he_latch_get_maximum_size(self.as_ref().to_glib_none().0)
         }
     }
 
-    fn set_description(&self, value: Option<&str>) {
+    fn set_maximum_size(&self, value: i32) {
         unsafe {
-            ffi::he_content_list_set_description(self.as_ref().to_glib_none().0, value.to_glib_none().0);
+            ffi::he_latch_set_maximum_size(self.as_ref().to_glib_none().0, value);
         }
     }
 
-    fn add(&self, child: &impl IsA<gtk::Widget>) {
+    fn child(&self) -> Option<gtk::Widget> {
         unsafe {
-            ffi::he_content_list_add(self.as_ref().to_glib_none().0, child.as_ref().to_glib_none().0);
+            from_glib_none(ffi::he_latch_get_child(self.as_ref().to_glib_none().0))
         }
     }
 
-    fn remove(&self, child: &impl IsA<gtk::Widget>) {
+    fn set_child(&self, value: &impl IsA<gtk::Widget>) {
         unsafe {
-            ffi::he_content_list_remove(self.as_ref().to_glib_none().0, child.as_ref().to_glib_none().0);
+            ffi::he_latch_set_child(self.as_ref().to_glib_none().0, value.as_ref().to_glib_none().0);
         }
     }
 
-    fn connect_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_title_trampoline<P: IsA<ContentList>, F: Fn(&P) + 'static>(this: *mut ffi::HeContentList, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
+    fn connect_tightening_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_tightening_threshold_trampoline<P: IsA<Latch>, F: Fn(&P) + 'static>(this: *mut ffi::HeLatch, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
             let f: &F = &*(f as *const F);
-            f(ContentList::from_glib_borrow(this).unsafe_cast_ref())
+            f(Latch::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            connect_raw(self.as_ptr() as *mut _, b"notify::title\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(notify_title_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
+            connect_raw(self.as_ptr() as *mut _, b"notify::tightening-threshold\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_tightening_threshold_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
-    fn connect_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_description_trampoline<P: IsA<ContentList>, F: Fn(&P) + 'static>(this: *mut ffi::HeContentList, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
+    fn connect_maximum_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_maximum_size_trampoline<P: IsA<Latch>, F: Fn(&P) + 'static>(this: *mut ffi::HeLatch, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
             let f: &F = &*(f as *const F);
-            f(ContentList::from_glib_borrow(this).unsafe_cast_ref())
+            f(Latch::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            connect_raw(self.as_ptr() as *mut _, b"notify::description\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(notify_description_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
+            connect_raw(self.as_ptr() as *mut _, b"notify::maximum-size\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_maximum_size_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
+        }
+    }
+
+    fn connect_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_child_trampoline<P: IsA<Latch>, F: Fn(&P) + 'static>(this: *mut ffi::HeLatch, _param_spec: glib::ffi::gpointer, f: glib::ffi::gpointer) {
+            let f: &F = &*(f as *const F);
+            f(Latch::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(self.as_ptr() as *mut _, b"notify::child\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_child_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 }
 
-impl fmt::Display for ContentList {
+impl fmt::Display for Latch {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ContentList")
+        f.write_str("Latch")
     }
 }

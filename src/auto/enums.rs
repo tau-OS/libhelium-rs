@@ -836,3 +836,87 @@ impl ToValue for OverlayButtonSize {
     }
 }
 
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "HeTabSwitcherTabBarBehavior")]
+pub enum TabSwitcherTabBarBehavior {
+    #[doc(alias = "HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_ALWAYS")]
+    Always,
+    #[doc(alias = "HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_SINGLE")]
+    Single,
+    #[doc(alias = "HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_NEVER")]
+    Never,
+#[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for TabSwitcherTabBarBehavior {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "TabSwitcherTabBarBehavior::{}", match *self {
+            Self::Always => "Always",
+            Self::Single => "Single",
+            Self::Never => "Never",
+            _ => "Unknown",
+        })
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for TabSwitcherTabBarBehavior {
+    type GlibType = ffi::HeTabSwitcherTabBarBehavior;
+
+    fn into_glib(self) -> ffi::HeTabSwitcherTabBarBehavior {
+        match self {
+            Self::Always => ffi::HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_ALWAYS,
+            Self::Single => ffi::HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_SINGLE,
+            Self::Never => ffi::HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_NEVER,
+            Self::__Unknown(value) => value,
+}
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::HeTabSwitcherTabBarBehavior> for TabSwitcherTabBarBehavior {
+    unsafe fn from_glib(value: ffi::HeTabSwitcherTabBarBehavior) -> Self {
+        match value {
+            ffi::HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_ALWAYS => Self::Always,
+            ffi::HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_SINGLE => Self::Single,
+            ffi::HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_NEVER => Self::Never,
+            value => Self::__Unknown(value),
+}
+    }
+}
+
+impl StaticType for TabSwitcherTabBarBehavior {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::he_tab_switcher_tab_bar_behavior_get_type()) }
+    }
+}
+
+impl glib::value::ValueType for TabSwitcherTabBarBehavior {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for TabSwitcherTabBarBehavior {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for TabSwitcherTabBarBehavior {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+

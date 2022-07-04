@@ -27,6 +27,7 @@ generate = [
     "He.AboutWindowLicenses",
     "He.AppBar",
     "He.ApplicationWindow",
+    "He.AnimationAnimationFunction",
     "He.Bin",
     "He.Badge",
     "He.Banner",
@@ -36,6 +37,10 @@ generate = [
     "He.BottomBarPosition",
     "He.Chip",
     "He.Colors",
+    "He.ColorRGBColor",
+    "He.ColorXYZColor",
+    "He.ColorLABColor",
+    "He.ColorLCHColor",
     "He.ContentBlock",
     "He.ContentBlockImage",
     "He.ContentBlockImageCluster",
@@ -44,6 +49,10 @@ generate = [
     "He.Desktop",
     "He.DesktopColorScheme",
     "He.Dialog",
+    "He.Tab",
+    "He.TabPage",
+    "He.TabSwitcher",
+    "He.TabSwitcherTabBarBehavior",
     "He.TintButton",
     "He.FillButton",
     "He.DisclosureButton",
@@ -56,6 +65,8 @@ generate = [
     "He.OverlayButtonSize",
     "He.OverlayButton",
     "He.OverlayButtonAlignment",
+    "He.SettingsPage",
+    "He.SettingsWindow",
     "He.SideBar",
     "He.TextButton",
     "He.Toast",
@@ -65,7 +76,8 @@ generate = [
     "He.ViewSubTitle",
     "He.ViewSwitcher",
     "He.ViewTitle",
-    "He.WelcomeScreen"
+    "He.WelcomeScreen",
+    "He.Latch",
 ]
 
 manual = [
@@ -81,13 +93,16 @@ manual = [
     "Gdk.Paintable",
     "Gdk.Rectangle",
     "Gdk.Texture",
+    "Gdk.RGBA",
     "Gio.Application",
     "Gio.ApplicationFlags",
     "Gio.ActionGroup",
     "Gio.ActionMap",
     "Gio.Icon",
     "Gio.ListModel",
+    "Gio.Menu",
     "Gio.MenuModel",
+    "Gio.SimpleActionGroup",
     "Gtk.Accessible",
     "Gtk.AccessibleRole",
     "Gtk.Actionable",
@@ -127,6 +142,8 @@ manual = [
     "Pango.EllipsizeMode",
 ]
 
+
+
 [[object]]
 name = "He.Button"
 status = "generate"
@@ -154,4 +171,7 @@ builder_postprocess = "Application::register_startup_hook(&ret);"
 trait_name = "HeApplicationExt"
     [[object.function]]
     name = "new"
+    manual = true
+    [[object.function]]
+    name = "set_default_accent_color"
     manual = true
