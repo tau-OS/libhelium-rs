@@ -153,9 +153,6 @@ generate_builder = false
 name = "He.View"
 status = "generate"
 generate_builder = false
-    # [[object.function]]
-    # name = "add_child"
-    # manual = true
 
 [[object]]
 name = "He.Window"
@@ -163,7 +160,7 @@ status = "generate"
 trait_name = "HeWindowExt"
 
 
-# # Borrowed from https://gitlab.gnome.org/World/Rust/libadwaita-rs/-/blob/master/libadwaita/Gir.toml
+# Borrowed from https://gitlab.gnome.org/World/Rust/libadwaita-rs/-/blob/master/libadwaita/Gir.toml
 [[object]]
 name = "He.Application"
 status = "generate"
@@ -175,3 +172,13 @@ trait_name = "HeApplicationExt"
     [[object.function]]
     name = "set_default_accent_color"
     manual = true
+    # Missing null values is messing it up
+    [[object.function]]
+    name = "get_accent_color"
+    ignore = true
+    [[object.function]]
+    name = "get_foreground"
+    ignore = true
+    [[object.function]]
+    name = "get_accent_foreground"
+    ignore = true

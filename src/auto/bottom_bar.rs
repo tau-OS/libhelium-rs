@@ -441,7 +441,7 @@ pub trait BottomBarExt: 'static {
     fn reorder_button_after(
         &self,
         icon: &impl IsA<IconicButton>,
-        after: &impl IsA<IconicButton>,
+        sibling: &impl IsA<IconicButton>,
         position: BottomBarPosition,
     );
 
@@ -569,14 +569,14 @@ impl<O: IsA<BottomBar>> BottomBarExt for O {
     fn reorder_button_after(
         &self,
         icon: &impl IsA<IconicButton>,
-        after: &impl IsA<IconicButton>,
+        sibling: &impl IsA<IconicButton>,
         position: BottomBarPosition,
     ) {
         unsafe {
             ffi::he_bottom_bar_reorder_button_after(
                 self.as_ref().to_glib_none().0,
                 icon.as_ref().to_glib_none().0,
-                after.as_ref().to_glib_none().0,
+                sibling.as_ref().to_glib_none().0,
                 position.into_glib(),
             );
         }

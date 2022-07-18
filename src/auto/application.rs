@@ -44,9 +44,9 @@ impl Application {
 #[must_use = "The builder must be built to be used"]
 pub struct ApplicationBuilder {
     default_accent_color: Option<ColorRGBColor>,
-    accent_color: Option<String>,
-    foreground: Option<String>,
-    accent_foreground: Option<String>,
+    accent_color: Option<ColorRGBColor>,
+    foreground: Option<ColorRGBColor>,
+    accent_foreground: Option<ColorRGBColor>,
     menubar: Option<gio::MenuModel>,
     register_session: Option<bool>,
     action_group: Option<gio::ActionGroup>,
@@ -114,18 +114,18 @@ impl ApplicationBuilder {
         self
     }
 
-    pub fn accent_color(mut self, accent_color: &str) -> Self {
-        self.accent_color = Some(accent_color.to_string());
+    pub fn accent_color(mut self, accent_color: &ColorRGBColor) -> Self {
+        self.accent_color = Some(accent_color.clone());
         self
     }
 
-    pub fn foreground(mut self, foreground: &str) -> Self {
-        self.foreground = Some(foreground.to_string());
+    pub fn foreground(mut self, foreground: &ColorRGBColor) -> Self {
+        self.foreground = Some(foreground.clone());
         self
     }
 
-    pub fn accent_foreground(mut self, accent_foreground: &str) -> Self {
-        self.accent_foreground = Some(accent_foreground.to_string());
+    pub fn accent_foreground(mut self, accent_foreground: &ColorRGBColor) -> Self {
+        self.accent_foreground = Some(accent_foreground.clone());
         self
     }
 
@@ -170,25 +170,13 @@ pub trait HeApplicationExt: 'static {
     #[doc(alias = "get_default_accent_color")]
     fn default_accent_color(&self) -> Option<ColorRGBColor>;
 
-    #[doc(alias = "he_application_get_accent_color")]
-    #[doc(alias = "get_accent_color")]
-    fn accent_color(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "he_application_get_foreground")]
-    #[doc(alias = "get_foreground")]
-    fn foreground(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "he_application_get_accent_foreground")]
-    #[doc(alias = "get_accent_foreground")]
-    fn accent_foreground(&self) -> Option<glib::GString>;
-
     #[doc(alias = "accent-color")]
-    fn set_accent_color(&self, accent_color: Option<&str>);
+    fn set_accent_color(&self, accent_color: Option<&ColorRGBColor>);
 
-    fn set_foreground(&self, foreground: Option<&str>);
+    fn set_foreground(&self, foreground: Option<&ColorRGBColor>);
 
     #[doc(alias = "accent-foreground")]
-    fn set_accent_foreground(&self, accent_foreground: Option<&str>);
+    fn set_accent_foreground(&self, accent_foreground: Option<&ColorRGBColor>);
 
     #[doc(alias = "default-accent-color")]
     fn connect_default_accent_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -212,39 +200,15 @@ impl<O: IsA<Application>> HeApplicationExt for O {
         }
     }
 
-    fn accent_color(&self) -> Option<glib::GString> {
-        unsafe {
-            from_glib_none(ffi::he_application_get_accent_color(
-                self.as_ref().to_glib_none().0,
-            ))
-        }
-    }
-
-    fn foreground(&self) -> Option<glib::GString> {
-        unsafe {
-            from_glib_none(ffi::he_application_get_foreground(
-                self.as_ref().to_glib_none().0,
-            ))
-        }
-    }
-
-    fn accent_foreground(&self) -> Option<glib::GString> {
-        unsafe {
-            from_glib_none(ffi::he_application_get_accent_foreground(
-                self.as_ref().to_glib_none().0,
-            ))
-        }
-    }
-
-    fn set_accent_color(&self, accent_color: Option<&str>) {
+    fn set_accent_color(&self, accent_color: Option<&ColorRGBColor>) {
         glib::ObjectExt::set_property(self.as_ref(), "accent-color", &accent_color)
     }
 
-    fn set_foreground(&self, foreground: Option<&str>) {
+    fn set_foreground(&self, foreground: Option<&ColorRGBColor>) {
         glib::ObjectExt::set_property(self.as_ref(), "foreground", &foreground)
     }
 
-    fn set_accent_foreground(&self, accent_foreground: Option<&str>) {
+    fn set_accent_foreground(&self, accent_foreground: Option<&ColorRGBColor>) {
         glib::ObjectExt::set_property(self.as_ref(), "accent-foreground", &accent_foreground)
     }
 

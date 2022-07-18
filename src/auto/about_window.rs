@@ -37,9 +37,9 @@ impl AboutWindow {
         app_id: &str,
         version: &str,
         icon: &str,
-        translate_url: &str,
-        issue_url: &str,
-        more_info_url: &str,
+        translate_url: Option<&str>,
+        issue_url: Option<&str>,
+        more_info_url: Option<&str>,
         translators: &[&str],
         developers: &[&str],
         copyright_year: i32,
@@ -100,6 +100,10 @@ pub struct AboutWindowBuilder {
     translator_names: Option<Vec<String>>,
     developer_names: Option<Vec<String>>,
     copyright_year: Option<i32>,
+    app_id: Option<String>,
+    translate_url: Option<String>,
+    issue_url: Option<String>,
+    more_info_url: Option<String>,
     parent: Option<gtk::Window>,
     modal: Option<bool>,
     has_title: Option<bool>,
@@ -197,6 +201,18 @@ impl AboutWindowBuilder {
         }
         if let Some(ref copyright_year) = self.copyright_year {
             properties.push(("copyright-year", copyright_year));
+        }
+        if let Some(ref app_id) = self.app_id {
+            properties.push(("app-id", app_id));
+        }
+        if let Some(ref translate_url) = self.translate_url {
+            properties.push(("translate-url", translate_url));
+        }
+        if let Some(ref issue_url) = self.issue_url {
+            properties.push(("issue-url", issue_url));
+        }
+        if let Some(ref more_info_url) = self.more_info_url {
+            properties.push(("more-info-url", more_info_url));
         }
         if let Some(ref parent) = self.parent {
             properties.push(("parent", parent));
@@ -409,6 +425,26 @@ impl AboutWindowBuilder {
 
     pub fn copyright_year(mut self, copyright_year: i32) -> Self {
         self.copyright_year = Some(copyright_year);
+        self
+    }
+
+    pub fn app_id(mut self, app_id: &str) -> Self {
+        self.app_id = Some(app_id.to_string());
+        self
+    }
+
+    pub fn translate_url(mut self, translate_url: &str) -> Self {
+        self.translate_url = Some(translate_url.to_string());
+        self
+    }
+
+    pub fn issue_url(mut self, issue_url: &str) -> Self {
+        self.issue_url = Some(issue_url.to_string());
+        self
+    }
+
+    pub fn more_info_url(mut self, more_info_url: &str) -> Self {
+        self.more_info_url = Some(more_info_url.to_string());
         self
     }
 
@@ -754,6 +790,34 @@ pub trait AboutWindowExt: 'static {
     #[doc(alias = "he_about_window_set_copyright_year")]
     fn set_copyright_year(&self, value: i32);
 
+    #[doc(alias = "he_about_window_get_app_id")]
+    #[doc(alias = "get_app_id")]
+    fn app_id(&self) -> Option<glib::GString>;
+
+    #[doc(alias = "he_about_window_set_app_id")]
+    fn set_app_id(&self, value: &str);
+
+    #[doc(alias = "he_about_window_get_translate_url")]
+    #[doc(alias = "get_translate_url")]
+    fn translate_url(&self) -> Option<glib::GString>;
+
+    #[doc(alias = "he_about_window_set_translate_url")]
+    fn set_translate_url(&self, value: Option<&str>);
+
+    #[doc(alias = "he_about_window_get_issue_url")]
+    #[doc(alias = "get_issue_url")]
+    fn issue_url(&self) -> Option<glib::GString>;
+
+    #[doc(alias = "he_about_window_set_issue_url")]
+    fn set_issue_url(&self, value: Option<&str>);
+
+    #[doc(alias = "he_about_window_get_more_info_url")]
+    #[doc(alias = "get_more_info_url")]
+    fn more_info_url(&self) -> Option<glib::GString>;
+
+    #[doc(alias = "he_about_window_set_more_info_url")]
+    fn set_more_info_url(&self, value: Option<&str>);
+
     #[doc(alias = "color")]
     fn connect_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -777,6 +841,18 @@ pub trait AboutWindowExt: 'static {
 
     #[doc(alias = "copyright-year")]
     fn connect_copyright_year_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "app-id")]
+    fn connect_app_id_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "translate-url")]
+    fn connect_translate_url_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "issue-url")]
+    fn connect_issue_url_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "more-info-url")]
+    fn connect_more_info_url_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: IsA<AboutWindow>> AboutWindowExt for O {
@@ -913,6 +989,71 @@ impl<O: IsA<AboutWindow>> AboutWindowExt for O {
     fn set_copyright_year(&self, value: i32) {
         unsafe {
             ffi::he_about_window_set_copyright_year(self.as_ref().to_glib_none().0, value);
+        }
+    }
+
+    fn app_id(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_none(ffi::he_about_window_get_app_id(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_app_id(&self, value: &str) {
+        unsafe {
+            ffi::he_about_window_set_app_id(self.as_ref().to_glib_none().0, value.to_glib_none().0);
+        }
+    }
+
+    fn translate_url(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_none(ffi::he_about_window_get_translate_url(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_translate_url(&self, value: Option<&str>) {
+        unsafe {
+            ffi::he_about_window_set_translate_url(
+                self.as_ref().to_glib_none().0,
+                value.to_glib_none().0,
+            );
+        }
+    }
+
+    fn issue_url(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_none(ffi::he_about_window_get_issue_url(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_issue_url(&self, value: Option<&str>) {
+        unsafe {
+            ffi::he_about_window_set_issue_url(
+                self.as_ref().to_glib_none().0,
+                value.to_glib_none().0,
+            );
+        }
+    }
+
+    fn more_info_url(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_none(ffi::he_about_window_get_more_info_url(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_more_info_url(&self, value: Option<&str>) {
+        unsafe {
+            ffi::he_about_window_set_more_info_url(
+                self.as_ref().to_glib_none().0,
+                value.to_glib_none().0,
+            );
         }
     }
 
@@ -1098,6 +1239,103 @@ impl<O: IsA<AboutWindow>> AboutWindowExt for O {
                 b"notify::copyright-year\0".as_ptr() as *const _,
                 Some(transmute::<_, unsafe extern "C" fn()>(
                     notify_copyright_year_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    fn connect_app_id_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_app_id_trampoline<P: IsA<AboutWindow>, F: Fn(&P) + 'static>(
+            this: *mut ffi::HeAboutWindow,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(AboutWindow::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::app-id\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_app_id_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    fn connect_translate_url_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_translate_url_trampoline<
+            P: IsA<AboutWindow>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::HeAboutWindow,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(AboutWindow::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::translate-url\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_translate_url_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    fn connect_issue_url_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_issue_url_trampoline<
+            P: IsA<AboutWindow>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::HeAboutWindow,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(AboutWindow::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::issue-url\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_issue_url_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    fn connect_more_info_url_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_more_info_url_trampoline<
+            P: IsA<AboutWindow>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::HeAboutWindow,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(AboutWindow::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::more-info-url\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_more_info_url_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )
