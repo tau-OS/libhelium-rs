@@ -4,10 +4,10 @@
 // DO NOT EDIT
 
 use libhelium_sys::*;
-use std::mem::{align_of, size_of};
 use std::env;
 use std::error::Error;
 use std::ffi::OsString;
+use std::mem::{align_of, size_of};
 use std::path::Path;
 use std::process::Command;
 use std::str;
@@ -65,20 +65,17 @@ fn pkg_config_cflags(packages: &[&str]) -> Result<Vec<String>, Box<dyn Error>> {
     if packages.is_empty() {
         return Ok(Vec::new());
     }
-    let pkg_config = env::var_os("PKG_CONFIG")
-        .unwrap_or_else(|| OsString::from("pkg-config"));
+    let pkg_config = env::var_os("PKG_CONFIG").unwrap_or_else(|| OsString::from("pkg-config"));
     let mut cmd = Command::new(pkg_config);
     cmd.arg("--cflags");
     cmd.args(packages);
     let out = cmd.output()?;
     if !out.status.success() {
-        return Err(format!("command {:?} returned {}",
-                           &cmd, out.status).into());
+        return Err(format!("command {:?} returned {}", &cmd, out.status).into());
     }
     let stdout = str::from_utf8(&out.stdout)?;
     Ok(shell_words::split(stdout.trim())?)
 }
-
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 struct Layout {
@@ -175,8 +172,7 @@ fn cross_validate_layout_with_c() {
 
     let mut results = Results::default();
 
-    for ((rust_name, rust_layout), (c_name, c_layout)) in
-        RUST_LAYOUTS.iter().zip(c_layouts.iter())
+    for ((rust_name, rust_layout), (c_name, c_layout)) in RUST_LAYOUTS.iter().zip(c_layouts.iter())
     {
         if rust_name != c_name {
             results.record_failed();
@@ -217,108 +213,720 @@ fn get_c_output(name: &str) -> Result<String, Box<dyn Error>> {
 }
 
 const RUST_LAYOUTS: &[(&str, Layout)] = &[
-    ("HeAboutWindow", Layout {size: size_of::<HeAboutWindow>(), alignment: align_of::<HeAboutWindow>()}),
-    ("HeAboutWindowClass", Layout {size: size_of::<HeAboutWindowClass>(), alignment: align_of::<HeAboutWindowClass>()}),
-    ("HeAboutWindowLicenses", Layout {size: size_of::<HeAboutWindowLicenses>(), alignment: align_of::<HeAboutWindowLicenses>()}),
-    ("HeAppBar", Layout {size: size_of::<HeAppBar>(), alignment: align_of::<HeAppBar>()}),
-    ("HeAppBarClass", Layout {size: size_of::<HeAppBarClass>(), alignment: align_of::<HeAppBarClass>()}),
-    ("HeApplication", Layout {size: size_of::<HeApplication>(), alignment: align_of::<HeApplication>()}),
-    ("HeApplicationClass", Layout {size: size_of::<HeApplicationClass>(), alignment: align_of::<HeApplicationClass>()}),
-    ("HeApplicationWindow", Layout {size: size_of::<HeApplicationWindow>(), alignment: align_of::<HeApplicationWindow>()}),
-    ("HeApplicationWindowClass", Layout {size: size_of::<HeApplicationWindowClass>(), alignment: align_of::<HeApplicationWindowClass>()}),
-    ("HeBadge", Layout {size: size_of::<HeBadge>(), alignment: align_of::<HeBadge>()}),
-    ("HeBadgeClass", Layout {size: size_of::<HeBadgeClass>(), alignment: align_of::<HeBadgeClass>()}),
-    ("HeBanner", Layout {size: size_of::<HeBanner>(), alignment: align_of::<HeBanner>()}),
-    ("HeBannerClass", Layout {size: size_of::<HeBannerClass>(), alignment: align_of::<HeBannerClass>()}),
-    ("HeBannerStyle", Layout {size: size_of::<HeBannerStyle>(), alignment: align_of::<HeBannerStyle>()}),
-    ("HeBin", Layout {size: size_of::<HeBin>(), alignment: align_of::<HeBin>()}),
-    ("HeBinClass", Layout {size: size_of::<HeBinClass>(), alignment: align_of::<HeBinClass>()}),
-    ("HeBottomBar", Layout {size: size_of::<HeBottomBar>(), alignment: align_of::<HeBottomBar>()}),
-    ("HeBottomBarClass", Layout {size: size_of::<HeBottomBarClass>(), alignment: align_of::<HeBottomBarClass>()}),
-    ("HeBottomBarPosition", Layout {size: size_of::<HeBottomBarPosition>(), alignment: align_of::<HeBottomBarPosition>()}),
-    ("HeButton", Layout {size: size_of::<HeButton>(), alignment: align_of::<HeButton>()}),
-    ("HeButtonClass", Layout {size: size_of::<HeButtonClass>(), alignment: align_of::<HeButtonClass>()}),
-    ("HeChip", Layout {size: size_of::<HeChip>(), alignment: align_of::<HeChip>()}),
-    ("HeChipClass", Layout {size: size_of::<HeChipClass>(), alignment: align_of::<HeChipClass>()}),
-    ("HeColorLABColor", Layout {size: size_of::<HeColorLABColor>(), alignment: align_of::<HeColorLABColor>()}),
-    ("HeColorLCHColor", Layout {size: size_of::<HeColorLCHColor>(), alignment: align_of::<HeColorLCHColor>()}),
-    ("HeColorRGBColor", Layout {size: size_of::<HeColorRGBColor>(), alignment: align_of::<HeColorRGBColor>()}),
-    ("HeColorXYZColor", Layout {size: size_of::<HeColorXYZColor>(), alignment: align_of::<HeColorXYZColor>()}),
-    ("HeColors", Layout {size: size_of::<HeColors>(), alignment: align_of::<HeColors>()}),
-    ("HeContentBlock", Layout {size: size_of::<HeContentBlock>(), alignment: align_of::<HeContentBlock>()}),
-    ("HeContentBlockClass", Layout {size: size_of::<HeContentBlockClass>(), alignment: align_of::<HeContentBlockClass>()}),
-    ("HeContentBlockImage", Layout {size: size_of::<HeContentBlockImage>(), alignment: align_of::<HeContentBlockImage>()}),
-    ("HeContentBlockImageClass", Layout {size: size_of::<HeContentBlockImageClass>(), alignment: align_of::<HeContentBlockImageClass>()}),
-    ("HeContentBlockImageCluster", Layout {size: size_of::<HeContentBlockImageCluster>(), alignment: align_of::<HeContentBlockImageCluster>()}),
-    ("HeContentBlockImageClusterClass", Layout {size: size_of::<HeContentBlockImageClusterClass>(), alignment: align_of::<HeContentBlockImageClusterClass>()}),
-    ("HeContentBlockImageClusterImagePosition", Layout {size: size_of::<HeContentBlockImageClusterImagePosition>(), alignment: align_of::<HeContentBlockImageClusterImagePosition>()}),
-    ("HeContentList", Layout {size: size_of::<HeContentList>(), alignment: align_of::<HeContentList>()}),
-    ("HeContentListClass", Layout {size: size_of::<HeContentListClass>(), alignment: align_of::<HeContentListClass>()}),
-    ("HeDesktop", Layout {size: size_of::<HeDesktop>(), alignment: align_of::<HeDesktop>()}),
-    ("HeDesktopClass", Layout {size: size_of::<HeDesktopClass>(), alignment: align_of::<HeDesktopClass>()}),
-    ("HeDesktopColorScheme", Layout {size: size_of::<HeDesktopColorScheme>(), alignment: align_of::<HeDesktopColorScheme>()}),
-    ("HeDialog", Layout {size: size_of::<HeDialog>(), alignment: align_of::<HeDialog>()}),
-    ("HeDialogClass", Layout {size: size_of::<HeDialogClass>(), alignment: align_of::<HeDialogClass>()}),
-    ("HeDisclosureButton", Layout {size: size_of::<HeDisclosureButton>(), alignment: align_of::<HeDisclosureButton>()}),
-    ("HeDisclosureButtonClass", Layout {size: size_of::<HeDisclosureButtonClass>(), alignment: align_of::<HeDisclosureButtonClass>()}),
-    ("HeEmptyPage", Layout {size: size_of::<HeEmptyPage>(), alignment: align_of::<HeEmptyPage>()}),
-    ("HeEmptyPageClass", Layout {size: size_of::<HeEmptyPageClass>(), alignment: align_of::<HeEmptyPageClass>()}),
-    ("HeFillButton", Layout {size: size_of::<HeFillButton>(), alignment: align_of::<HeFillButton>()}),
-    ("HeFillButtonClass", Layout {size: size_of::<HeFillButtonClass>(), alignment: align_of::<HeFillButtonClass>()}),
-    ("HeIconicButton", Layout {size: size_of::<HeIconicButton>(), alignment: align_of::<HeIconicButton>()}),
-    ("HeIconicButtonClass", Layout {size: size_of::<HeIconicButtonClass>(), alignment: align_of::<HeIconicButtonClass>()}),
-    ("HeLatch", Layout {size: size_of::<HeLatch>(), alignment: align_of::<HeLatch>()}),
-    ("HeLatchClass", Layout {size: size_of::<HeLatchClass>(), alignment: align_of::<HeLatchClass>()}),
-    ("HeMiniContentBlock", Layout {size: size_of::<HeMiniContentBlock>(), alignment: align_of::<HeMiniContentBlock>()}),
-    ("HeMiniContentBlockClass", Layout {size: size_of::<HeMiniContentBlockClass>(), alignment: align_of::<HeMiniContentBlockClass>()}),
-    ("HeModifierBadge", Layout {size: size_of::<HeModifierBadge>(), alignment: align_of::<HeModifierBadge>()}),
-    ("HeModifierBadgeAlignment", Layout {size: size_of::<HeModifierBadgeAlignment>(), alignment: align_of::<HeModifierBadgeAlignment>()}),
-    ("HeModifierBadgeClass", Layout {size: size_of::<HeModifierBadgeClass>(), alignment: align_of::<HeModifierBadgeClass>()}),
-    ("HeOutlineButton", Layout {size: size_of::<HeOutlineButton>(), alignment: align_of::<HeOutlineButton>()}),
-    ("HeOutlineButtonClass", Layout {size: size_of::<HeOutlineButtonClass>(), alignment: align_of::<HeOutlineButtonClass>()}),
-    ("HeOverlayButton", Layout {size: size_of::<HeOverlayButton>(), alignment: align_of::<HeOverlayButton>()}),
-    ("HeOverlayButtonAlignment", Layout {size: size_of::<HeOverlayButtonAlignment>(), alignment: align_of::<HeOverlayButtonAlignment>()}),
-    ("HeOverlayButtonClass", Layout {size: size_of::<HeOverlayButtonClass>(), alignment: align_of::<HeOverlayButtonClass>()}),
-    ("HeOverlayButtonSize", Layout {size: size_of::<HeOverlayButtonSize>(), alignment: align_of::<HeOverlayButtonSize>()}),
-    ("HePillButton", Layout {size: size_of::<HePillButton>(), alignment: align_of::<HePillButton>()}),
-    ("HePillButtonClass", Layout {size: size_of::<HePillButtonClass>(), alignment: align_of::<HePillButtonClass>()}),
-    ("HeSettingsPage", Layout {size: size_of::<HeSettingsPage>(), alignment: align_of::<HeSettingsPage>()}),
-    ("HeSettingsPageClass", Layout {size: size_of::<HeSettingsPageClass>(), alignment: align_of::<HeSettingsPageClass>()}),
-    ("HeSettingsWindow", Layout {size: size_of::<HeSettingsWindow>(), alignment: align_of::<HeSettingsWindow>()}),
-    ("HeSettingsWindowClass", Layout {size: size_of::<HeSettingsWindowClass>(), alignment: align_of::<HeSettingsWindowClass>()}),
-    ("HeSideBar", Layout {size: size_of::<HeSideBar>(), alignment: align_of::<HeSideBar>()}),
-    ("HeSideBarClass", Layout {size: size_of::<HeSideBarClass>(), alignment: align_of::<HeSideBarClass>()}),
-    ("HeTab", Layout {size: size_of::<HeTab>(), alignment: align_of::<HeTab>()}),
-    ("HeTabClass", Layout {size: size_of::<HeTabClass>(), alignment: align_of::<HeTabClass>()}),
-    ("HeTabPage", Layout {size: size_of::<HeTabPage>(), alignment: align_of::<HeTabPage>()}),
-    ("HeTabPageClass", Layout {size: size_of::<HeTabPageClass>(), alignment: align_of::<HeTabPageClass>()}),
-    ("HeTabSwitcher", Layout {size: size_of::<HeTabSwitcher>(), alignment: align_of::<HeTabSwitcher>()}),
-    ("HeTabSwitcherClass", Layout {size: size_of::<HeTabSwitcherClass>(), alignment: align_of::<HeTabSwitcherClass>()}),
-    ("HeTabSwitcherTabBarBehavior", Layout {size: size_of::<HeTabSwitcherTabBarBehavior>(), alignment: align_of::<HeTabSwitcherTabBarBehavior>()}),
-    ("HeTextButton", Layout {size: size_of::<HeTextButton>(), alignment: align_of::<HeTextButton>()}),
-    ("HeTextButtonClass", Layout {size: size_of::<HeTextButtonClass>(), alignment: align_of::<HeTextButtonClass>()}),
-    ("HeTintButton", Layout {size: size_of::<HeTintButton>(), alignment: align_of::<HeTintButton>()}),
-    ("HeTintButtonClass", Layout {size: size_of::<HeTintButtonClass>(), alignment: align_of::<HeTintButtonClass>()}),
-    ("HeToast", Layout {size: size_of::<HeToast>(), alignment: align_of::<HeToast>()}),
-    ("HeToastClass", Layout {size: size_of::<HeToastClass>(), alignment: align_of::<HeToastClass>()}),
-    ("HeView", Layout {size: size_of::<HeView>(), alignment: align_of::<HeView>()}),
-    ("HeViewAux", Layout {size: size_of::<HeViewAux>(), alignment: align_of::<HeViewAux>()}),
-    ("HeViewAuxClass", Layout {size: size_of::<HeViewAuxClass>(), alignment: align_of::<HeViewAuxClass>()}),
-    ("HeViewClass", Layout {size: size_of::<HeViewClass>(), alignment: align_of::<HeViewClass>()}),
-    ("HeViewDual", Layout {size: size_of::<HeViewDual>(), alignment: align_of::<HeViewDual>()}),
-    ("HeViewDualClass", Layout {size: size_of::<HeViewDualClass>(), alignment: align_of::<HeViewDualClass>()}),
-    ("HeViewMono", Layout {size: size_of::<HeViewMono>(), alignment: align_of::<HeViewMono>()}),
-    ("HeViewMonoClass", Layout {size: size_of::<HeViewMonoClass>(), alignment: align_of::<HeViewMonoClass>()}),
-    ("HeViewSubTitle", Layout {size: size_of::<HeViewSubTitle>(), alignment: align_of::<HeViewSubTitle>()}),
-    ("HeViewSubTitleClass", Layout {size: size_of::<HeViewSubTitleClass>(), alignment: align_of::<HeViewSubTitleClass>()}),
-    ("HeViewSwitcher", Layout {size: size_of::<HeViewSwitcher>(), alignment: align_of::<HeViewSwitcher>()}),
-    ("HeViewSwitcherClass", Layout {size: size_of::<HeViewSwitcherClass>(), alignment: align_of::<HeViewSwitcherClass>()}),
-    ("HeViewTitle", Layout {size: size_of::<HeViewTitle>(), alignment: align_of::<HeViewTitle>()}),
-    ("HeViewTitleClass", Layout {size: size_of::<HeViewTitleClass>(), alignment: align_of::<HeViewTitleClass>()}),
-    ("HeWelcomeScreen", Layout {size: size_of::<HeWelcomeScreen>(), alignment: align_of::<HeWelcomeScreen>()}),
-    ("HeWelcomeScreenClass", Layout {size: size_of::<HeWelcomeScreenClass>(), alignment: align_of::<HeWelcomeScreenClass>()}),
-    ("HeWindow", Layout {size: size_of::<HeWindow>(), alignment: align_of::<HeWindow>()}),
-    ("HeWindowClass", Layout {size: size_of::<HeWindowClass>(), alignment: align_of::<HeWindowClass>()}),
+    (
+        "HeAboutWindow",
+        Layout {
+            size: size_of::<HeAboutWindow>(),
+            alignment: align_of::<HeAboutWindow>(),
+        },
+    ),
+    (
+        "HeAboutWindowClass",
+        Layout {
+            size: size_of::<HeAboutWindowClass>(),
+            alignment: align_of::<HeAboutWindowClass>(),
+        },
+    ),
+    (
+        "HeAboutWindowLicenses",
+        Layout {
+            size: size_of::<HeAboutWindowLicenses>(),
+            alignment: align_of::<HeAboutWindowLicenses>(),
+        },
+    ),
+    (
+        "HeAppBar",
+        Layout {
+            size: size_of::<HeAppBar>(),
+            alignment: align_of::<HeAppBar>(),
+        },
+    ),
+    (
+        "HeAppBarClass",
+        Layout {
+            size: size_of::<HeAppBarClass>(),
+            alignment: align_of::<HeAppBarClass>(),
+        },
+    ),
+    (
+        "HeApplication",
+        Layout {
+            size: size_of::<HeApplication>(),
+            alignment: align_of::<HeApplication>(),
+        },
+    ),
+    (
+        "HeApplicationClass",
+        Layout {
+            size: size_of::<HeApplicationClass>(),
+            alignment: align_of::<HeApplicationClass>(),
+        },
+    ),
+    (
+        "HeApplicationWindow",
+        Layout {
+            size: size_of::<HeApplicationWindow>(),
+            alignment: align_of::<HeApplicationWindow>(),
+        },
+    ),
+    (
+        "HeApplicationWindowClass",
+        Layout {
+            size: size_of::<HeApplicationWindowClass>(),
+            alignment: align_of::<HeApplicationWindowClass>(),
+        },
+    ),
+    (
+        "HeBadge",
+        Layout {
+            size: size_of::<HeBadge>(),
+            alignment: align_of::<HeBadge>(),
+        },
+    ),
+    (
+        "HeBadgeClass",
+        Layout {
+            size: size_of::<HeBadgeClass>(),
+            alignment: align_of::<HeBadgeClass>(),
+        },
+    ),
+    (
+        "HeBanner",
+        Layout {
+            size: size_of::<HeBanner>(),
+            alignment: align_of::<HeBanner>(),
+        },
+    ),
+    (
+        "HeBannerClass",
+        Layout {
+            size: size_of::<HeBannerClass>(),
+            alignment: align_of::<HeBannerClass>(),
+        },
+    ),
+    (
+        "HeBannerStyle",
+        Layout {
+            size: size_of::<HeBannerStyle>(),
+            alignment: align_of::<HeBannerStyle>(),
+        },
+    ),
+    (
+        "HeBin",
+        Layout {
+            size: size_of::<HeBin>(),
+            alignment: align_of::<HeBin>(),
+        },
+    ),
+    (
+        "HeBinClass",
+        Layout {
+            size: size_of::<HeBinClass>(),
+            alignment: align_of::<HeBinClass>(),
+        },
+    ),
+    (
+        "HeBottomBar",
+        Layout {
+            size: size_of::<HeBottomBar>(),
+            alignment: align_of::<HeBottomBar>(),
+        },
+    ),
+    (
+        "HeBottomBarClass",
+        Layout {
+            size: size_of::<HeBottomBarClass>(),
+            alignment: align_of::<HeBottomBarClass>(),
+        },
+    ),
+    (
+        "HeBottomBarPosition",
+        Layout {
+            size: size_of::<HeBottomBarPosition>(),
+            alignment: align_of::<HeBottomBarPosition>(),
+        },
+    ),
+    (
+        "HeButton",
+        Layout {
+            size: size_of::<HeButton>(),
+            alignment: align_of::<HeButton>(),
+        },
+    ),
+    (
+        "HeButtonClass",
+        Layout {
+            size: size_of::<HeButtonClass>(),
+            alignment: align_of::<HeButtonClass>(),
+        },
+    ),
+    (
+        "HeChip",
+        Layout {
+            size: size_of::<HeChip>(),
+            alignment: align_of::<HeChip>(),
+        },
+    ),
+    (
+        "HeChipClass",
+        Layout {
+            size: size_of::<HeChipClass>(),
+            alignment: align_of::<HeChipClass>(),
+        },
+    ),
+    (
+        "HeColorLABColor",
+        Layout {
+            size: size_of::<HeColorLABColor>(),
+            alignment: align_of::<HeColorLABColor>(),
+        },
+    ),
+    (
+        "HeColorLCHColor",
+        Layout {
+            size: size_of::<HeColorLCHColor>(),
+            alignment: align_of::<HeColorLCHColor>(),
+        },
+    ),
+    (
+        "HeColorRGBColor",
+        Layout {
+            size: size_of::<HeColorRGBColor>(),
+            alignment: align_of::<HeColorRGBColor>(),
+        },
+    ),
+    (
+        "HeColorXYZColor",
+        Layout {
+            size: size_of::<HeColorXYZColor>(),
+            alignment: align_of::<HeColorXYZColor>(),
+        },
+    ),
+    (
+        "HeColors",
+        Layout {
+            size: size_of::<HeColors>(),
+            alignment: align_of::<HeColors>(),
+        },
+    ),
+    (
+        "HeContentBlock",
+        Layout {
+            size: size_of::<HeContentBlock>(),
+            alignment: align_of::<HeContentBlock>(),
+        },
+    ),
+    (
+        "HeContentBlockClass",
+        Layout {
+            size: size_of::<HeContentBlockClass>(),
+            alignment: align_of::<HeContentBlockClass>(),
+        },
+    ),
+    (
+        "HeContentBlockImage",
+        Layout {
+            size: size_of::<HeContentBlockImage>(),
+            alignment: align_of::<HeContentBlockImage>(),
+        },
+    ),
+    (
+        "HeContentBlockImageClass",
+        Layout {
+            size: size_of::<HeContentBlockImageClass>(),
+            alignment: align_of::<HeContentBlockImageClass>(),
+        },
+    ),
+    (
+        "HeContentBlockImageCluster",
+        Layout {
+            size: size_of::<HeContentBlockImageCluster>(),
+            alignment: align_of::<HeContentBlockImageCluster>(),
+        },
+    ),
+    (
+        "HeContentBlockImageClusterClass",
+        Layout {
+            size: size_of::<HeContentBlockImageClusterClass>(),
+            alignment: align_of::<HeContentBlockImageClusterClass>(),
+        },
+    ),
+    (
+        "HeContentBlockImageClusterImagePosition",
+        Layout {
+            size: size_of::<HeContentBlockImageClusterImagePosition>(),
+            alignment: align_of::<HeContentBlockImageClusterImagePosition>(),
+        },
+    ),
+    (
+        "HeContentList",
+        Layout {
+            size: size_of::<HeContentList>(),
+            alignment: align_of::<HeContentList>(),
+        },
+    ),
+    (
+        "HeContentListClass",
+        Layout {
+            size: size_of::<HeContentListClass>(),
+            alignment: align_of::<HeContentListClass>(),
+        },
+    ),
+    (
+        "HeDesktop",
+        Layout {
+            size: size_of::<HeDesktop>(),
+            alignment: align_of::<HeDesktop>(),
+        },
+    ),
+    (
+        "HeDesktopClass",
+        Layout {
+            size: size_of::<HeDesktopClass>(),
+            alignment: align_of::<HeDesktopClass>(),
+        },
+    ),
+    (
+        "HeDesktopColorScheme",
+        Layout {
+            size: size_of::<HeDesktopColorScheme>(),
+            alignment: align_of::<HeDesktopColorScheme>(),
+        },
+    ),
+    (
+        "HeDialog",
+        Layout {
+            size: size_of::<HeDialog>(),
+            alignment: align_of::<HeDialog>(),
+        },
+    ),
+    (
+        "HeDialogClass",
+        Layout {
+            size: size_of::<HeDialogClass>(),
+            alignment: align_of::<HeDialogClass>(),
+        },
+    ),
+    (
+        "HeDisclosureButton",
+        Layout {
+            size: size_of::<HeDisclosureButton>(),
+            alignment: align_of::<HeDisclosureButton>(),
+        },
+    ),
+    (
+        "HeDisclosureButtonClass",
+        Layout {
+            size: size_of::<HeDisclosureButtonClass>(),
+            alignment: align_of::<HeDisclosureButtonClass>(),
+        },
+    ),
+    (
+        "HeEmptyPage",
+        Layout {
+            size: size_of::<HeEmptyPage>(),
+            alignment: align_of::<HeEmptyPage>(),
+        },
+    ),
+    (
+        "HeEmptyPageClass",
+        Layout {
+            size: size_of::<HeEmptyPageClass>(),
+            alignment: align_of::<HeEmptyPageClass>(),
+        },
+    ),
+    (
+        "HeFillButton",
+        Layout {
+            size: size_of::<HeFillButton>(),
+            alignment: align_of::<HeFillButton>(),
+        },
+    ),
+    (
+        "HeFillButtonClass",
+        Layout {
+            size: size_of::<HeFillButtonClass>(),
+            alignment: align_of::<HeFillButtonClass>(),
+        },
+    ),
+    (
+        "HeIconicButton",
+        Layout {
+            size: size_of::<HeIconicButton>(),
+            alignment: align_of::<HeIconicButton>(),
+        },
+    ),
+    (
+        "HeIconicButtonClass",
+        Layout {
+            size: size_of::<HeIconicButtonClass>(),
+            alignment: align_of::<HeIconicButtonClass>(),
+        },
+    ),
+    (
+        "HeLatch",
+        Layout {
+            size: size_of::<HeLatch>(),
+            alignment: align_of::<HeLatch>(),
+        },
+    ),
+    (
+        "HeLatchClass",
+        Layout {
+            size: size_of::<HeLatchClass>(),
+            alignment: align_of::<HeLatchClass>(),
+        },
+    ),
+    (
+        "HeMiniContentBlock",
+        Layout {
+            size: size_of::<HeMiniContentBlock>(),
+            alignment: align_of::<HeMiniContentBlock>(),
+        },
+    ),
+    (
+        "HeMiniContentBlockClass",
+        Layout {
+            size: size_of::<HeMiniContentBlockClass>(),
+            alignment: align_of::<HeMiniContentBlockClass>(),
+        },
+    ),
+    (
+        "HeModifierBadge",
+        Layout {
+            size: size_of::<HeModifierBadge>(),
+            alignment: align_of::<HeModifierBadge>(),
+        },
+    ),
+    (
+        "HeModifierBadgeAlignment",
+        Layout {
+            size: size_of::<HeModifierBadgeAlignment>(),
+            alignment: align_of::<HeModifierBadgeAlignment>(),
+        },
+    ),
+    (
+        "HeModifierBadgeClass",
+        Layout {
+            size: size_of::<HeModifierBadgeClass>(),
+            alignment: align_of::<HeModifierBadgeClass>(),
+        },
+    ),
+    (
+        "HeOutlineButton",
+        Layout {
+            size: size_of::<HeOutlineButton>(),
+            alignment: align_of::<HeOutlineButton>(),
+        },
+    ),
+    (
+        "HeOutlineButtonClass",
+        Layout {
+            size: size_of::<HeOutlineButtonClass>(),
+            alignment: align_of::<HeOutlineButtonClass>(),
+        },
+    ),
+    (
+        "HeOverlayButton",
+        Layout {
+            size: size_of::<HeOverlayButton>(),
+            alignment: align_of::<HeOverlayButton>(),
+        },
+    ),
+    (
+        "HeOverlayButtonAlignment",
+        Layout {
+            size: size_of::<HeOverlayButtonAlignment>(),
+            alignment: align_of::<HeOverlayButtonAlignment>(),
+        },
+    ),
+    (
+        "HeOverlayButtonClass",
+        Layout {
+            size: size_of::<HeOverlayButtonClass>(),
+            alignment: align_of::<HeOverlayButtonClass>(),
+        },
+    ),
+    (
+        "HeOverlayButtonSize",
+        Layout {
+            size: size_of::<HeOverlayButtonSize>(),
+            alignment: align_of::<HeOverlayButtonSize>(),
+        },
+    ),
+    (
+        "HePillButton",
+        Layout {
+            size: size_of::<HePillButton>(),
+            alignment: align_of::<HePillButton>(),
+        },
+    ),
+    (
+        "HePillButtonClass",
+        Layout {
+            size: size_of::<HePillButtonClass>(),
+            alignment: align_of::<HePillButtonClass>(),
+        },
+    ),
+    (
+        "HeSettingsPage",
+        Layout {
+            size: size_of::<HeSettingsPage>(),
+            alignment: align_of::<HeSettingsPage>(),
+        },
+    ),
+    (
+        "HeSettingsPageClass",
+        Layout {
+            size: size_of::<HeSettingsPageClass>(),
+            alignment: align_of::<HeSettingsPageClass>(),
+        },
+    ),
+    (
+        "HeSettingsWindow",
+        Layout {
+            size: size_of::<HeSettingsWindow>(),
+            alignment: align_of::<HeSettingsWindow>(),
+        },
+    ),
+    (
+        "HeSettingsWindowClass",
+        Layout {
+            size: size_of::<HeSettingsWindowClass>(),
+            alignment: align_of::<HeSettingsWindowClass>(),
+        },
+    ),
+    (
+        "HeSideBar",
+        Layout {
+            size: size_of::<HeSideBar>(),
+            alignment: align_of::<HeSideBar>(),
+        },
+    ),
+    (
+        "HeSideBarClass",
+        Layout {
+            size: size_of::<HeSideBarClass>(),
+            alignment: align_of::<HeSideBarClass>(),
+        },
+    ),
+    (
+        "HeTab",
+        Layout {
+            size: size_of::<HeTab>(),
+            alignment: align_of::<HeTab>(),
+        },
+    ),
+    (
+        "HeTabClass",
+        Layout {
+            size: size_of::<HeTabClass>(),
+            alignment: align_of::<HeTabClass>(),
+        },
+    ),
+    (
+        "HeTabPage",
+        Layout {
+            size: size_of::<HeTabPage>(),
+            alignment: align_of::<HeTabPage>(),
+        },
+    ),
+    (
+        "HeTabPageClass",
+        Layout {
+            size: size_of::<HeTabPageClass>(),
+            alignment: align_of::<HeTabPageClass>(),
+        },
+    ),
+    (
+        "HeTabSwitcher",
+        Layout {
+            size: size_of::<HeTabSwitcher>(),
+            alignment: align_of::<HeTabSwitcher>(),
+        },
+    ),
+    (
+        "HeTabSwitcherClass",
+        Layout {
+            size: size_of::<HeTabSwitcherClass>(),
+            alignment: align_of::<HeTabSwitcherClass>(),
+        },
+    ),
+    (
+        "HeTabSwitcherTabBarBehavior",
+        Layout {
+            size: size_of::<HeTabSwitcherTabBarBehavior>(),
+            alignment: align_of::<HeTabSwitcherTabBarBehavior>(),
+        },
+    ),
+    (
+        "HeTextButton",
+        Layout {
+            size: size_of::<HeTextButton>(),
+            alignment: align_of::<HeTextButton>(),
+        },
+    ),
+    (
+        "HeTextButtonClass",
+        Layout {
+            size: size_of::<HeTextButtonClass>(),
+            alignment: align_of::<HeTextButtonClass>(),
+        },
+    ),
+    (
+        "HeTintButton",
+        Layout {
+            size: size_of::<HeTintButton>(),
+            alignment: align_of::<HeTintButton>(),
+        },
+    ),
+    (
+        "HeTintButtonClass",
+        Layout {
+            size: size_of::<HeTintButtonClass>(),
+            alignment: align_of::<HeTintButtonClass>(),
+        },
+    ),
+    (
+        "HeToast",
+        Layout {
+            size: size_of::<HeToast>(),
+            alignment: align_of::<HeToast>(),
+        },
+    ),
+    (
+        "HeToastClass",
+        Layout {
+            size: size_of::<HeToastClass>(),
+            alignment: align_of::<HeToastClass>(),
+        },
+    ),
+    (
+        "HeView",
+        Layout {
+            size: size_of::<HeView>(),
+            alignment: align_of::<HeView>(),
+        },
+    ),
+    (
+        "HeViewAux",
+        Layout {
+            size: size_of::<HeViewAux>(),
+            alignment: align_of::<HeViewAux>(),
+        },
+    ),
+    (
+        "HeViewAuxClass",
+        Layout {
+            size: size_of::<HeViewAuxClass>(),
+            alignment: align_of::<HeViewAuxClass>(),
+        },
+    ),
+    (
+        "HeViewClass",
+        Layout {
+            size: size_of::<HeViewClass>(),
+            alignment: align_of::<HeViewClass>(),
+        },
+    ),
+    (
+        "HeViewDual",
+        Layout {
+            size: size_of::<HeViewDual>(),
+            alignment: align_of::<HeViewDual>(),
+        },
+    ),
+    (
+        "HeViewDualClass",
+        Layout {
+            size: size_of::<HeViewDualClass>(),
+            alignment: align_of::<HeViewDualClass>(),
+        },
+    ),
+    (
+        "HeViewMono",
+        Layout {
+            size: size_of::<HeViewMono>(),
+            alignment: align_of::<HeViewMono>(),
+        },
+    ),
+    (
+        "HeViewMonoClass",
+        Layout {
+            size: size_of::<HeViewMonoClass>(),
+            alignment: align_of::<HeViewMonoClass>(),
+        },
+    ),
+    (
+        "HeViewSubTitle",
+        Layout {
+            size: size_of::<HeViewSubTitle>(),
+            alignment: align_of::<HeViewSubTitle>(),
+        },
+    ),
+    (
+        "HeViewSubTitleClass",
+        Layout {
+            size: size_of::<HeViewSubTitleClass>(),
+            alignment: align_of::<HeViewSubTitleClass>(),
+        },
+    ),
+    (
+        "HeViewSwitcher",
+        Layout {
+            size: size_of::<HeViewSwitcher>(),
+            alignment: align_of::<HeViewSwitcher>(),
+        },
+    ),
+    (
+        "HeViewSwitcherClass",
+        Layout {
+            size: size_of::<HeViewSwitcherClass>(),
+            alignment: align_of::<HeViewSwitcherClass>(),
+        },
+    ),
+    (
+        "HeViewTitle",
+        Layout {
+            size: size_of::<HeViewTitle>(),
+            alignment: align_of::<HeViewTitle>(),
+        },
+    ),
+    (
+        "HeViewTitleClass",
+        Layout {
+            size: size_of::<HeViewTitleClass>(),
+            alignment: align_of::<HeViewTitleClass>(),
+        },
+    ),
+    (
+        "HeWelcomeScreen",
+        Layout {
+            size: size_of::<HeWelcomeScreen>(),
+            alignment: align_of::<HeWelcomeScreen>(),
+        },
+    ),
+    (
+        "HeWelcomeScreenClass",
+        Layout {
+            size: size_of::<HeWelcomeScreenClass>(),
+            alignment: align_of::<HeWelcomeScreenClass>(),
+        },
+    ),
+    (
+        "HeWindow",
+        Layout {
+            size: size_of::<HeWindow>(),
+            alignment: align_of::<HeWindow>(),
+        },
+    ),
+    (
+        "HeWindowClass",
+        Layout {
+            size: size_of::<HeWindowClass>(),
+            alignment: align_of::<HeWindowClass>(),
+        },
+    ),
 ];
 
 const RUST_CONSTANTS: &[(&str, &str)] = &[
@@ -357,10 +965,22 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("HE_COLOR_LAB_CONSTANTS_t2", "0.128418550"),
     ("HE_COLOR_LAB_CONSTANTS_t3", "0.008856452"),
     ("HE_COLOR_WHITE", "(null)"),
-    ("(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_LEFT", "1"),
-    ("(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_RIGHT", "3"),
-    ("(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_LEFT", "0"),
-    ("(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_RIGHT", "2"),
+    (
+        "(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_LEFT",
+        "1",
+    ),
+    (
+        "(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_RIGHT",
+        "3",
+    ),
+    (
+        "(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_LEFT",
+        "0",
+    ),
+    (
+        "(gint) HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_RIGHT",
+        "2",
+    ),
     ("(gint) HE_DESKTOP_COLOR_SCHEME_DARK", "1"),
     ("(gint) HE_DESKTOP_COLOR_SCHEME_LIGHT", "2"),
     ("(gint) HE_DESKTOP_COLOR_SCHEME_NO_PREFERENCE", "0"),
@@ -377,5 +997,3 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_NEVER", "2"),
     ("(gint) HE_TAB_SWITCHER_TAB_BAR_BEHAVIOR_SINGLE", "1"),
 ];
-
-

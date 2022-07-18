@@ -4,14 +4,19 @@
 // DO NOT EDIT
 
 #![allow(non_camel_case_types, non_upper_case_globals, non_snake_case)]
-#![allow(clippy::approx_constant, clippy::type_complexity, clippy::unreadable_literal, clippy::upper_case_acronyms)]
+#![allow(
+    clippy::approx_constant,
+    clippy::type_complexity,
+    clippy::unreadable_literal,
+    clippy::upper_case_acronyms
+)]
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 
-
 #[allow(unused_imports)]
-use libc::{c_int, c_char, c_uchar, c_float, c_uint, c_double,
-    c_short, c_ushort, c_long, c_ulong,
-    c_void, size_t, ssize_t, intptr_t, uintptr_t, FILE};
+use libc::{
+    c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
+    intptr_t, size_t, ssize_t, uintptr_t, FILE,
+};
 
 #[allow(unused_imports)]
 use glib::{gboolean, gconstpointer, gpointer, GType};
@@ -51,10 +56,14 @@ pub const HE_COLORS_LIGHT: HeColors = 11;
 pub const HE_COLORS_DARK: HeColors = 12;
 
 pub type HeContentBlockImageClusterImagePosition = c_int;
-pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_LEFT: HeContentBlockImageClusterImagePosition = 0;
-pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_LEFT: HeContentBlockImageClusterImagePosition = 1;
-pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_RIGHT: HeContentBlockImageClusterImagePosition = 2;
-pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_RIGHT: HeContentBlockImageClusterImagePosition = 3;
+pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_LEFT:
+    HeContentBlockImageClusterImagePosition = 0;
+pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_LEFT:
+    HeContentBlockImageClusterImagePosition = 1;
+pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_TOP_RIGHT:
+    HeContentBlockImageClusterImagePosition = 2;
+pub const HE_CONTENT_BLOCK_IMAGE_CLUSTER_IMAGE_POSITION_BOTTOM_RIGHT:
+    HeContentBlockImageClusterImagePosition = 3;
 
 pub type HeDesktopColorScheme = c_int;
 pub const HE_DESKTOP_COLOR_SCHEME_NO_PREFERENCE: HeDesktopColorScheme = 0;
@@ -90,11 +99,20 @@ pub const HE_COLOR_LAB_CONSTANTS_t0: c_double = 0.137931034;
 pub const HE_COLOR_LAB_CONSTANTS_t1: c_double = 0.206896552;
 pub const HE_COLOR_LAB_CONSTANTS_t2: c_double = 0.128418550;
 pub const HE_COLOR_LAB_CONSTANTS_t3: c_double = 0.008856452;
-pub const HE_COLOR_BLACK: HeColorRGBColor = HeColorRGBColor {r: 45, g: 45, b: 45};
-pub const HE_COLOR_WHITE: HeColorRGBColor = HeColorRGBColor {r: 240, g: 240, b: 240};
+pub const HE_COLOR_BLACK: HeColorRGBColor = HeColorRGBColor {
+    r: 45,
+    g: 45,
+    b: 45,
+};
+pub const HE_COLOR_WHITE: HeColorRGBColor = HeColorRGBColor {
+    r: 240,
+    g: 240,
+    b: 240,
+};
 
 // Callbacks
-pub type HeAnimationAnimationFunction = Option<unsafe extern "C" fn(c_double, c_double, *mut c_void) -> c_double>;
+pub type HeAnimationAnimationFunction =
+    Option<unsafe extern "C" fn(c_double, c_double, *mut c_void) -> c_double>;
 
 // Records
 #[derive(Copy, Clone)]
@@ -106,7 +124,7 @@ pub struct HeAboutWindowClass {
 impl ::std::fmt::Debug for HeAboutWindowClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeAboutWindowClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -127,7 +145,7 @@ pub struct HeAppBarClass {
 impl ::std::fmt::Debug for HeAppBarClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeAppBarClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -148,7 +166,7 @@ pub struct HeApplicationClass {
 impl ::std::fmt::Debug for HeApplicationClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeApplicationClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -169,7 +187,7 @@ pub struct HeApplicationWindowClass {
 impl ::std::fmt::Debug for HeApplicationWindowClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeApplicationWindowClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -190,7 +208,7 @@ pub struct HeBadgeClass {
 impl ::std::fmt::Debug for HeBadgeClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeBadgeClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -211,7 +229,7 @@ pub struct HeBannerClass {
 impl ::std::fmt::Debug for HeBannerClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeBannerClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -227,14 +245,21 @@ pub type HeBannerPrivate = *mut _HeBannerPrivate;
 #[repr(C)]
 pub struct HeBinClass {
     pub parent_class: gtk::GtkWidgetClass,
-    pub add_child: Option<unsafe extern "C" fn(*mut HeBin, *mut gtk::GtkBuilder, *mut gobject::GObject, *const c_char)>,
+    pub add_child: Option<
+        unsafe extern "C" fn(
+            *mut HeBin,
+            *mut gtk::GtkBuilder,
+            *mut gobject::GObject,
+            *const c_char,
+        ),
+    >,
 }
 
 impl ::std::fmt::Debug for HeBinClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeBinClass @ {:p}", self))
-         .field("add_child", &self.add_child)
-         .finish()
+            .field("add_child", &self.add_child)
+            .finish()
     }
 }
 
@@ -255,7 +280,7 @@ pub struct HeBottomBarClass {
 impl ::std::fmt::Debug for HeBottomBarClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeBottomBarClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -276,7 +301,7 @@ pub struct HeButtonClass {
 impl ::std::fmt::Debug for HeButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -297,7 +322,7 @@ pub struct HeChipClass {
 impl ::std::fmt::Debug for HeChipClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeChipClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -320,10 +345,10 @@ pub struct HeColorLABColor {
 impl ::std::fmt::Debug for HeColorLABColor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeColorLABColor @ {:p}", self))
-         .field("l", &self.l)
-         .field("a", &self.a)
-         .field("b", &self.b)
-         .finish()
+            .field("l", &self.l)
+            .field("a", &self.a)
+            .field("b", &self.b)
+            .finish()
     }
 }
 
@@ -338,10 +363,10 @@ pub struct HeColorLCHColor {
 impl ::std::fmt::Debug for HeColorLCHColor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeColorLCHColor @ {:p}", self))
-         .field("l", &self.l)
-         .field("c", &self.c)
-         .field("h", &self.h)
-         .finish()
+            .field("l", &self.l)
+            .field("c", &self.c)
+            .field("h", &self.h)
+            .finish()
     }
 }
 
@@ -356,10 +381,10 @@ pub struct HeColorRGBColor {
 impl ::std::fmt::Debug for HeColorRGBColor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeColorRGBColor @ {:p}", self))
-         .field("r", &self.r)
-         .field("g", &self.g)
-         .field("b", &self.b)
-         .finish()
+            .field("r", &self.r)
+            .field("g", &self.g)
+            .field("b", &self.b)
+            .finish()
     }
 }
 
@@ -374,10 +399,10 @@ pub struct HeColorXYZColor {
 impl ::std::fmt::Debug for HeColorXYZColor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeColorXYZColor @ {:p}", self))
-         .field("x", &self.x)
-         .field("y", &self.y)
-         .field("z", &self.z)
-         .finish()
+            .field("x", &self.x)
+            .field("y", &self.y)
+            .field("z", &self.z)
+            .finish()
     }
 }
 
@@ -390,7 +415,7 @@ pub struct HeContentBlockClass {
 impl ::std::fmt::Debug for HeContentBlockClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentBlockClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -403,7 +428,7 @@ pub struct HeContentBlockImageClass {
 impl ::std::fmt::Debug for HeContentBlockImageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentBlockImageClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -416,7 +441,7 @@ pub struct HeContentBlockImageClusterClass {
 impl ::std::fmt::Debug for HeContentBlockImageClusterClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentBlockImageClusterClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -453,7 +478,7 @@ pub struct HeContentListClass {
 impl ::std::fmt::Debug for HeContentListClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentListClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -474,7 +499,7 @@ pub struct HeDesktopClass {
 impl ::std::fmt::Debug for HeDesktopClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeDesktopClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -495,7 +520,7 @@ pub struct HeDialogClass {
 impl ::std::fmt::Debug for HeDialogClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeDialogClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -516,7 +541,7 @@ pub struct HeDisclosureButtonClass {
 impl ::std::fmt::Debug for HeDisclosureButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeDisclosureButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -537,7 +562,7 @@ pub struct HeEmptyPageClass {
 impl ::std::fmt::Debug for HeEmptyPageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeEmptyPageClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -558,7 +583,7 @@ pub struct HeFillButtonClass {
 impl ::std::fmt::Debug for HeFillButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeFillButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -579,7 +604,7 @@ pub struct HeIconicButtonClass {
 impl ::std::fmt::Debug for HeIconicButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeIconicButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -600,7 +625,7 @@ pub struct HeLatchClass {
 impl ::std::fmt::Debug for HeLatchClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeLatchClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -621,7 +646,7 @@ pub struct HeMiniContentBlockClass {
 impl ::std::fmt::Debug for HeMiniContentBlockClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeMiniContentBlockClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -642,7 +667,7 @@ pub struct HeModifierBadgeClass {
 impl ::std::fmt::Debug for HeModifierBadgeClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeModifierBadgeClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -663,7 +688,7 @@ pub struct HeOutlineButtonClass {
 impl ::std::fmt::Debug for HeOutlineButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeOutlineButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -684,7 +709,7 @@ pub struct HeOverlayButtonClass {
 impl ::std::fmt::Debug for HeOverlayButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeOverlayButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -705,7 +730,7 @@ pub struct HePillButtonClass {
 impl ::std::fmt::Debug for HePillButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HePillButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -726,7 +751,7 @@ pub struct HeSettingsPageClass {
 impl ::std::fmt::Debug for HeSettingsPageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeSettingsPageClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -747,7 +772,7 @@ pub struct HeSettingsWindowClass {
 impl ::std::fmt::Debug for HeSettingsWindowClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeSettingsWindowClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -768,7 +793,7 @@ pub struct HeSideBarClass {
 impl ::std::fmt::Debug for HeSideBarClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeSideBarClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -788,8 +813,7 @@ pub struct HeTabClass {
 
 impl ::std::fmt::Debug for HeTabClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeTabClass @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeTabClass @ {:p}", self)).finish()
     }
 }
 
@@ -802,7 +826,7 @@ pub struct HeTabPageClass {
 impl ::std::fmt::Debug for HeTabPageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTabPageClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -831,7 +855,7 @@ pub struct HeTabSwitcherClass {
 impl ::std::fmt::Debug for HeTabSwitcherClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTabSwitcherClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -852,7 +876,7 @@ pub struct HeTextButtonClass {
 impl ::std::fmt::Debug for HeTextButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTextButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -873,7 +897,7 @@ pub struct HeTintButtonClass {
 impl ::std::fmt::Debug for HeTintButtonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTintButtonClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -894,7 +918,7 @@ pub struct HeToastClass {
 impl ::std::fmt::Debug for HeToastClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeToastClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -915,7 +939,7 @@ pub struct HeViewAuxClass {
 impl ::std::fmt::Debug for HeViewAuxClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewAuxClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -931,14 +955,21 @@ pub type HeViewAuxPrivate = *mut _HeViewAuxPrivate;
 #[repr(C)]
 pub struct HeViewClass {
     pub parent_class: gtk::GtkWidgetClass,
-    pub add_child: Option<unsafe extern "C" fn(*mut HeView, *mut gtk::GtkBuilder, *mut gobject::GObject, *const c_char)>,
+    pub add_child: Option<
+        unsafe extern "C" fn(
+            *mut HeView,
+            *mut gtk::GtkBuilder,
+            *mut gobject::GObject,
+            *const c_char,
+        ),
+    >,
 }
 
 impl ::std::fmt::Debug for HeViewClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewClass @ {:p}", self))
-         .field("add_child", &self.add_child)
-         .finish()
+            .field("add_child", &self.add_child)
+            .finish()
     }
 }
 
@@ -951,7 +982,7 @@ pub struct HeViewDualClass {
 impl ::std::fmt::Debug for HeViewDualClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewDualClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -972,7 +1003,7 @@ pub struct HeViewMonoClass {
 impl ::std::fmt::Debug for HeViewMonoClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewMonoClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1001,7 +1032,7 @@ pub struct HeViewSubTitleClass {
 impl ::std::fmt::Debug for HeViewSubTitleClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewSubTitleClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1022,7 +1053,7 @@ pub struct HeViewSwitcherClass {
 impl ::std::fmt::Debug for HeViewSwitcherClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewSwitcherClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1043,7 +1074,7 @@ pub struct HeViewTitleClass {
 impl ::std::fmt::Debug for HeViewTitleClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewTitleClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1064,7 +1095,7 @@ pub struct HeWelcomeScreenClass {
 impl ::std::fmt::Debug for HeWelcomeScreenClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeWelcomeScreenClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1085,7 +1116,7 @@ pub struct HeWindowClass {
 impl ::std::fmt::Debug for HeWindowClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeWindowClass @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1112,11 +1143,11 @@ pub struct HeAboutWindow {
 impl ::std::fmt::Debug for HeAboutWindow {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeAboutWindow @ {:p}", self))
-         .field("app_id", &self.app_id)
-         .field("translate_url", &self.translate_url)
-         .field("issue_url", &self.issue_url)
-         .field("more_info_url", &self.more_info_url)
-         .finish()
+            .field("app_id", &self.app_id)
+            .field("translate_url", &self.translate_url)
+            .field("issue_url", &self.issue_url)
+            .field("more_info_url", &self.more_info_url)
+            .finish()
     }
 }
 
@@ -1131,8 +1162,8 @@ pub struct HeAppBar {
 impl ::std::fmt::Debug for HeAppBar {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeAppBar @ {:p}", self))
-         .field("title", &self.title)
-         .finish()
+            .field("title", &self.title)
+            .finish()
     }
 }
 
@@ -1146,7 +1177,7 @@ pub struct HeApplication {
 impl ::std::fmt::Debug for HeApplication {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeApplication @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1160,7 +1191,7 @@ pub struct HeApplicationWindow {
 impl ::std::fmt::Debug for HeApplicationWindow {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeApplicationWindow @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1173,8 +1204,7 @@ pub struct HeBadge {
 
 impl ::std::fmt::Debug for HeBadge {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeBadge @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeBadge @ {:p}", self)).finish()
     }
 }
 
@@ -1187,8 +1217,7 @@ pub struct HeBanner {
 
 impl ::std::fmt::Debug for HeBanner {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeBanner @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeBanner @ {:p}", self)).finish()
     }
 }
 
@@ -1201,8 +1230,7 @@ pub struct HeBin {
 
 impl ::std::fmt::Debug for HeBin {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeBin @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeBin @ {:p}", self)).finish()
     }
 }
 
@@ -1216,7 +1244,7 @@ pub struct HeBottomBar {
 impl ::std::fmt::Debug for HeBottomBar {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeBottomBar @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1229,8 +1257,7 @@ pub struct HeButton {
 
 impl ::std::fmt::Debug for HeButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeButton @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeButton @ {:p}", self)).finish()
     }
 }
 
@@ -1243,8 +1270,7 @@ pub struct HeChip {
 
 impl ::std::fmt::Debug for HeChip {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeChip @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeChip @ {:p}", self)).finish()
     }
 }
 
@@ -1258,7 +1284,7 @@ pub struct HeContentBlock {
 impl ::std::fmt::Debug for HeContentBlock {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentBlock @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1272,7 +1298,7 @@ pub struct HeContentBlockImage {
 impl ::std::fmt::Debug for HeContentBlockImage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentBlockImage @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1286,7 +1312,7 @@ pub struct HeContentBlockImageCluster {
 impl ::std::fmt::Debug for HeContentBlockImageCluster {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentBlockImageCluster @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1301,8 +1327,8 @@ pub struct HeContentList {
 impl ::std::fmt::Debug for HeContentList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeContentList @ {:p}", self))
-         .field("children", &self.children)
-         .finish()
+            .field("children", &self.children)
+            .finish()
     }
 }
 
@@ -1315,8 +1341,7 @@ pub struct HeDesktop {
 
 impl ::std::fmt::Debug for HeDesktop {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeDesktop @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeDesktop @ {:p}", self)).finish()
     }
 }
 
@@ -1331,8 +1356,8 @@ pub struct HeDialog {
 impl ::std::fmt::Debug for HeDialog {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeDialog @ {:p}", self))
-         .field("cancel_button", &self.cancel_button)
-         .finish()
+            .field("cancel_button", &self.cancel_button)
+            .finish()
     }
 }
 
@@ -1346,7 +1371,7 @@ pub struct HeDisclosureButton {
 impl ::std::fmt::Debug for HeDisclosureButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeDisclosureButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1361,8 +1386,8 @@ pub struct HeEmptyPage {
 impl ::std::fmt::Debug for HeEmptyPage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeEmptyPage @ {:p}", self))
-         .field("action_button", &self.action_button)
-         .finish()
+            .field("action_button", &self.action_button)
+            .finish()
     }
 }
 
@@ -1376,7 +1401,7 @@ pub struct HeFillButton {
 impl ::std::fmt::Debug for HeFillButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeFillButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1390,7 +1415,7 @@ pub struct HeIconicButton {
 impl ::std::fmt::Debug for HeIconicButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeIconicButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1403,8 +1428,7 @@ pub struct HeLatch {
 
 impl ::std::fmt::Debug for HeLatch {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeLatch @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeLatch @ {:p}", self)).finish()
     }
 }
 
@@ -1418,7 +1442,7 @@ pub struct HeMiniContentBlock {
 impl ::std::fmt::Debug for HeMiniContentBlock {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeMiniContentBlock @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1432,7 +1456,7 @@ pub struct HeModifierBadge {
 impl ::std::fmt::Debug for HeModifierBadge {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeModifierBadge @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1446,7 +1470,7 @@ pub struct HeOutlineButton {
 impl ::std::fmt::Debug for HeOutlineButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeOutlineButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1460,7 +1484,7 @@ pub struct HeOverlayButton {
 impl ::std::fmt::Debug for HeOverlayButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeOverlayButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1474,7 +1498,7 @@ pub struct HePillButton {
 impl ::std::fmt::Debug for HePillButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HePillButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1488,7 +1512,7 @@ pub struct HeSettingsPage {
 impl ::std::fmt::Debug for HeSettingsPage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeSettingsPage @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1502,7 +1526,7 @@ pub struct HeSettingsWindow {
 impl ::std::fmt::Debug for HeSettingsWindow {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeSettingsWindow @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1515,8 +1539,7 @@ pub struct HeSideBar {
 
 impl ::std::fmt::Debug for HeSideBar {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeSideBar @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeSideBar @ {:p}", self)).finish()
     }
 }
 
@@ -1531,8 +1554,8 @@ pub struct HeTab {
 impl ::std::fmt::Debug for HeTab {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTab @ {:p}", self))
-         .field("page_container", &self.page_container)
-         .finish()
+            .field("page_container", &self.page_container)
+            .finish()
     }
 }
 
@@ -1545,8 +1568,7 @@ pub struct HeTabPage {
 
 impl ::std::fmt::Debug for HeTabPage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeTabPage @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeTabPage @ {:p}", self)).finish()
     }
 }
 
@@ -1561,8 +1583,8 @@ pub struct HeTabSwitcher {
 impl ::std::fmt::Debug for HeTabSwitcher {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTabSwitcher @ {:p}", self))
-         .field("notebook", &self.notebook)
-         .finish()
+            .field("notebook", &self.notebook)
+            .finish()
     }
 }
 
@@ -1576,7 +1598,7 @@ pub struct HeTextButton {
 impl ::std::fmt::Debug for HeTextButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTextButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1590,7 +1612,7 @@ pub struct HeTintButton {
 impl ::std::fmt::Debug for HeTintButton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeTintButton @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1603,8 +1625,7 @@ pub struct HeToast {
 
 impl ::std::fmt::Debug for HeToast {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeToast @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeToast @ {:p}", self)).finish()
     }
 }
 
@@ -1617,8 +1638,7 @@ pub struct HeView {
 
 impl ::std::fmt::Debug for HeView {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeView @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeView @ {:p}", self)).finish()
     }
 }
 
@@ -1631,8 +1651,7 @@ pub struct HeViewAux {
 
 impl ::std::fmt::Debug for HeViewAux {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeViewAux @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeViewAux @ {:p}", self)).finish()
     }
 }
 
@@ -1645,8 +1664,7 @@ pub struct HeViewDual {
 
 impl ::std::fmt::Debug for HeViewDual {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeViewDual @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeViewDual @ {:p}", self)).finish()
     }
 }
 
@@ -1659,8 +1677,7 @@ pub struct HeViewMono {
 
 impl ::std::fmt::Debug for HeViewMono {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeViewMono @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeViewMono @ {:p}", self)).finish()
     }
 }
 
@@ -1674,7 +1691,7 @@ pub struct HeViewSubTitle {
 impl ::std::fmt::Debug for HeViewSubTitle {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewSubTitle @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1688,7 +1705,7 @@ pub struct HeViewSwitcher {
 impl ::std::fmt::Debug for HeViewSwitcher {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewSwitcher @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1702,7 +1719,7 @@ pub struct HeViewTitle {
 impl ::std::fmt::Debug for HeViewTitle {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeViewTitle @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1716,7 +1733,7 @@ pub struct HeWelcomeScreen {
 impl ::std::fmt::Debug for HeWelcomeScreen {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("HeWelcomeScreen @ {:p}", self))
-         .finish()
+            .finish()
     }
 }
 
@@ -1729,8 +1746,7 @@ pub struct HeWindow {
 
 impl ::std::fmt::Debug for HeWindow {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("HeWindow @ {:p}", self))
-         .finish()
+        f.debug_struct(&format!("HeWindow @ {:p}", self)).finish()
     }
 }
 
@@ -1820,13 +1836,43 @@ extern "C" {
     pub fn he_about_window_set_app_name(self_: *mut HeAboutWindow, value: *const c_char);
     pub fn he_about_window_get_icon(self_: *mut HeAboutWindow) -> *const c_char;
     pub fn he_about_window_set_icon(self_: *mut HeAboutWindow, value: *const c_char);
-    pub fn he_about_window_get_translator_names(self_: *mut HeAboutWindow, result_length1: *mut c_int) -> *mut *mut c_char;
-    pub fn he_about_window_set_translator_names(self_: *mut HeAboutWindow, value: *mut *mut c_char, value_length1: c_int);
-    pub fn he_about_window_get_developer_names(self_: *mut HeAboutWindow, result_length1: *mut c_int) -> *mut *mut c_char;
-    pub fn he_about_window_set_developer_names(self_: *mut HeAboutWindow, value: *mut *mut c_char, value_length1: c_int);
+    pub fn he_about_window_get_translator_names(
+        self_: *mut HeAboutWindow,
+        result_length1: *mut c_int,
+    ) -> *mut *mut c_char;
+    pub fn he_about_window_set_translator_names(
+        self_: *mut HeAboutWindow,
+        value: *mut *mut c_char,
+        value_length1: c_int,
+    );
+    pub fn he_about_window_get_developer_names(
+        self_: *mut HeAboutWindow,
+        result_length1: *mut c_int,
+    ) -> *mut *mut c_char;
+    pub fn he_about_window_set_developer_names(
+        self_: *mut HeAboutWindow,
+        value: *mut *mut c_char,
+        value_length1: c_int,
+    );
     pub fn he_about_window_get_copyright_year(self_: *mut HeAboutWindow) -> c_int;
     pub fn he_about_window_set_copyright_year(self_: *mut HeAboutWindow, value: c_int);
-    pub fn he_about_window_new(parent: *mut gtk::GtkWindow, app_name: *const c_char, app_id: *const c_char, version: *const c_char, icon: *const c_char, translate_url: *const c_char, issue_url: *const c_char, more_info_url: *const c_char, translators: *mut *mut c_char, translators_length1: c_int, developers: *mut *mut c_char, developers_length1: c_int, copyright_year: c_int, license: HeAboutWindowLicenses, color: HeColors) -> *mut HeAboutWindow;
+    pub fn he_about_window_new(
+        parent: *mut gtk::GtkWindow,
+        app_name: *const c_char,
+        app_id: *const c_char,
+        version: *const c_char,
+        icon: *const c_char,
+        translate_url: *const c_char,
+        issue_url: *const c_char,
+        more_info_url: *const c_char,
+        translators: *mut *mut c_char,
+        translators_length1: c_int,
+        developers: *mut *mut c_char,
+        developers_length1: c_int,
+        copyright_year: c_int,
+        license: HeAboutWindowLicenses,
+        color: HeColors,
+    ) -> *mut HeAboutWindow;
 
     //=========================================================================
     // HeAppBar
@@ -1848,12 +1894,20 @@ extern "C" {
     // HeApplication
     //=========================================================================
     pub fn he_application_get_type() -> GType;
-    pub fn he_application_get_default_accent_color(self_: *mut HeApplication) -> *mut HeColorRGBColor;
-    pub fn he_application_set_default_accent_color(self_: *mut HeApplication, value: *mut HeColorRGBColor);
+    pub fn he_application_get_default_accent_color(
+        self_: *mut HeApplication,
+    ) -> *mut HeColorRGBColor;
+    pub fn he_application_set_default_accent_color(
+        self_: *mut HeApplication,
+        value: *mut HeColorRGBColor,
+    );
     pub fn he_application_get_accent_color(self_: *mut HeApplication) -> *const c_char;
     pub fn he_application_get_foreground(self_: *mut HeApplication) -> *const c_char;
     pub fn he_application_get_accent_foreground(self_: *mut HeApplication) -> *const c_char;
-    pub fn he_application_new(application_id: *const c_char, flags: gio::GApplicationFlags) -> *mut HeApplication;
+    pub fn he_application_new(
+        application_id: *const c_char,
+        flags: gio::GApplicationFlags,
+    ) -> *mut HeApplication;
 
     //=========================================================================
     // HeApplicationWindow
@@ -1865,7 +1919,10 @@ extern "C" {
     pub fn he_application_window_get_has_title(self_: *mut HeApplicationWindow) -> gboolean;
     pub fn he_application_window_set_has_title(self_: *mut HeApplicationWindow, value: gboolean);
     pub fn he_application_window_get_has_back_button(self_: *mut HeApplicationWindow) -> gboolean;
-    pub fn he_application_window_set_has_back_button(self_: *mut HeApplicationWindow, value: gboolean);
+    pub fn he_application_window_set_has_back_button(
+        self_: *mut HeApplicationWindow,
+        value: gboolean,
+    );
 
     //=========================================================================
     // HeBadge
@@ -1896,7 +1953,12 @@ extern "C" {
     // HeBin
     //=========================================================================
     pub fn he_bin_get_type() -> GType;
-    pub fn he_bin_add_child(self_: *mut HeBin, builder: *mut gtk::GtkBuilder, child: *mut gobject::GObject, type_: *const c_char);
+    pub fn he_bin_add_child(
+        self_: *mut HeBin,
+        builder: *mut gtk::GtkBuilder,
+        child: *mut gobject::GObject,
+        type_: *const c_char,
+    );
 
     //=========================================================================
     // HeBottomBar
@@ -1910,13 +1972,38 @@ extern "C" {
     pub fn he_bottom_bar_set_menu_model(self_: *mut HeBottomBar, value: *mut gio::GMenuModel);
     pub fn he_bottom_bar_get_collapse_actions(self_: *mut HeBottomBar) -> gboolean;
     pub fn he_bottom_bar_set_collapse_actions(self_: *mut HeBottomBar, value: gboolean);
-    pub fn he_bottom_bar_new_with_details(title: *const c_char, description: *const c_char) -> *mut HeBottomBar;
+    pub fn he_bottom_bar_new_with_details(
+        title: *const c_char,
+        description: *const c_char,
+    ) -> *mut HeBottomBar;
     pub fn he_bottom_bar_new() -> *mut HeBottomBar;
-    pub fn he_bottom_bar_append_button(self_: *mut HeBottomBar, icon: *mut HeIconicButton, position: HeBottomBarPosition);
-    pub fn he_bottom_bar_prepend_button(self_: *mut HeBottomBar, icon: *mut HeIconicButton, position: HeBottomBarPosition);
-    pub fn he_bottom_bar_remove_button(self_: *mut HeBottomBar, icon: *mut HeIconicButton, position: HeBottomBarPosition);
-    pub fn he_bottom_bar_insert_button_after(self_: *mut HeBottomBar, icon: *mut HeIconicButton, after: *mut HeIconicButton, position: HeBottomBarPosition);
-    pub fn he_bottom_bar_reorder_button_after(self_: *mut HeBottomBar, icon: *mut HeIconicButton, after: *mut HeIconicButton, position: HeBottomBarPosition);
+    pub fn he_bottom_bar_append_button(
+        self_: *mut HeBottomBar,
+        icon: *mut HeIconicButton,
+        position: HeBottomBarPosition,
+    );
+    pub fn he_bottom_bar_prepend_button(
+        self_: *mut HeBottomBar,
+        icon: *mut HeIconicButton,
+        position: HeBottomBarPosition,
+    );
+    pub fn he_bottom_bar_remove_button(
+        self_: *mut HeBottomBar,
+        icon: *mut HeIconicButton,
+        position: HeBottomBarPosition,
+    );
+    pub fn he_bottom_bar_insert_button_after(
+        self_: *mut HeBottomBar,
+        icon: *mut HeIconicButton,
+        after: *mut HeIconicButton,
+        position: HeBottomBarPosition,
+    );
+    pub fn he_bottom_bar_reorder_button_after(
+        self_: *mut HeBottomBar,
+        icon: *mut HeIconicButton,
+        after: *mut HeIconicButton,
+        position: HeBottomBarPosition,
+    );
 
     //=========================================================================
     // HeButton
@@ -1948,7 +2035,13 @@ extern "C" {
     pub fn he_content_block_set_secondary_button(self_: *mut HeContentBlock, value: *mut HeButton);
     pub fn he_content_block_get_primary_button(self_: *mut HeContentBlock) -> *mut HeButton;
     pub fn he_content_block_set_primary_button(self_: *mut HeContentBlock, value: *mut HeButton);
-    pub fn he_content_block_new(title: *const c_char, subtitle: *const c_char, icon: *const c_char, primary_button: *mut HeButton, secondary_button: *mut HeButton) -> *mut HeContentBlock;
+    pub fn he_content_block_new(
+        title: *const c_char,
+        subtitle: *const c_char,
+        icon: *const c_char,
+        primary_button: *mut HeButton,
+        secondary_button: *mut HeButton,
+    ) -> *mut HeContentBlock;
 
     //=========================================================================
     // HeContentBlockImage
@@ -1957,23 +2050,55 @@ extern "C" {
     pub fn he_content_block_image_get_file(self_: *mut HeContentBlockImage) -> *const c_char;
     pub fn he_content_block_image_set_file(self_: *mut HeContentBlockImage, value: *const c_char);
     pub fn he_content_block_image_get_requested_height(self_: *mut HeContentBlockImage) -> c_int;
-    pub fn he_content_block_image_set_requested_height(self_: *mut HeContentBlockImage, value: c_int);
+    pub fn he_content_block_image_set_requested_height(
+        self_: *mut HeContentBlockImage,
+        value: c_int,
+    );
     pub fn he_content_block_image_get_requested_width(self_: *mut HeContentBlockImage) -> c_int;
-    pub fn he_content_block_image_set_requested_width(self_: *mut HeContentBlockImage, value: c_int);
+    pub fn he_content_block_image_set_requested_width(
+        self_: *mut HeContentBlockImage,
+        value: c_int,
+    );
 
     //=========================================================================
     // HeContentBlockImageCluster
     //=========================================================================
     pub fn he_content_block_image_cluster_get_type() -> GType;
-    pub fn he_content_block_image_cluster_get_title(self_: *mut HeContentBlockImageCluster) -> *const c_char;
-    pub fn he_content_block_image_cluster_set_title(self_: *mut HeContentBlockImageCluster, value: *const c_char);
-    pub fn he_content_block_image_cluster_get_subtitle(self_: *mut HeContentBlockImageCluster) -> *const c_char;
-    pub fn he_content_block_image_cluster_set_subtitle(self_: *mut HeContentBlockImageCluster, value: *const c_char);
-    pub fn he_content_block_image_cluster_get_icon(self_: *mut HeContentBlockImageCluster) -> *const c_char;
-    pub fn he_content_block_image_cluster_set_icon(self_: *mut HeContentBlockImageCluster, value: *const c_char);
-    pub fn he_content_block_image_cluster_set_image(self_: *mut HeContentBlockImageCluster, image: *mut HeContentBlockImage, position: HeContentBlockImageClusterImagePosition);
-    pub fn he_content_block_image_cluster_remove_image(self_: *mut HeContentBlockImageCluster, image: *mut HeContentBlockImage);
-    pub fn he_content_block_image_cluster_new(title: *const c_char, subtitle: *const c_char, icon: *const c_char) -> *mut HeContentBlockImageCluster;
+    pub fn he_content_block_image_cluster_get_title(
+        self_: *mut HeContentBlockImageCluster,
+    ) -> *const c_char;
+    pub fn he_content_block_image_cluster_set_title(
+        self_: *mut HeContentBlockImageCluster,
+        value: *const c_char,
+    );
+    pub fn he_content_block_image_cluster_get_subtitle(
+        self_: *mut HeContentBlockImageCluster,
+    ) -> *const c_char;
+    pub fn he_content_block_image_cluster_set_subtitle(
+        self_: *mut HeContentBlockImageCluster,
+        value: *const c_char,
+    );
+    pub fn he_content_block_image_cluster_get_icon(
+        self_: *mut HeContentBlockImageCluster,
+    ) -> *const c_char;
+    pub fn he_content_block_image_cluster_set_icon(
+        self_: *mut HeContentBlockImageCluster,
+        value: *const c_char,
+    );
+    pub fn he_content_block_image_cluster_set_image(
+        self_: *mut HeContentBlockImageCluster,
+        image: *mut HeContentBlockImage,
+        position: HeContentBlockImageClusterImagePosition,
+    );
+    pub fn he_content_block_image_cluster_remove_image(
+        self_: *mut HeContentBlockImageCluster,
+        image: *mut HeContentBlockImage,
+    );
+    pub fn he_content_block_image_cluster_new(
+        title: *const c_char,
+        subtitle: *const c_char,
+        icon: *const c_char,
+    ) -> *mut HeContentBlockImageCluster;
 
     //=========================================================================
     // HeContentList
@@ -2011,7 +2136,16 @@ extern "C" {
     pub fn he_dialog_set_secondary_button(self_: *mut HeDialog, value: *mut HeTintButton);
     pub fn he_dialog_get_primary_button(self_: *mut HeDialog) -> *mut HeFillButton;
     pub fn he_dialog_set_primary_button(self_: *mut HeDialog, value: *mut HeFillButton);
-    pub fn he_dialog_new(modal: gboolean, parent: *mut gtk::GtkWindow, title: *const c_char, subtitle: *const c_char, info: *const c_char, icon: *const c_char, primary_button: *mut HeFillButton, secondary_button: *mut HeTintButton) -> *mut HeDialog;
+    pub fn he_dialog_new(
+        modal: gboolean,
+        parent: *mut gtk::GtkWindow,
+        title: *const c_char,
+        subtitle: *const c_char,
+        info: *const c_char,
+        icon: *const c_char,
+        primary_button: *mut HeFillButton,
+        secondary_button: *mut HeTintButton,
+    ) -> *mut HeDialog;
 
     //=========================================================================
     // HeDisclosureButton
@@ -2075,9 +2209,18 @@ extern "C" {
     pub fn he_mini_content_block_get_icon(self_: *mut HeMiniContentBlock) -> *const c_char;
     pub fn he_mini_content_block_set_icon(self_: *mut HeMiniContentBlock, value: *const c_char);
     pub fn he_mini_content_block_set_gicon(self_: *mut HeMiniContentBlock, value: *mut gio::GIcon);
-    pub fn he_mini_content_block_get_primary_button(self_: *mut HeMiniContentBlock) -> *mut HeButton;
-    pub fn he_mini_content_block_set_primary_button(self_: *mut HeMiniContentBlock, value: *mut HeButton);
-    pub fn he_mini_content_block_new_with_details(title: *const c_char, subtitle: *const c_char, primary_button: *mut HeButton) -> *mut HeMiniContentBlock;
+    pub fn he_mini_content_block_get_primary_button(
+        self_: *mut HeMiniContentBlock,
+    ) -> *mut HeButton;
+    pub fn he_mini_content_block_set_primary_button(
+        self_: *mut HeMiniContentBlock,
+        value: *mut HeButton,
+    );
+    pub fn he_mini_content_block_new_with_details(
+        title: *const c_char,
+        subtitle: *const c_char,
+        primary_button: *mut HeButton,
+    ) -> *mut HeMiniContentBlock;
     pub fn he_mini_content_block_new() -> *mut HeMiniContentBlock;
 
     //=========================================================================
@@ -2091,8 +2234,12 @@ extern "C" {
     pub fn he_modifier_badge_get_label(self_: *mut HeModifierBadge) -> *const c_char;
     pub fn he_modifier_badge_set_label(self_: *mut HeModifierBadge, value: *const c_char);
     pub fn he_modifier_badge_new(label: *const c_char) -> *mut HeModifierBadge;
-    pub fn he_modifier_badge_get_alignment(self_: *mut HeModifierBadge) -> HeModifierBadgeAlignment;
-    pub fn he_modifier_badge_set_alignment(self_: *mut HeModifierBadge, value: HeModifierBadgeAlignment);
+    pub fn he_modifier_badge_get_alignment(self_: *mut HeModifierBadge)
+        -> HeModifierBadgeAlignment;
+    pub fn he_modifier_badge_set_alignment(
+        self_: *mut HeModifierBadge,
+        value: HeModifierBadgeAlignment,
+    );
 
     //=========================================================================
     // HeOutlineButton
@@ -2118,9 +2265,17 @@ extern "C" {
     pub fn he_overlay_button_set_label(self_: *mut HeOverlayButton, value: *const c_char);
     pub fn he_overlay_button_get_child(self_: *mut HeOverlayButton) -> *mut gtk::GtkWidget;
     pub fn he_overlay_button_set_child(self_: *mut HeOverlayButton, value: *mut gtk::GtkWidget);
-    pub fn he_overlay_button_get_alignment(self_: *mut HeOverlayButton) -> HeOverlayButtonAlignment;
-    pub fn he_overlay_button_set_alignment(self_: *mut HeOverlayButton, value: HeOverlayButtonAlignment);
-    pub fn he_overlay_button_new(icon: *const c_char, label: *const c_char, secondary_icon: *const c_char) -> *mut HeOverlayButton;
+    pub fn he_overlay_button_get_alignment(self_: *mut HeOverlayButton)
+        -> HeOverlayButtonAlignment;
+    pub fn he_overlay_button_set_alignment(
+        self_: *mut HeOverlayButton,
+        value: HeOverlayButtonAlignment,
+    );
+    pub fn he_overlay_button_new(
+        icon: *const c_char,
+        label: *const c_char,
+        secondary_icon: *const c_char,
+    ) -> *mut HeOverlayButton;
 
     //=========================================================================
     // HePillButton
@@ -2188,12 +2343,21 @@ extern "C" {
     pub fn he_tab_switcher_get_type() -> GType;
     pub fn he_tab_switcher_get_n_tabs(self_: *mut HeTabSwitcher) -> c_int;
     pub fn he_tab_switcher_get_tabs(self_: *mut HeTabSwitcher) -> *mut glib::GList;
-    pub fn he_tab_switcher_get_tab_bar_behavior(self_: *mut HeTabSwitcher) -> HeTabSwitcherTabBarBehavior;
-    pub fn he_tab_switcher_set_tab_bar_behavior(self_: *mut HeTabSwitcher, value: HeTabSwitcherTabBarBehavior);
+    pub fn he_tab_switcher_get_tab_bar_behavior(
+        self_: *mut HeTabSwitcher,
+    ) -> HeTabSwitcherTabBarBehavior;
+    pub fn he_tab_switcher_set_tab_bar_behavior(
+        self_: *mut HeTabSwitcher,
+        value: HeTabSwitcherTabBarBehavior,
+    );
     pub fn he_tab_switcher_get_tab_position(self_: *mut HeTabSwitcher, tab: *mut HeTab) -> c_int;
     pub fn he_tab_switcher_get_current(self_: *mut HeTabSwitcher) -> *mut HeTab;
     pub fn he_tab_switcher_set_current(self_: *mut HeTabSwitcher, value: *mut HeTab);
-    pub fn he_tab_switcher_insert_tab(self_: *mut HeTabSwitcher, tab: *mut HeTab, index: c_int) -> c_uint;
+    pub fn he_tab_switcher_insert_tab(
+        self_: *mut HeTabSwitcher,
+        tab: *mut HeTab,
+        index: c_int,
+    ) -> c_uint;
     pub fn he_tab_switcher_remove_tab(self_: *mut HeTabSwitcher, tab: *mut HeTab);
     pub fn he_tab_switcher_get_menu(self_: *mut HeTabSwitcher) -> *mut gio::GMenu;
     pub fn he_tab_switcher_get_actions(self_: *mut HeTabSwitcher) -> *mut gio::GSimpleActionGroup;
@@ -2236,7 +2400,12 @@ extern "C" {
     pub fn he_view_set_subtitle(self_: *mut HeView, value: *const c_char);
     pub fn he_view_get_has_margins(self_: *mut HeView) -> gboolean;
     pub fn he_view_set_has_margins(self_: *mut HeView, value: gboolean);
-    pub fn he_view_add_child(self_: *mut HeView, builder: *mut gtk::GtkBuilder, child: *mut gobject::GObject, type_: *const c_char);
+    pub fn he_view_add_child(
+        self_: *mut HeView,
+        builder: *mut gtk::GtkBuilder,
+        child: *mut gobject::GObject,
+        type_: *const c_char,
+    );
     pub fn he_view_add(self_: *mut HeView, widget: *mut gtk::GtkWidget);
 
     //=========================================================================
@@ -2291,8 +2460,16 @@ extern "C" {
     pub fn he_welcome_screen_set_appname(self_: *mut HeWelcomeScreen, value: *const c_char);
     pub fn he_welcome_screen_get_description(self_: *mut HeWelcomeScreen) -> *const c_char;
     pub fn he_welcome_screen_set_description(self_: *mut HeWelcomeScreen, value: *const c_char);
-    pub fn he_welcome_screen_add_child(self_: *mut HeWelcomeScreen, builder: *mut gtk::GtkBuilder, child: *mut gobject::GObject, type_: *const c_char);
-    pub fn he_welcome_screen_new(appname: *const c_char, description: *const c_char) -> *mut HeWelcomeScreen;
+    pub fn he_welcome_screen_add_child(
+        self_: *mut HeWelcomeScreen,
+        builder: *mut gtk::GtkBuilder,
+        child: *mut gobject::GObject,
+        type_: *const c_char,
+    );
+    pub fn he_welcome_screen_new(
+        appname: *const c_char,
+        description: *const c_char,
+    ) -> *mut HeWelcomeScreen;
 
     //=========================================================================
     // HeWindow
@@ -2342,9 +2519,29 @@ extern "C" {
     pub fn he_animation_ease_out_bounce(t: c_double, d: c_double) -> c_double;
     pub fn he_animation_ease_in_bounce(t: c_double, d: c_double) -> c_double;
     pub fn he_animation_ease_in_out_bounce(t: c_double, d: c_double) -> c_double;
-    pub fn he_misc_find_ancestor_of_type(t_type: GType, t_dup_func: gobject::GBoxedCopyFunc, t_destroy_func: glib::GDestroyNotify, widget: *mut gtk::GtkWidget) -> gpointer;
-    pub fn he_misc_contrast_ratio(red: c_double, green: c_double, blue: c_double, red2: c_double, green2: c_double, blue2: c_double) -> c_double;
-    pub fn he_misc_fix_fg_contrast(red: c_double, green: c_double, blue: c_double, red2: c_double, green2: c_double, blue2: c_double, result_length1: *mut c_int) -> *mut c_double;
+    pub fn he_misc_find_ancestor_of_type(
+        t_type: GType,
+        t_dup_func: gobject::GBoxedCopyFunc,
+        t_destroy_func: glib::GDestroyNotify,
+        widget: *mut gtk::GtkWidget,
+    ) -> gpointer;
+    pub fn he_misc_contrast_ratio(
+        red: c_double,
+        green: c_double,
+        blue: c_double,
+        red2: c_double,
+        green2: c_double,
+        blue2: c_double,
+    ) -> c_double;
+    pub fn he_misc_fix_fg_contrast(
+        red: c_double,
+        green: c_double,
+        blue: c_double,
+        red2: c_double,
+        green2: c_double,
+        blue2: c_double,
+        result_length1: *mut c_int,
+    ) -> *mut c_double;
     pub fn he_color_rgb_value_to_xyz(v: c_double) -> c_double;
     pub fn he_color_xyz_value_to_lab(v: c_double) -> c_double;
     pub fn he_color_rgb_to_xyz(color: HeColorRGBColor, result: *mut HeColorXYZColor);
@@ -2354,20 +2551,40 @@ extern "C" {
     pub fn he_color_lab_to_rgb(color: HeColorLABColor, result: *mut HeColorRGBColor);
     pub fn he_color_lab_to_xyz(color: HeColorLABColor, result: *mut HeColorXYZColor);
     pub fn he_color_contrast_ratio(luma1: c_double, luma2: c_double) -> c_double;
-    pub fn he_color_contrast_ratio_for_lch(color1: HeColorLCHColor, color2: HeColorLCHColor) -> c_double;
-    pub fn he_color_derive_contasting_color(color: HeColorLCHColor, contrast: *mut c_double, lighten: *mut gboolean, result: *mut HeColorLCHColor);
+    pub fn he_color_contrast_ratio_for_lch(
+        color1: HeColorLCHColor,
+        color2: HeColorLCHColor,
+    ) -> c_double;
+    pub fn he_color_derive_contasting_color(
+        color: HeColorLCHColor,
+        contrast: *mut c_double,
+        lighten: *mut gboolean,
+        result: *mut HeColorLCHColor,
+    );
     pub fn he_color_to_gdk_rgba(color: HeColorRGBColor, result: *mut gdk::GdkRGBA);
     pub fn he_color_from_gdk_rgba(color: gdk::GdkRGBA, result: *mut HeColorRGBColor);
     pub fn he_colors_to_css_class(self_: HeColors) -> *mut c_char;
     pub fn he_colors_to_string(self_: HeColors) -> *mut c_char;
     pub fn he_about_window_licenses_get_url(self_: HeAboutWindowLicenses) -> *mut c_char;
     pub fn he_about_window_licenses_get_name(self_: HeAboutWindowLicenses) -> *mut c_char;
-    pub fn he_content_block_image_cluster_image_position_get_column(self_: HeContentBlockImageClusterImagePosition) -> c_int;
-    pub fn he_content_block_image_cluster_image_position_get_row(self_: HeContentBlockImageClusterImagePosition) -> c_int;
-    pub fn he_modifier_badge_alignment_to_gtk_align(self_: HeModifierBadgeAlignment) -> gtk::GtkAlign;
-    pub fn he_modifier_badge_alignment_from_gtk_align(align: gtk::GtkAlign) -> HeModifierBadgeAlignment;
+    pub fn he_content_block_image_cluster_image_position_get_column(
+        self_: HeContentBlockImageClusterImagePosition,
+    ) -> c_int;
+    pub fn he_content_block_image_cluster_image_position_get_row(
+        self_: HeContentBlockImageClusterImagePosition,
+    ) -> c_int;
+    pub fn he_modifier_badge_alignment_to_gtk_align(
+        self_: HeModifierBadgeAlignment,
+    ) -> gtk::GtkAlign;
+    pub fn he_modifier_badge_alignment_from_gtk_align(
+        align: gtk::GtkAlign,
+    ) -> HeModifierBadgeAlignment;
     pub fn he_overlay_button_size_to_css_class(self_: HeOverlayButtonSize) -> *mut c_char;
-    pub fn he_overlay_button_alignment_to_gtk_align(self_: HeOverlayButtonAlignment) -> gtk::GtkAlign;
-    pub fn he_overlay_button_alignment_from_gtk_align(align: gtk::GtkAlign) -> HeOverlayButtonAlignment;
+    pub fn he_overlay_button_alignment_to_gtk_align(
+        self_: HeOverlayButtonAlignment,
+    ) -> gtk::GtkAlign;
+    pub fn he_overlay_button_alignment_from_gtk_align(
+        align: gtk::GtkAlign,
+    ) -> HeOverlayButtonAlignment;
 
 }
