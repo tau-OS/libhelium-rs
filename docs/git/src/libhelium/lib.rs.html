@@ -46,6 +46,9 @@
 <span id="38">38</span>
 <span id="39">39</span>
 <span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::needless_doctest_main</span>)]</span>
 <span class="attribute">#![<span class="ident">doc</span>(
@@ -61,17 +64,17 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">gtk</span>;
 
 <span class="doccomment">/// Asserts that this is the main thread and `gtk::init` has been called.</span>
-<span class="macro">macro_rules!</span> <span class="ident">assert_initialized_main_thread</span> {
-    () =&gt; {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">::gtk::is_initialized_main_thread</span>() {
-            <span class="kw">if</span> <span class="ident">::gtk::is_initialized</span>() {
-                <span class="macro">panic!</span>(<span class="string">&quot;libhelium may only be used from the main thread.&quot;</span>);
-            } <span class="kw">else</span> {
-                <span class="macro">panic!</span>(<span class="string">&quot;Gtk has to be initialized before using libadwaita.&quot;</span>);
-            }
-        }
-    };
-}
+<span class="comment">// macro_rules! assert_initialized_main_thread {</span>
+<span class="comment">//     () =&gt; {</span>
+<span class="comment">//         if !::gtk::is_initialized_main_thread() {</span>
+<span class="comment">//             if ::gtk::is_initialized() {</span>
+<span class="comment">//                 panic!(&quot;libhelium may only be used from the main thread.&quot;);</span>
+<span class="comment">//             } else {</span>
+<span class="comment">//                 panic!(&quot;Gtk has to be initialized before using libhelium.&quot;);</span>
+<span class="comment">//             }</span>
+<span class="comment">//         }</span>
+<span class="comment">//     };</span>
+<span class="comment">// }</span>
 
 <span class="macro">macro_rules!</span> <span class="ident">skip_assert_initialized</span> {
     () =&gt; {};
@@ -82,10 +85,13 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::type_complexity</span>)]</span>
 <span class="kw">mod</span> <span class="ident">auto</span>;
 
+<span class="kw">mod</span> <span class="ident">application</span>;
+
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">auto</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">builders</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">subclass</span>;
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="libhelium" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (263edd43c 2022-07-17)" ></div>
 </body></html>
